@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Login</title>
+  <meta name="description" content="Login">
+  <link rel="icon" href="/media/logo.png" type="image/x-icon">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/{{.css}}">
+  <script src="/js/{{.js}}"></script>
+</head>
+<body>
+  <input type="hidden" id="_pageid" value="login">
+  <div class="flex-container">
+    <div>
+      <div class="configbox">
+        
+          
+            <div class="flex-container">
+              <div style="width: fit-content;">
+                <img src="/media/logo.png" class="menu-logo">
+              </div>
+              <div style="flex-grow: 1; text-align: center;">
+                <h4>Login</h4>
+              </div>
+            </div>
+
+          
+            <div class="container">
+              <div style="width: 100%;text-align: right;">
+                Email
+                <input type="email" id="_email" required>
+              </div>
+            
+              <div style="width: 100%;">
+                Password
+                <input type="password" id="_password" required>
+              </div>
+            
+              <div style="text-align: center;margin: 5px;">
+                <input type="button" id="_btn" class="loginbtn"
+                  onclick="Login()" value="Login">
+              </div>
+            </div>
+          
+        
+      </div>
+      <div class="info-text">
+        Sign up <a href="/signup/0" class="info-text">here</a>
+      </div>
+      <div id="_msg" class="errmessage"></div>
+    </div>
+  </div>
+</body>
+</html>

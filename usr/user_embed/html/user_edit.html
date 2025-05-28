@@ -1,0 +1,81 @@
+{{ template "user_menu.html" . }}
+<div>
+    <table>
+        <tr>
+            <td class="div-header-bold">Edit {{ .edituid.Role }} {{ .edituid.Email }}</td>
+            <td>&nbsp&nbsp
+                {{ if ne .edituid.Role "admin" }}
+                <button value="{{ .edituid.ID }}" 
+                        class="delbutton"
+                        onclick="Delete('{{.edituid.UUID}}')">
+                        Delete user
+                </button>
+                {{ end }}
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="flex-container" style="margin-top: 5px; flex-direction: row;">
+    <!-- <input type="hidden" id="_id" value="{{ .edituid.ID }}" /> -->
+    <input type="hidden" id="_email" value="{{ .edituid.Email }}" />
+
+    <div>
+        <form id="changepassword" action="/user/psw" method="post"  class="lst-box">
+            <table>
+                <tr>
+                    <td style="text-align: right;">
+                      <label for="_psw1">New Password</label>
+                      <input type="password" id="_psw1" required />
+                    </td>
+                  </tr>
+                  <tr>
+                      <td style="text-align: right;">
+                        <label for="_psw2">Confirm Password</label>
+                        <input type="password" id="_psw2" required />
+                      </td>
+                    </tr>
+                  <tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <input type="button" value="Save Password" class="lst-btn" 
+                            style="width: 155px;margin-top:5px;" onclick="setPsw('{{.edituid.UUID}}')" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        </div>
+    </div>
+ 
+    {{ if ne .edituid.UUID .user.UUID }}
+    <div class="lst-box">
+        <div>
+            <label for="_role">Role</label>
+            <select id="_role" >
+                {{ if eq .edituid.Role "admin" }}
+                    <option value="admin" selected>admin</option>
+                    <option value="superuser">superuser</option>
+                    <option value="user">user</option>
+                {{ end }}
+                {{ if eq .edituid.Role "superuser" }}
+                    <option value="admin">admin</option>
+                    <option value="superuser" selected>superuser</option>
+                    <option value="user">user</option>
+                {{ end }}
+                {{ if eq .edituid.Role "user" }}
+                    <option value="admin">admin</option>
+                    <option value="superuser">superuser</option>
+                    <option value="user" selected>user</option>  
+                {{ end }}
+            </select>
+        </div>
+        <div style="text-align: center;">
+            <input type="button" value="Update Role" class="lst-btn" 
+            style="width: 155px;margin-top:5px;" onclick="Role('{{.edituid.UUID}}')" />
+        </div>        
+    </div>
+</div>
+    {{ end }}
+    
+<script src="/js/{{ .js }}"></script>
+</body>
+</html>

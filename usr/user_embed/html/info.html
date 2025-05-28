@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    
+    <title>{{ .title }}</title>
+    <style>
+        a {
+            text-decoration: none;
+            color: black;
+        }
+        a:hover {
+            font-weight: bold;
+        }
+        .timetxt {
+            font-family: monospace;
+            font-size: 14px;
+
+            text-align: center;
+
+            margin-top: 30px;
+        }
+        .timetxt:hover {
+            font-weight: bold;
+            color: black;
+            cursor: pointer;
+        }
+        .header, .content {
+            display: flex;
+            justify-content: space-between;
+            font-family: monospace;
+        }
+        .header div {
+            vertical-align: middle;
+        }
+        .content {
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        .app-info {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .app-info-long {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .company-info {
+            font-size: 20px;
+            font-weight: bold;
+
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            {{ if .backbtn }}
+            <a href="{{ .backbtn }}">⬅ back</a>
+            {{ else }}
+            <a href="/">⬅ back</a>
+            {{ end }}
+        </div>
+        <div>
+            {{ .loctime }}
+        </div>
+        <div style="text-align: right;">
+            <a href="https://raadig.no" target="_blank">raadig.no</a>
+        </div>
+    </div>
+    <br><br>
+    <div class="content">
+        <div style="text-align: center;">
+            <div class="app-info">
+                {{ .info.AppName }} v{{ .info.Version }}
+            </div>
+            <div class="app-info-long">
+                {{ .info.AppNameLong }}
+            </div>
+            <div class="company-info">
+                {{ .info.Company }}
+            </div>
+           
+        </div>
+    </div>
+    <div class="timetxt">{{ .apptime }}</div>
+</body>
+</html>

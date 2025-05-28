@@ -1,0 +1,87 @@
+:root {
+    --color-primary: #282828;
+    --color-secondary: #d3d3d3;
+    --color-background: #f0f0f0;
+    --color-text: #000;
+    --color-border: #282828;
+    --color-th: #a0a0a0;
+}
+
+/* General styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: medium;
+    color: var(--color-text);
+    background-color: var(--color-background);
+    height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 5px;
+    font-family: Arial, Helvetica, sans-serif, monospace;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="search"] {
+    border-radius: 5px;
+    background: var(--color-background);
+    color: var(--color-text);
+    text-align: left;
+    font-size: large;
+}
+
+a {
+    color: var(--color-secondary);
+    text-decoration: none;
+}
+
+select {
+    margin: 0;
+    padding: 2px;
+    border: 1px solid var(--color-text);
+    background: var(--color-background);
+    width: 140px;
+}
+
+.th-lst,
+.td-lst {
+    padding: 2px 4px;
+    border: 2px solid var(--color-primary);
+    border-radius: 5px;
+    color: var(--color-text);
+    background: transparent;
+}
+
+.th-lst {
+    background-color: var(--color-th);
+}
+
+.td-lst {
+    vertical-align: middle;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+
+.div-header,
+.div-header-bold {
+    background: transparent;
+    color: var(--color-text);
+    font-size: medium;
+}
+
+.div-header-bold {
+    font-weight: bold;
+}

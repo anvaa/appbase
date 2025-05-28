@@ -1,0 +1,10 @@
+{{ template "menu.html" . }}
+<input type="hidden" id="_page" value="start" />
+
+<div>Start page</div>
+
+<script>
+    setFocus('{{ .appConf.StartPageFocus }}');
+</script>
+
+{{ template "footer.html" . }}

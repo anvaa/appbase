@@ -1,0 +1,255 @@
+{{ template "menu.html" . }}
+
+<div class="div-header-bold">Tools</div>
+<div class="flex-container" style="flex-wrap: wrap;">
+    <div class="tools-box">
+        <div class="div-header">{{ .menu0.Title }}</div>
+        <div>
+            <div >
+                <input type="text" id="_txtmnu{{.menu0.ID}}" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu0.ID}}')" />
+                <input type="hidden" id="_idmnu{{.menu0.ID}}" value="{{.menu0.ID}}" />
+                <input type="hidden" id="_idsub{{.menu0.ID}}" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu0.ID}}')" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_mnu0" size="6" class="tools-select" >
+                    {{ range .menu0.SubItems }}
+                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Delete" onclick="lstDel('{{.menu0.ID}}')" class="tools-btn-del"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="tools-box">
+        <div class="div-header">{{ .menu1.Title }}</div>
+        <div>
+            <div >
+                <input type="text" id="_txtmnu{{.menu1.ID}}" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu1.ID}}')" />
+                <input type="hidden" id="_idmnu{{.menu1.ID}}" value="{{.menu1.ID}}" />
+                <input type="hidden" id="_idsub{{.menu1.ID}}" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu1.ID}}')" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_mnu0" size="6" class="tools-select" > 
+                    {{ range .menu1.SubItems }}
+                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Delete" onclick="lstDel('{{.menu1.ID}}')" class="tools-btn-del"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="tools-box">
+        <div class="div-header">{{ .menu2.Title }}</div>
+        <div>
+            <div >
+                <input type="text" id="_txtmnu{{.menu2.ID}}" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu2.ID}}')" />
+                <input type="hidden" id="_idmnu{{.menu2.ID}}" value="{{.menu2.ID}}" />
+                <input type="hidden" id="_idsub{{.menu2.ID}}" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu2.ID}}')" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_mnu0" size="6" class="tools-select" > 
+                    {{ range .menu2.SubItems }}
+                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Delete" onclick="lstDel('{{.menu2.ID}}')" class="tools-btn-del"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="tools-box">
+        <div class="div-header">{{ .menu3.Title }}</div>
+        <div>
+            <div >
+                <input type="text" id="_txtmnu{{.menu3.ID}}" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu3.ID}}')" />
+                <input type="hidden" id="_idmnu{{.menu3.ID}}" value="{{.menu3.ID}}" />
+                <input type="hidden" id="_idsub{{.menu3.ID}}" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu3.ID}}')" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_mnu0" size="6" class="tools-select" > 
+                    {{ range .menu3.SubItems }}
+                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Delete" onclick="lstDel('{{.menu3.ID}}')" class="tools-btn-del"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="tools-box">
+        <div class="div-header">{{ .menu4.Title }}</div>
+        <div>
+            <div >
+                <input type="text" id="_txtmnu{{.menu4.ID}}" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu4.ID}}')" />
+                <input type="hidden" id="_idmnu{{.menu4.ID}}" value="{{.menu4.ID}}" />
+                <input type="hidden" id="_idsub{{.menu4.ID}}" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu4.ID}}')" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_mnu0" size="6" class="tools-select" > 
+                    {{ range .menu4.SubItems }}
+                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Delete" onclick="lstDel('{{.menu4.ID}}')" class="tools-btn-del"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="tools-box">
+        <div class="div-header">{{ .menu5.Title }}</div>
+        <div>
+            <div >
+                <input type="text" id="_txtmnu{{.menu5.ID}}" value="" class="tools-text" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu5.ID}}')" />
+                <input type="hidden" id="_idmnu{{.menu5.ID}}" value="{{.menu5.ID}}" />
+                <input type="hidden" id="_idsub{{.menu5.ID}}" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu5.ID}}')" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_mnu0" size="6" class="tools-select" > 
+                    {{ range .menu5.SubItems }}
+                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Delete" onclick="lstDel('{{.menu5.ID}}')" class="tools-btn-del"/>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="flex-container">
+    
+    <div class="tools-box">
+        <div class="div-header">Status</div>
+        <div>
+            <div>
+                <input type="text" id="_txtmnu100" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('status',100)" />
+                <input type="hidden" id="_idmnu100" value="100" />
+                <input type="hidden" id="_idsub100" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Add/Update" 
+                onclick="subAddUpd('100')" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_status" size="8" class="tools-select" >
+                    {{ range .stats }}
+                    <option id="_selsub{{ .UUID }}" value="{{ .Name }}" onclick="subSel('{{ .UUID }}',100)">{{.Name}} {{.Type}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Delete" onclick="lstDel('100')" class="tools-btn-del"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="tools-box">
+        <div class="div-header">Menu Titles</div>
+        <div>
+            <div >
+                <input type="text" id="_txtmnu200" value="" class="tools-txt" placeholder="Edit" maxlength="12" title="max 12 char" onkeydown="isEdit('titles',200)" />
+                <input type="hidden" id="_idmnu200" value="200" />
+                <input type="hidden" id="_idsub200" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Update" onclick="TitlesUpd()" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_mnuts" size="{{ len .menu }}" class="tools-select" >
+                    {{ range .menu }}
+                    <option id="_selsub{{.UUID}}" value="{{.Title}}" 
+                    onclick="subSel('{{.UUID}}',200)">{{.Title}} {{.Type}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+        </div>
+    </div>
+
+        
+
+</div>
+
+<div class="flex-container">
+    <div class="tools-box">
+        <div class="container">
+            <div><b>Print Settings</b></div>
+            <div>
+                <label  onclick="printTxt()">Print QR Text</label>
+                {{if eq .printConf.Prnttxt 0 }}
+                <input type="checkbox" id="_printtxt" value="{{.printConf.Prnttxt}}" onchange="printTxt()" style="margin-top:5px;" />
+                {{else}}
+                <input type="checkbox" id="_printtxt" checked value="{{.printConf.Prnttxt}}" onchange="printTxt()" style="margin-top:5px;" />
+                {{end}}
+            </div>
+            <div>
+                <label  onclick="isPrintTxt()">QR Font Size</label>
+                <input type="number" id="_print_fontsize" value="{{.printConf.FontSize}}" 
+                    onchange="printConf()" style="margin-top: 5px; width: 45px;" />
+            </div>
+                <input type="hidden" id="_print_height" value="{{.printConf.Height}}" />
+                <input type="hidden" id="_print_width" value="{{.printConf.Width}}" />
+                <input type="hidden" id="_print_margin" value="{{.printConf.Margin}}" />
+        </div>
+    </div>
+
+    <div class="tools-box">
+        <div class="container">
+            <div><b>Other Settings</b></div>
+            <div>
+                <label>Start page focus</label>
+                <br>
+                <div style="text-align: right;">
+                <label for="_scanfoc">QR Scan</label>
+                <input type="radio" id="_scanfoc" name="foc_select" value="_scan"
+                    onchange="startPageFocus()" style="margin-top:5px;" />
+                <br>
+                <label for="_menu8foc">{{.menu8.Title}}</label>  
+                <input type="radio" id="_menu8foc" name="foc_select" value="_menu8"
+                    onchange="startPageFocus()" style="margin-top:5px;" />
+                </div>
+                {{ if eq .appConf.StartPageFocus "_scan" }}
+                    <script>
+                        document.getElementById("_scanfoc").checked = true;
+                    </script>
+                {{ else }}
+                    <script>
+                        document.getElementById("_menu8foc").checked = true;
+                    </script>
+                {{ end }}
+            </div>
+        <div>
+    </div>
+</div>
+
+{{ template "footer.html" . }}

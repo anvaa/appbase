@@ -1,0 +1,86 @@
+
+.tools-txt {
+    
+    margin-top: 2px;
+    margin-bottom: 2px;
+    
+    margin-left: auto;
+    margin-right: auto;
+    
+    border: 1px solid black;
+    border-radius: 5px;
+    background: rgb(240, 240, 240);
+    
+    width: 155px;
+    /* height: 20px; */
+    
+}
+
+.tools-box {
+    padding: 1px;
+    
+    border-radius: 5px;
+    border: 2px solid rgb(160, 160, 160);
+
+    width: fit-content; 
+    background-color: rgb(200, 200, 200);
+    margin-top: 5px;
+
+    width: fit-content;
+    
+}
+
+.tools-btn {
+    margin-top: 0px;
+    margin-bottom: 2px;
+    
+    width: 100%;
+    height: 25px;
+    
+    border-radius: 5px;
+    
+    border: 1px solid rgb(80, 80, 80);
+    background: rgb(160, 160, 160);
+    color: rgb(40, 40, 40);
+
+    cursor: pointer;
+
+}
+.tools-btn:hover {
+    border: 1px solid rgb(40, 40, 40);
+    background: rgb(220, 220, 220);
+}
+
+.tools-btn-del {
+    margin-top: auto;
+    margin-bottom: 0px;
+    
+    width: 100%;
+    height: 25px;
+    
+    border-radius: 5px;
+    
+    border: 1px solid rgb(40, 40, 40);
+    background: rgb(256, 10, 10);
+    color: rgb(200, 200, 200);
+
+    cursor: pointer;
+
+}
+.tools-btn-del:hover {
+    
+    background: rgb(240, 240, 240);
+    color: rgb(256, 10, 10);
+}
+
+.tools-select {
+    border: 1px solid black;
+    background: rgb(240, 240, 240);
+
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+    size: 6;
+    
+}

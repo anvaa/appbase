@@ -1,0 +1,27 @@
+go 1.24.0
+
+use (
+	.
+	./app/app_db
+	./app/app_conf
+
+	./app
+ 	./app/app_api
+	./app/app_ctrl
+	./app/app_embed
+	./app/app_models
+
+	./srv
+	./srv/srv_conf
+	./srv/srv_sec
+	./srv/filefunc
+	./srv/global
+	./srv/server
+
+	./srv/web/middleware
+
+	./usr
+	./usr/user_api
+	./usr/user_embed
+	
+)

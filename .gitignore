@@ -1,0 +1,20 @@
+
+# general files
+*.csv
+
+# air generated files
+.air.toml
+/tmp
+tmp/*
+
+# app generated files #
+*.crt
+*.key
+
+/static
+/data
+/assets
+
+*.db
+*.yaml
+.DS_Store
