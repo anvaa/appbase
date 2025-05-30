@@ -4,7 +4,7 @@
     --color-background: #f0f0f0;
     --color-text: #000;
     --color-border: #646464;
-    --color-accent: #a0a0a0;
+    --color-accent: rgb(172, 172, 172);
     --color-hover: #e6e6e6;
     --color-button-bg: #c8c8c8;
     --color-span: #323232;
@@ -75,7 +75,7 @@ span {
     font-size: 10px;
     padding: 0 5px;
     width: 99%;
-    height: 15px;
+    height: 20px;
     border: 1px solid var(--color-border);
     border-radius: 5px;
     position: fixed;
