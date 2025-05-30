@@ -1,27 +1,26 @@
 {{ template "header.html" . }}
-
 <div class="menu-flex-container">
     <div class="menubox-logo" onclick="AppInfo()">
-        <img src="/media/logo.png" class="menu-logo" alt="Logo">
+        <img src="/media/logo.png" class="menu-logo" alt="Info">
     </div>
 
     <div class="menubutton" style="display: flex; align-items: center;" onclick="Start()" title="ctrl + 1">
-        <img src="/media/table.svg" class="menu-img" alt="Start">
+        <img src="/media/table.svg" class="btn-img">
         <span>Start</span>
     </div>
     
     <div style="flex-grow: 1;"></div>
 
     {{ if or (eq .user.Role "admin") (eq .user.Role "superuser") }}
-    <div class="menubutton" style="display: flex; align-items: center;" onclick="Tools()" title="F4">
-        <img src="/media/tools.svg" class="menu-img" alt="Tools">
+    <div class="menubutton" style="display: flex; align-items: center;" onclick="Tools()">
+        <img src="/media/tools.svg" class="btn-img">
         <span>Tools</span>
     </div>
     {{ end }}
 
     {{ if eq .user.Role "admin" }}
     <div class="menubutton" style="display: flex; align-items: center;" onclick="Users()">
-        <img src="/media/person-gear.svg" class="menu-img" alt="Users">
+        <img src="/media/person-gear.svg" class="btn-img">
         <span>Users</span>
     </div>
     {{ end }}
@@ -31,10 +30,12 @@
     </div>
 
     <div class="menubutton" style="display: flex; align-items: center;" onclick="Logout()" title="ctrl + q">
-        <img src="/media/lock.svg" class="menu-img" alt="Logout">
+        <img src="/media/lock.svg" class="btn-img">
         <span>Logout</span>
     </div>
 </div>
 
 <div id="_msg"></div>
-<script src="/js/menu.js"></script>
+<div id="content"></div>
+<input type="hidden" id="_page" value="" />
+{{ template "footer.html" . }}

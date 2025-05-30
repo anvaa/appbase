@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta name="robots" content="noindex, nofollow" />
-    <head>
-        <meta charset="UTF-8" />
-        
-        <title>{{ .title }}</title>
-        <link rel="apple-touch-icon" href="/media/apple-touch-icon.png">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{{ .title }}</title>
+    <link rel="apple-touch-icon" href="/media/apple-touch-icon.png">
 
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/menu.css">
-        <link rel="stylesheet" href="/css/app.css">
-        <link rel="stylesheet" href="/css/{{ .css }}">
-        <script src="/js/{{ .js }}"></script>
-    </head>
+    <!-- Permanent CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/menu.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/tools.css">
+
+    <!-- Permanent JS -->
+    <script src="/js/menu.js"></script> 
+
+    <!-- Dynamic CSS and JS -->
+    {{ if .css }}<link rel="stylesheet" href="/css/{{ .css }}">{{ end }}
+    {{ if .js }}<script src="/js/{{ .js }}"></script>{{ end }}
+</head>
 <body>

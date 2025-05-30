@@ -23,9 +23,9 @@
 }
 
 /* Menu image */
-.menu-img {
-    width: 20px;
-    height: 20px;
+.btn-img {
+    width: 15px;
+    height: 15px;
     margin-left: 3px;
     background: transparent;
 }
@@ -35,6 +35,7 @@ span {
     font-size: medium;
     color: var(--color-span);
     margin-left: 2px;
+    margin-right: 2px;
 }
 
 /* Button and logo styles */
@@ -43,7 +44,6 @@ span {
     border: 1px solid var(--color-border);
     color: var(--color-span);
     background: var(--color-button-bg);
-    padding-right: 3px;
     margin-right: 5px;
     vertical-align: middle;
     align-content: center;
@@ -62,8 +62,8 @@ span {
 
 /* Logo specific */
 .menu-logo {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     margin-top: 1px;
 }
 

@@ -1,0 +1,54 @@
+{{ template "tools_menu.html" . }}
+
+<div class="div-header-bold">App Config</div>
+<div class="flex-container">
+    <div class="tools-box">
+        <div class="container">
+            <div><b>Print Settings</b></div>
+            <div>
+                <label  onclick="printTxt()">Print QR Text</label>
+                {{if eq .printConf.Prnttxt 0 }}
+                <input type="checkbox" id="_printtxt" value="{{.printConf.Prnttxt}}" onchange="printTxt()" style="margin-top:5px;" />
+                {{else}}
+                <input type="checkbox" id="_printtxt" checked value="{{.printConf.Prnttxt}}" onchange="printTxt()" style="margin-top:5px;" />
+                {{end}}
+            </div>
+            <div>
+                <label  onclick="isPrintTxt()">QR Font Size</label>
+                <input type="number" id="_print_fontsize" value="{{.printConf.FontSize}}" 
+                    onchange="printConf()" style="margin-top: 5px; width: 45px;" />
+            </div>
+                <input type="hidden" id="_print_height" value="{{.printConf.Height}}" />
+                <input type="hidden" id="_print_width" value="{{.printConf.Width}}" />
+                <input type="hidden" id="_print_margin" value="{{.printConf.Margin}}" />
+        </div>
+    </div>
+
+    <div class="tools-box">
+        <div class="container">
+            <div><b>Other Settings</b></div>
+            <div>
+                <label>Start page focus</label>
+                <br>
+                <div style="text-align: right;">
+                <label for="_scanfoc">QR Scan</label>
+                <input type="radio" id="_scanfoc" name="foc_select" value="_scan"
+                    onchange="startPageFocus()" style="margin-top:5px;" />
+                <br>
+                <label for="_menu8foc">{{.menu8.Title}}</label>  
+                <input type="radio" id="_menu8foc" name="foc_select" value="_menu8"
+                    onchange="startPageFocus()" style="margin-top:5px;" />
+                </div>
+                {{ if eq .appConf.StartPageFocus "_scan" }}
+                    <script>
+                        document.getElementById("_scanfoc").checked = true;
+                    </script>
+                {{ else }}
+                    <script>
+                        document.getElementById("_menu8foc").checked = true;
+                    </script>
+                {{ end }}
+            </div>
+        <div>
+    </div>
+</div>

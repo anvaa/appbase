@@ -1,7 +1,6 @@
 package users
 import (
 	"app/app_conf"
-	"srv/srv_conf"
 
 	"fmt"
 	"net/http"
@@ -28,7 +27,7 @@ func Info(c *gin.Context) {
 		"company": appinfo.AppName,
 		"loctime": app_conf.GetLocalTime(),
 		"apptime": app_conf.RunTime(),
-		"backbtn": "/app",
+		"backbtn": c.Request.Referer(),
 	})
 }
 
@@ -69,9 +68,7 @@ func View_NewUsers(c *gin.Context) {
 	c.HTML(http.StatusOK, "users_new.html", gin.H{
 		"title":    "New users",
 		"user":     c.Keys["user"],
-		"css":      "user.css",
 		"js":       "users.js",
-		"ginmode":  srv_conf.GetString("gin_mode"),
 		"newusers": newusers,
 		"countnew": cnewusers,
 	})
@@ -86,7 +83,6 @@ func View_ManageUsers(c *gin.Context) {
 	c.HTML(http.StatusOK, "users.html", gin.H{
 		"title":       "Manage All Users",
 		"user":        c.Keys["user"],
-		"css":         "user.css",
 		"js":          "users.js",
 
 		"authusers":   authusers,
@@ -109,7 +105,6 @@ func View_EditUser(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "user_edit.html", gin.H{
 		"title":   "Edit User",
-		"css":     "user.css",
 		"js":      "users.js",	
 		"user":    c.Keys["user"],
 
@@ -122,7 +117,7 @@ func View_MyAccount(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "myaccount.html", gin.H{
 		"title":   "My Account",
-		"css":     "tools.css",
+		"css":     "",
 		"js":      "myaccount.js",
 		"user":    c.Keys["user"],
 

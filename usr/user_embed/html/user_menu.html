@@ -2,19 +2,20 @@
     
 <div class="menu-flex-container" style="padding: 2px;">
     <div class="menubutton" style="display: flex; align-items: center;" onclick="newUsers()">
-        <img src="/media/person.svg" class="menu-img">
+        <img src="/media/person.svg" class="btn-img">
         <span>New users</span>
     </div>
     <div class="menubutton" style="display: flex; align-items: center;" onclick="mngUsers()">
-        <img src="/media/person-gear.svg" class="menu-img">
+        <img src="/media/person-gear.svg" class="btn-img">
         <span>Manage users</span>
     </div>
     <div class="menubutton" style="display: flex; align-items: center;" onclick="addUser()">
-        <img src="/media/person-add.svg" class="menu-img">
+        <img src="/media/person-add.svg" class="btn-img">
         <span>Add User</span>
     </div>
+    <div style="flex-grow: 1;"></div>
     <div class="menubutton" style="display: flex; align-items: center;" onclick="backToApp()">
-        <img src="/media/arrow-right-circle.svg" class="menu-img">
+        <img src="/media/arrow-right-circle.svg" class="btn-img">
         <span>Back to App</span>
     </div>
     <div style="flex-grow: 1;"></div>
@@ -22,7 +23,7 @@
         {{ .user.Email }}
     </div>
     <div class="menubutton" style="display: flex; align-items: center;" onclick="Logout()">
-        <img src="/media/lock.svg" class="menu-img">
+        <img src="/media/lock.svg" class="btn-img">
         <span>Logout</span>
     </div>
 </div>

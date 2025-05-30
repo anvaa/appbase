@@ -1,10 +1,18 @@
 {{ template "menu.html" . }}
-<input type="hidden" id="_page" value="start" />
 
-<div>Start page</div>
+<div class="div-header-bold">Start Page</div>
 
-<script>
-    setFocus('{{ .appConf.StartPageFocus }}');
-</script>
+<br>
+<div>Titles & Menu test</div>
+<b>{{.menu0.Title}}</b>
+{{ range .menu0.SubItems }}
+<ul>{{.Name}}</ul>
+{{ end }}
 
-{{ template "footer.html" . }}
+<br><br>
+<div>JS Test</div>
+<div class="flex-container" style="width: 100px;; margin-top: 3px;">
+    <input type="text" id="_text" placeholder="Write something" />
+    <input type="button" value="Show text" class="menubutton" onclick="ShowText()" />
+</div>
+<div id="_show"></div>

@@ -1,7 +1,6 @@
 
-async function setPsw() {
+async function NewPsw(_uuid) {
 
-    var _id = document.getElementById("_id").value;
     var _psw1 = document.getElementById("_psw1").value;
     var _psw2 = document.getElementById("_psw2").value;
 
@@ -10,7 +9,7 @@ async function setPsw() {
     }
 
     var userData = {
-        id: _id,
+        uuid: _uuid,
         psw1: _psw1,
         psw2: _psw2,
     };
@@ -23,12 +22,13 @@ async function setPsw() {
         });
     
         if (!response.ok) {
-            ShowMsg(error.message);
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Failed to change password");
         }
     
-            ShowMsg("Password changed successfully");
+            ShowMsg("Password changed successfully", "success");
         } catch (error) {
-            ShowMsg("Change password failed: " + error.message);
+            ShowMsg("Change password failed: " + error.message, "error");
         
     }
 }
@@ -36,17 +36,17 @@ async function setPsw() {
 function validatePasswords(password, password2) {
 
     if (password === "" || password2 === "") {
-        ShowMsg("Passwords cannot be empty");
+        ShowMsg("Passwords cannot be empty", "info");
     return false;
     }
 
     if (password !== password2) {
-        ShowMsg("Passwords do not match");
+        ShowMsg("Passwords do not match", "info");
     return false;
     }
 
     if (password.length < 8) {
-        ShowMsg("Passwords must be at least 8 characters long");
+        ShowMsg("Passwords must be at least 8 characters long", "info");
     return false;
     }
 

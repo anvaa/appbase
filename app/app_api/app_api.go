@@ -29,8 +29,9 @@ func App_Api(r *gin.Engine) *gin.Engine {
 	{
 		invGrp.Use(middleware.RequireAuth)
 
-		invGrp.GET("/", app_ctrl.Start)
-		invGrp.GET("/tools", app_ctrl.Tools)
+		invGrp.GET("/", app_ctrl.MainMenu)
+		invGrp.GET("/start", app_ctrl.Start)
+		
 
 	}
 
@@ -50,9 +51,6 @@ func App_Api(r *gin.Engine) *gin.Engine {
 		staGrp.POST("/addupd", app_ctrl.Sta_AddUpd)
 		staGrp.POST("/delete", app_ctrl.Sta_Delete)
 
-		staGrp.DELETE("/hist/delete/:id", app_ctrl.Sta_HistDelete)
-		staGrp.POST("/hist/add", app_ctrl.Sta_HistAdd)
-
 	}
 
 	titelsGrp := r.Group("/title")
@@ -66,6 +64,9 @@ func App_Api(r *gin.Engine) *gin.Engine {
 	toolsGrp := r.Group("/tools")
 	{
 		toolsGrp.Use(middleware.RequireAuth)
+
+		toolsGrp.GET("/titles", app_ctrl.ToolsTitles)
+		toolsGrp.GET("/conf", app_ctrl.ToolsConf) // tools configuration page
 
 		toolsGrp.POST("/printconf", app_ctrl.PrintConf) // save print conf
 		toolsGrp.POST("/appconf", app_ctrl.AppConf) //  application conifg/settings
