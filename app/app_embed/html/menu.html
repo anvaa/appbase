@@ -4,35 +4,35 @@
         <img src="/media/logo.png" class="menu-logo" alt="Info">
     </div>
 
-    <div class="menubutton" style="display: flex; align-items: center;" onclick="Start()" title="ctrl + 1">
-        <img src="/media/table.svg" class="btn-img">
+    <button class="menubutton" onclick="Start()" title="ctrl + 1">
+        <img src="/media/table.svg" class="btn-img" alt="">
         <span>Start</span>
-    </div>
+    </button>
     
     <div style="flex-grow: 1;"></div>
 
     {{ if or (eq .user.Role "admin") (eq .user.Role "superuser") }}
-    <div class="menubutton" style="display: flex; align-items: center;" onclick="Tools()">
-        <img src="/media/tools.svg" class="btn-img">
+    <button class="menubutton" onclick="Tools()">
+        <img src="/media/tools.svg" class="btn-img" alt="">
         <span>Tools</span>
-    </div>
+    </button>
     {{ end }}
 
     {{ if eq .user.Role "admin" }}
-    <div class="menubutton" style="display: flex; align-items: center;" onclick="Users()">
-        <img src="/media/person-gear.svg" class="btn-img">
+    <button class="menubutton" onclick="Users()">
+        <img src="/media/person-gear.svg" class="btn-img" alt="">
         <span>Users</span>
-    </div>
+    </button>
     {{ end }}
 
-    <div class="menubutton" style="display: flex; align-items: center;" onclick="MyAccount()">
+    <button class="menubutton" onclick="MyAccount()">
         <span style="padding: 3px;">{{ .user.Email }}</span>
-    </div>
+    </button>
 
-    <div class="menubutton" style="display: flex; align-items: center;" onclick="Logout()" title="ctrl + q">
-        <img src="/media/lock.svg" class="btn-img">
+    <button class="menubutton" onclick="Logout()" title="ctrl + q">
+        <img src="/media/lock.svg" class="btn-img" alt="">
         <span>Logout</span>
-    </div>
+    </button>
 </div>
 
 <div id="_msg"></div>

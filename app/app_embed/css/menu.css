@@ -7,6 +7,8 @@
     --color-accent: rgb(172, 172, 172);
     --color-hover: #e6e6e6;
     --color-button-bg: #c8c8c8;
+    --color-subbutton-bg: #9d9b9b;
+    --color-sub-hover: #bcbaba;
     --color-span: #323232;
 }
 
@@ -40,6 +42,7 @@ span {
 
 /* Button and logo styles */
 .menubutton,
+.submenubutton,
 .menu-logo {
     border: 1px solid var(--color-border);
     color: var(--color-span);
@@ -58,6 +61,15 @@ span {
 /* Button hover */
 .menubutton:hover {
     background: var(--color-hover);
+    border-color: var(--color-span);
+}
+
+.submenubutton {
+    padding: 2px;
+    background: var(--color-subbutton-bg);
+}
+.submenubutton:hover {
+    background: var(--color-sub-hover);
     border-color: var(--color-span);
 }
 
