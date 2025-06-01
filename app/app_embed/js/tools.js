@@ -1,85 +1,65 @@
-
-var mnu_TYPE = "";
-var sel_TXT = "";
-var mnu_ID = "";
-var sub_UUID = 0;
-
+let mnu_TYPE = "";
+let sel_TXT = "";
+let mnu_ID = "";
+let sub_UUID = 0;
 
 function resetPage() {
     window.location.reload();
-    return;
-};
+}
 
-document.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        
-        if (mnu_TYPE == "") {
-            return;
-        }
-        
-        if (mnu_TYPE == "titles") {
-            TitlesUpd(mnu_ID);
-            return;
-        } else {
-            subAddUpd(mnu_ID);
-            return;
-        }
+document.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" || !mnu_TYPE) return;
+    if (mnu_TYPE === "titles") {
+        TitlesUpd();
+    } else {
+        subAddUpd(mnu_ID);
     }
 });
 
 function isEdit(mnu_type, mnu_id) {
     mnu_TYPE = mnu_type;
     mnu_ID = mnu_id;
-    
-    sel_TXT = document.getElementById("_txt_"+mnu_ID).value;
-
+    const txtElem = document.getElementById(`_txt_${mnu_ID}`);
+    sel_TXT = txtElem ? txtElem.value : "";
 }
-
 
 // MENUS //
 function subSel(sub_uuid, mnu_id, mnu_type) {
     mnu_ID = mnu_id;
-    sub_UUID = parseInt(sub_uuid);
-    mnu_TYPE = mnu_type;
+    sub_UUID = parseInt(sub_uuid, 10);
+    mnu_TYPE = mnu_id === 500 ? "titles" : mnu_type;
 
-    if (mnu_ID === 500) {
-        mnu_TYPE = "titles";
-    }
+    const optElem = document.getElementById(`_opt_${sub_UUID}`);
+    const txtElem = document.getElementById(`_txt_${mnu_ID}`);
+    const subElem = document.getElementById(`_sub_${mnu_ID}`);
 
-    // alert("subSel: "+mnu_ID+" "+sub_UUID+" "+mnu_TYPE);
-    
-    sel_TXT = document.getElementById("_opt_"+sub_UUID).value;
-    document.getElementById("_txt_"+mnu_ID).value = sel_TXT;
-    document.getElementById("_sub_"+mnu_ID).value = sub_UUID;
-
+    sel_TXT = optElem ? optElem.value : "";
+    if (txtElem) txtElem.value = sel_TXT;
+    if (subElem) subElem.value = sub_UUID;
 }
 
 async function TitlesUpd() {
-    var _txt = document.getElementById("_txt_500").value;
-    var _uuid = parseInt(document.getElementById("_sub_500").value);
+    const txtElem = document.getElementById("_txt_500");
+    const subElem = document.getElementById("_sub_500");
+    const _txt = txtElem ? txtElem.value : "";
+    const _uuid = subElem ? parseInt(subElem.value, 10) : 0;
 
-    if (_uuid == 0 || _txt == "") {
-        return; 
-    }
-    
-    var data = {
-        "mnu_id": 500,
-        "sub_uuid": _uuid,
-        "mnu_title": _txt,
+    if (!_uuid || !_txt) return;
+
+    const data = {
+        mnu_id: 500,
+        sub_uuid: _uuid,
+        mnu_title: _txt,
     };
-    // alert(JSON.stringify(data));
+
     try {
         const response = await fetch("/title/upd", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
         });
-
         const responseData = await response.json();
-        if (!response.ok) {
-            throw new Error(responseData.Error);
-        }
-
+        if (!response.ok) throw new Error(responseData.Error);
         window.location.reload();
     } catch (error) {
         ShowMsg("Upd Titles failed: " + error.message, "error");
@@ -88,85 +68,67 @@ async function TitlesUpd() {
 }
 
 async function subAddUpd(mnu_id) {
-    
-    var txt = document.getElementById("_txt_"+mnu_id).value;
+    const txtElem = document.getElementById(`_txt_${mnu_id}`);
+    const subElem = document.getElementById(`_sub_${mnu_id}`);
+    let txt = txtElem ? txtElem.value.trim() : "";
 
-    if (txt == "") {
-        alert("Nothing to add or update"+mnu_id);
-        return; 
+    if (!txt) {
+        alert("Nothing to add or update" + mnu_id);
+        return;
     }
 
-    txt = txt.trim();
+    const sub_uuid = subElem ? parseInt(subElem.value, 10) : 0;
+    const _mnuid = mnu_id.toString().substring(3);
 
-    var sub_uuid = parseInt(document.getElementById("_sub_"+mnu_id).value);
-    
-    if (sub_uuid == "") {
-        id = 0;
-    }
-
-    // remove first three chars
-    _mnuid = mnu_id.toString().substring(3);
-
-    var data = {
-        mnu_id: parseInt(_mnuid),
-        sub_uuid: parseInt(sub_uuid),
+    const data = {
+        mnu_id: parseInt(_mnuid, 10),
+        sub_uuid,
         val: txt,
     };
 
-    var url = "/"+mnu_TYPE+"/addupd";
-    // alert(JSON.stringify(data)+" "+url);
+    const url = `/${mnu_TYPE}/addupd`;
     try {
         const response = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
         });
-
         const responseData = await response.json();
-        if (!response.ok) {
-            throw new Error(responseData.Error);
-        }
-        
+        if (!response.ok) throw new Error(responseData.Error);
         window.location.reload();
     } catch (error) {
-        alert("Add/Update "+mnu_TYPE+" failed: " + error.message);
+        alert(`Add/Update ${mnu_TYPE} failed: ${error.message}`);
     }
 }
 
 async function lstDel(mnu_id) {
+    const txtElem = document.getElementById(`_txt_${mnu_ID}`);
+    const subElem = document.getElementById(`_sub_${mnu_ID}`);
+    const txt = txtElem ? txtElem.value : "";
+    const sub_uuid = subElem ? parseInt(subElem.value, 10) : 0;
 
-    var txt = document.getElementById("_txtmnu"+mnu_ID).value;
-    var sub_uuid = parseInt(document.getElementById("_idsub"+mnu_ID).value);
-
-    if (txt == "") {
+    if (!txt) {
         alert("Nothing to delete");
-        return; 
-    }
-
-    if (!confirm("Delete '"+txt+"'?")) {
         return;
     }
 
-    var data = {
-        "sub_uuid": sub_uuid,
-        "url": window.location.pathname,
+    if (!confirm(`Delete '${txt}'?`)) return;
+
+    const data = {
+        sub_uuid: sub_uuid,
     };
 
     try {
-        const response = await fetch("/"+mnu_TYPE+"/delete", {
+        const response = await fetch(`/${mnu_TYPE}/delete`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
         });
-
-        const responseData = await response.json(); 
-       if (response.status != 200) {
-            throw new Error(responseData.error);
-        }
-
+        const responseData = await response.json();
+        if (response.status !== 200) throw new Error(responseData.error);
         window.location.reload();
     } catch (error) {
-        alert("Delete "+mnu_TYPE+" failed: " + error.message);
+        alert(`Delete ${mnu_TYPE} failed: ${error.message}`);
         window.location.reload();
     }
 }
