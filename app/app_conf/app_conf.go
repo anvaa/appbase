@@ -29,14 +29,7 @@ func init() {
 func WriteDefaultConfig(appRoot string) {
 	// SetDefault sets the default value for the key.
 	appConf.SetDefault("app_db", "data/app.db")
-	appConf.SetDefault("start_url", "/app")
-	appConf.SetDefault("status_default", 0)
-	appConf.SetDefault("sub0_default", 0)
-	appConf.SetDefault("sub1_default", 0)
-	appConf.SetDefault("sub2_default", 0)
-	appConf.SetDefault("sub3_default", 0)
-	appConf.SetDefault("sub4_default", 0)
-	appConf.SetDefault("sub5_default", 0)
+	appConf.SetDefault("start_url", "/app/start")
 	appConf.SetDefault("print_height", 24)
 	appConf.SetDefault("print_width", 160)
 	appConf.SetDefault("print_margin", 3)

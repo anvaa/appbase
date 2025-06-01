@@ -1,204 +1,97 @@
 {{ template "tools_menu.html" . }}
 
-<div class="div-header-bold">Menu Titles</div>
-<div class="flex-container" style="flex-wrap: wrap;">
-    <div class="tools-box">
-        <div class="div-header">{{ .menu0.Title }}</div>
-        <div>
-            <div >
-                <input type="text" id="_txtmnu{{.menu0.ID}}" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu0.ID}}')" />
-                <input type="hidden" id="_idmnu{{.menu0.ID}}" value="{{.menu0.ID}}" />
-                <input type="hidden" id="_idsub{{.menu0.ID}}" value="0" />
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu0.ID}}')" class="tools-btn"/>
-            </div>
-            <div >
-                <select Name="_mnu0" size="6" class="tools-select" >
-                    {{ range .menu0.SubItems }}
-                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
-                    {{ end }}
-                </select> 
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Delete" onclick="lstDel('{{.menu0.ID}}')" class="tools-btn-del"/>
-            </div>
-        </div>
-    </div>
-
-    <div class="tools-box">
-        <div class="div-header">{{ .menu1.Title }}</div>
-        <div>
-            <div >
-                <input type="text" id="_txtmnu{{.menu1.ID}}" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu1.ID}}')" />
-                <input type="hidden" id="_idmnu{{.menu1.ID}}" value="{{.menu1.ID}}" />
-                <input type="hidden" id="_idsub{{.menu1.ID}}" value="0" />
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu1.ID}}')" class="tools-btn"/>
-            </div>
-            <div >
-                <select Name="_mnu0" size="6" class="tools-select" > 
-                    {{ range .menu1.SubItems }}
-                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
-                    {{ end }}
-                </select> 
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Delete" onclick="lstDel('{{.menu1.ID}}')" class="tools-btn-del"/>
-            </div>
-        </div>
-    </div>
-
-    <div class="tools-box">
-        <div class="div-header">{{ .menu2.Title }}</div>
-        <div>
-            <div >
-                <input type="text" id="_txtmnu{{.menu2.ID}}" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu2.ID}}')" />
-                <input type="hidden" id="_idmnu{{.menu2.ID}}" value="{{.menu2.ID}}" />
-                <input type="hidden" id="_idsub{{.menu2.ID}}" value="0" />
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu2.ID}}')" class="tools-btn"/>
-            </div>
-            <div >
-                <select Name="_mnu0" size="6" class="tools-select" > 
-                    {{ range .menu2.SubItems }}
-                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
-                    {{ end }}
-                </select> 
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Delete" onclick="lstDel('{{.menu2.ID}}')" class="tools-btn-del"/>
-            </div>
-        </div>
-    </div>
-
-    <div class="tools-box">
-        <div class="div-header">{{ .menu3.Title }}</div>
-        <div>
-            <div >
-                <input type="text" id="_txtmnu{{.menu3.ID}}" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu3.ID}}')" />
-                <input type="hidden" id="_idmnu{{.menu3.ID}}" value="{{.menu3.ID}}" />
-                <input type="hidden" id="_idsub{{.menu3.ID}}" value="0" />
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu3.ID}}')" class="tools-btn"/>
-            </div>
-            <div >
-                <select Name="_mnu0" size="6" class="tools-select" > 
-                    {{ range .menu3.SubItems }}
-                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
-                    {{ end }}
-                </select> 
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Delete" onclick="lstDel('{{.menu3.ID}}')" class="tools-btn-del"/>
-            </div>
-        </div>
-    </div>
-
-    <div class="tools-box">
-        <div class="div-header">{{ .menu4.Title }}</div>
-        <div>
-            <div >
-                <input type="text" id="_txtmnu{{.menu4.ID}}" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu4.ID}}')" />
-                <input type="hidden" id="_idmnu{{.menu4.ID}}" value="{{.menu4.ID}}" />
-                <input type="hidden" id="_idsub{{.menu4.ID}}" value="0" />
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu4.ID}}')" class="tools-btn"/>
-            </div>
-            <div >
-                <select Name="_mnu0" size="6" class="tools-select" > 
-                    {{ range .menu4.SubItems }}
-                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
-                    {{ end }}
-                </select> 
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Delete" onclick="lstDel('{{.menu4.ID}}')" class="tools-btn-del"/>
-            </div>
-        </div>
-    </div>
-
-    <div class="tools-box">
-        <div class="div-header">{{ .menu5.Title }}</div>
-        <div>
-            <div >
-                <input type="text" id="_txtmnu{{.menu5.ID}}" value="" class="tools-text" placeholder="Add/Edit" onkeydown="isEdit('subitem','{{.menu5.ID}}')" />
-                <input type="hidden" id="_idmnu{{.menu5.ID}}" value="{{.menu5.ID}}" />
-                <input type="hidden" id="_idsub{{.menu5.ID}}" value="0" />
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Add/Update" onclick="subAddUpd('{{.menu5.ID}}')" class="tools-btn"/>
-            </div>
-            <div >
-                <select Name="_mnu0" size="6" class="tools-select" > 
-                    {{ range .menu5.SubItems }}
-                    <option id="_selsub{{.UUID}}" value="{{.Name}}" onclick="subSel('{{.UUID}}','{{.MenuId}}')">{{.Name}} {{.Type}}</option>
-                    {{ end }}
-                </select> 
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Delete" onclick="lstDel('{{.menu5.ID}}')" class="tools-btn-del"/>
-            </div>
-        </div>
-    </div>
-
-</div>
 <div class="flex-container">
-    
+    {{ range .sta }}
     <div class="tools-box">
-        <div class="div-header">Status</div>
+        <div class="div-header">{{.Title}} ({{ len .StaSub }})</div>
+        {{$S_ID := printf "sta%d" .ID}}
         <div>
             <div>
-                <input type="text" id="_txtmnu100" value="" class="tools-txt" placeholder="Add/Edit" onkeydown="isEdit('status',100)" />
-                <input type="hidden" id="_idmnu100" value="100" />
-                <input type="hidden" id="_idsub100" value="0" />
+                <input type="text" id="_txt_{{$S_ID}}" value="" class="tools-txt" 
+                    onkeydown="isEdit('status','{{$S_ID}}')" />
+                
+                    <input type="hidden" id="_id_{{$S_ID}}" value="{{.ID}}" />
+                <input type="hidden" id="_sub_{{$S_ID}}" value="0" />
             </div>
             <div style="text-align: center;">
-                <input type="button" value="Add/Update" 
-                onclick="subAddUpd('100')" class="tools-btn"/>
+                <input type="button" value="Add/Edit" 
+                onclick="subAddUpd('{{$S_ID}}')" class="tools-btn"/>
             </div>
             <div >
-                <select Name="_status" size="8" class="tools-select" >
-                    {{ range .stats }}
-                    <option id="_selsub{{ .UUID }}" value="{{ .Name }}" onclick="subSel('{{ .UUID }}',100)">{{.Name}} {{.Type}}</option>
+                <select Name="_status{{$S_ID}}" size="8" class="tools-select" >
+                    {{ range .StaSub }}
+                    <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
+                        onclick="subSel('{{.UUID}}','{{$S_ID}}','status')">{{.Name}} {{.Type}}</option>
                     {{ end }}
                 </select> 
             </div>
             <div style="text-align: center;">
-                <input type="button" value="Delete" onclick="lstDel('100')" class="tools-btn-del"/>
+                <input type="button" value="Delete" onclick="lstDel('{{$S_ID}}')" class="tools-btn-del"/>
             </div>
         </div>
     </div>
+    {{ end }}
 
-    <div class="tools-box">
-        <div class="div-header">Menu Titles</div>
-        <div>
-            <div >
-                <input type="text" id="_txtmnu200" value="" class="tools-txt" placeholder="Edit" maxlength="12" title="max 12 char" onkeydown="isEdit('titles',200)" />
-                <input type="hidden" id="_idmnu200" value="200" />
-                <input type="hidden" id="_idsub200" value="0" />
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Update" onclick="TitlesUpd()" class="tools-btn"/>
-            </div>
-            <div >
-                <select Name="_mnuts" size="{{ len .menu }}" class="tools-select" >
-                    {{ range .menu }}
-                    <option id="_selsub{{.UUID}}" value="{{.Title}}" 
-                    onclick="subSel('{{.UUID}}',200)">{{.Title}} {{.Type}}</option>
-                    {{ end }}
-                </select> 
-            </div>
-        </div>
-    </div>
-
-        
-
+    
 </div>
 
+<div class="flex-container" style="flex-wrap: wrap;">
+    
+    <div class="tools-box">
+        <div class="div-header">Menu Titles ({{ len .menu }})</div>
+        <div>
+            <div >
+                <input type="text" id="_txt_500" value="" class="tools-txt" maxlength="12" title="max 12 char" onkeydown="isEdit('titles','500')" />
+                <input type="hidden" id="_id_500" value="500" />
+                <input type="hidden" id="_sub_500" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Edit" onclick="TitlesUpd()" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_mnuts" size="9" class="tools-select" >
+                    {{ range .menu }}
+                    <option id="_opt_{{.UUID}}" value="{{.Title}}" 
+                    onclick="subSel('{{.UUID}}','500')">{{.Title}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+        </div>
+    </div>
+    
+    {{ range .menu }}
+    {{ if eq .Type "sub" }}
+    <div class="tools-box">
+        <div class="div-header">{{.Title}} ({{ len .MenuSub }})</div>
+        {{$M_ID := printf "mnu%d" .ID}}
+        <div>
+            <div>
+                <input type="text" id="_txt_{{$M_ID}}" value="" class="tools-txt" 
+                    onkeydown="isEdit('menu','{{$M_ID}}')" />
+                
+                    <input type="hidden" id="_id_{{$M_ID}}" value="{{.ID}}" />
+                <input type="hidden" id="_sub_{{$M_ID}}" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Add/Edit" 
+                onclick="subAddUpd('{{$M_ID}}')" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_status{{$M_ID}}" size="8" class="tools-select" >
+                    {{ range .MenuSub }}
+                    <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
+                        onclick="subSel('{{.UUID}}','{{$M_ID}}','menu')">{{.Name}} {{.Type}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Delete" onclick="lstDel('{{$M_ID}}')" class="tools-btn-del"/>
+            </div>
+        </div>
+    </div>
+    {{ end }}
+    {{ end }}
+
+</div>
 
 {{ template "footer.html" . }}

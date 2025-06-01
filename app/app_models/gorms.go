@@ -29,35 +29,29 @@ type Users struct {
 
 type Status struct {
 	BaseModel
-	Name string `gorm:"size:20" json:"name"`
-	Type string `gorm:"size:5" json:"type"`
+	Title  string   `gorm:"size:50" json:"title"`
+	StaSub []StaSub `gorm:"foreignKey:StatusID" json:"sta_sub"`
 }
 
-type StatusHistory struct {
+type StaSub struct {
 	BaseModel
-	ItemId int `gorm:"foreignKey:ItemId" json:"item_id"`
-
-	UserId int `gorm:"foreignKey:UserId" json:"user_id"`
-	User   Users
-
-	Note string `gorm:"size:255" json:"note"`
-
-	StatusId int `gorm:"foreignKey:StatusId" json:"status_id"`
-	Status   Status
+	Name     string `gorm:"size:50" json:"name"`
+	Type     string `gorm:"size:5" json:"type"`
+	StatusID int    `gorm:"foreignKey:StatusID" json:"status_id"`
 }
 
 // Menu represents a menu with subMenu.
 type Menu struct {
 	BaseModel
-	Title    string    `gorm:"size:50" json:"title"`
-	Type     string    `gorm:"size:5" json:"type"`
-	SubItems []SubMenu `gorm:"foreignKey:MenuId" json:"sub_items"`
+	Title   string    `gorm:"size:50" json:"title"`
+	Type    string    `gorm:"size:5" json:"type"`
+	MenuSub []MenuSub `gorm:"foreignKey:MenuID" json:"menu_sub"`
 }
 
 // SubMenu represents a submenu linked to menu.
-type SubMenu struct {
+type MenuSub struct {
 	BaseModel
 	Name   string `gorm:"size:50" json:"name"`
 	Type   string `gorm:"size:5" json:"type"`
-	MenuId int    `gorm:"foreignKey:MenuId" json:"menu_id"`
+	MenuID int    `gorm:"foreignKey:MenuID" json:"menu_id"`
 }

@@ -52,7 +52,7 @@ func InitWebServer() *gin.Engine {
 	return r
 }
 
-// func to send all error to /error page
+// send all error to /error page
 func GinError(c *gin.Context) {
 	errtxt := fmt.Sprintf("%v", c.Errors)
 	fmt.Println("Error:", errtxt)

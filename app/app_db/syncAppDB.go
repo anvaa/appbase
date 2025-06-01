@@ -12,13 +12,13 @@ import (
 func SyncAppDB(db *gorm.DB) {
 	db.AutoMigrate(
 		&app_models.Users{},
-		
-		&app_models.Status{},
-		&app_models.StatusHistory{},
-		&app_models.Menu{},
-		&app_models.SubMenu{},
-	)
 
+		&app_models.Status{},
+		&app_models.StaSub{},
+		&app_models.Menu{},
+		&app_models.MenuSub{},
+		// &app_models.StatusHistory{},
+	)
 
 	seedUsers(db)
 	seedMenus(db)
@@ -41,7 +41,6 @@ func seedUsers(db *gorm.DB) {
 			IsAuth:   true,
 			Note:     "Default Admin User",
 			Role:     "admin"},
-			
 
 		{Email: "super@app.loc",
 			Password: "$2a$10$7PcHWQCFWYX8K.k8GwI8WeSCc8s/Xyly.HM0FfyUm2BE8tGTcfOYy", // Psddword: superuser
@@ -71,48 +70,33 @@ func seedUsers(db *gorm.DB) {
 
 func seedMenus(db *gorm.DB) {
 
-	// if menus are > 0
+	// Check if the database is empty
 	var count int64
 	db.Model(&app_models.Menu{}).Count(&count)
 	if count > 0 {
-		fmt.Println("Menus already seeded")
+		fmt.Println("MnuDB already seeded")
 		return
 	}
+
+	// Seed the database with initial data
 	menus := []app_models.Menu{
-		{Title: "Location", Type: "[T]", SubItems: []app_models.SubMenu{
-			{Name: "def", Type: "[D]"}},
-		},
-		{Title: "Item", Type: "[T]", SubItems: []app_models.SubMenu{
-			{Name: "def", Type: "[D]"}},
-		},
-		{Title: "Manufact", Type: "[T]", SubItems: []app_models.SubMenu{
-			{Name: "def", Type: "[D]"}},
-		},
-		{Title: "Title4", Type: "[T]", SubItems: []app_models.SubMenu{
-			{Name: "def", Type: "[D]"}},
-		},
-		{Title: "Title5", Type: "[T]", SubItems: []app_models.SubMenu{
-			{Name: "def", Type: "[D]"}},
-		},
-		{Title: "Title6", Type: "[T]", SubItems: []app_models.SubMenu{
-			{Name: "def", Type: "[D]"}},
-		},
-		{Title: "Note", Type: "[T]", SubItems: []app_models.SubMenu{
-			{Name: "def", Type: "[D]"}},
-		},
-		{Title: "Cost", Type: "[N]", SubItems: []app_models.SubMenu{
-			{Name: "def", Type: "[D]"}},
-		},
-		{Title: "BC", Type: "[T]", SubItems: []app_models.SubMenu{
-			{Name: "def", Type: "[D]"}},
-		},
+		{Title: "Title0", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title1", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title2", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title3", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title4", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title5", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title6", Type: "mnu", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title7", Type: "mnu", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title8", Type: "mnu", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title9", Type: "mnu", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
 	}
 
 	for i := range menus {
 		db.Create(&menus[i])
 	}
 
-	fmt.Println("Menus and SubItems Seeded")
+	fmt.Println("Menus and MenuSub Seeded")
 
 }
 
@@ -126,8 +110,18 @@ func seedStatus(db *gorm.DB) {
 	}
 
 	status := []app_models.Status{
-		{Name: "New", Type: "[D]"},
-		{Name: "Note", Type: ""},
+		{Title: "Status0", StaSub: []app_models.StaSub{
+			{Name: "Ny", Type: "[D]"},
+			{Name: "Notat0", Type: ""},
+		}},
+		{Title: "Status1", StaSub: []app_models.StaSub{
+			{Name: "Ny", Type: "[D]"},
+			{Name: "Notat1", Type: ""},
+		}},
+		{Title: "Status2", StaSub: []app_models.StaSub{
+			{Name: "Ny", Type: "[D]"},
+			{Name: "Notat2", Type: ""},
+		}},
 	}
 
 	for i := range status {

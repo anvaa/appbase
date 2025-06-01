@@ -35,7 +35,7 @@ func App_Api(r *gin.Engine) *gin.Engine {
 
 	}
 
-	manGrp := r.Group("/subitem")
+	manGrp := r.Group("/menu")
 	{
 		manGrp.Use(middleware.RequireAuth)
 

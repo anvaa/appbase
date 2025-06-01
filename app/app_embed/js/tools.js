@@ -1,7 +1,7 @@
 
-var is_edit = "";
-var sel_Txt = "";
-var mnu_ID = 0;
+var mnu_TYPE = "";
+var sel_TXT = "";
+var mnu_ID = "";
 var sub_UUID = 0;
 
 
@@ -13,11 +13,11 @@ function resetPage() {
 document.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
         
-        if (is_edit == "") {
+        if (mnu_TYPE == "") {
             return;
         }
         
-        if (is_edit == "titles") {
+        if (mnu_TYPE == "titles") {
             TitlesUpd(mnu_ID);
             return;
         } else {
@@ -27,125 +27,43 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-function isEdit(val,mnuid) {
-    is_edit = val;
-    mnu_ID = mnuid;
+function isEdit(mnu_type, mnu_id) {
+    mnu_TYPE = mnu_type;
+    mnu_ID = mnu_id;
     
-    mnu_ID = document.getElementById("_idmnu"+mnu_ID).value;
-    sel_Txt = document.getElementById("_txtmnu"+mnu_ID).value;
-    //alert("isEdit: "+is_edit+" mnu_ID: "+mnu_ID+" sel_Txt: "+sel_Txt);
+    sel_TXT = document.getElementById("_txt_"+mnu_ID).value;
+
 }
 
-function printTxt() {
-    const is_printtxt = document.getElementById("_printtxt").checked;
-    if (is_printtxt) {
-        document.getElementById("_printtxt").value = "0";
-        document.getElementById("_printtxt").checked = false;
-    } else {
-        document.getElementById("_printtxt").value = "1";
-        document.getElementById("_printtxt").checked = true;
-    }
-    printConf();
-    return;
-}
-
-function startPageFocus() {
-    // get radio button value
-    var radioValue = document.querySelector('input[name="foc_select"]:checked').value;
-
-    var data = {
-        "start_page_focus": radioValue,
-    };
-    // alert(JSON.stringify(data));
-    try {
-        const response = fetch("/tools/appconf", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-        });
-
-        const responseData = response.json();
-        if (!response.ok) {
-            alert(responseData.Error);
-            throw new Error(responseData.Error);
-        }
-        
-    } catch (error) {
-        // ShowMsg("Start Page Focus failed: " + error.message);
-    }
-
-    return;
-}
-
-function printConf() {
-
-    var _printtxt = document.getElementById("_printtxt").value;
-    var _height = document.getElementById("_print_height").value;
-    var _width = document.getElementById("_print_width").value;
-    var _margin = document.getElementById("_print_margin").value;
-    var _fontSize = document.getElementById("_print_fontsize").value;
-
-    var data = {
-        print_txt : parseInt(_printtxt),
-        font_size : parseInt(_fontSize),
-        height : parseInt(_height),
-        width : parseInt(_width),
-        margin : parseInt(_margin),
-    };
-    // alert(JSON.stringify(data));
-    try {
-        const response = fetch("/tools/printconf", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-        });
-
-        const responseData = response.json();
-        if (!response.ok) {
-            alert(responseData.Error);
-            throw new Error(responseData.Error);
-        }
-        
-        document.getElementById("_printtxt").checked = responseData.data.print_txt;
-        document.getElementById("_print_height").style.height = responseData.height;
-        document.getElementById("_print_width").style.width = responseData.width;
-        document.getElementById("_print_margin").value = responseData.margin;
-        document.getElementById("_print_fontsize").value = responseData.font_size;
-    
-    } catch (error) {
-        // ShowMsg("Print Config failed: " + error.message);
-    }
-}
 
 // MENUS //
-function subSel(sub_uuid, mnuid) {
-    mnu_ID = mnuid;
-    sub_UUID = sub_uuid;
-    is_edit = "subitem";
+function subSel(sub_uuid, mnu_id, mnu_type) {
+    mnu_ID = mnu_id;
+    sub_UUID = parseInt(sub_uuid);
+    mnu_TYPE = mnu_type;
 
-    if (mnu_ID === 100) {
-        is_edit = "status";
-    } 
-    if (mnu_ID === 200) {
-        is_edit = "titles";
+    if (mnu_ID === 500) {
+        mnu_TYPE = "titles";
     }
 
-    sel_Txt = document.getElementById("_selsub"+sub_UUID).value;
-    document.getElementById("_txtmnu"+mnu_ID).value = sel_Txt;
-    document.getElementById("_idsub"+mnu_ID).value = sub_UUID;
-    mnu_ID = document.getElementById("_idmnu"+mnuid).value;
+    // alert("subSel: "+mnu_ID+" "+sub_UUID+" "+mnu_TYPE);
+    
+    sel_TXT = document.getElementById("_opt_"+sub_UUID).value;
+    document.getElementById("_txt_"+mnu_ID).value = sel_TXT;
+    document.getElementById("_sub_"+mnu_ID).value = sub_UUID;
+
 }
 
 async function TitlesUpd() {
-    var _txt = document.getElementById("_txtmnu200").value;
-    var _uuid = parseInt(document.getElementById("_idsub200").value);
+    var _txt = document.getElementById("_txt_500").value;
+    var _uuid = parseInt(document.getElementById("_sub_500").value);
 
     if (_uuid == 0 || _txt == "") {
         return; 
     }
     
     var data = {
-        "mnu_id": 200,
+        "mnu_id": 500,
         "sub_uuid": _uuid,
         "mnu_title": _txt,
     };
@@ -164,35 +82,41 @@ async function TitlesUpd() {
 
         window.location.reload();
     } catch (error) {
-        alert("Upd Titles "+txt+" failed: " + error.message);
+        ShowMsg("Upd Titles failed: " + error.message, "error");
         window.location.reload();
     }
 }
 
 async function subAddUpd(mnu_id) {
     
-    var txt = document.getElementById("_txtmnu"+mnu_ID).value;
+    var txt = document.getElementById("_txt_"+mnu_id).value;
 
     if (txt == "") {
-        alert("Status: Nothing to add or update");
+        alert("Nothing to add or update"+mnu_id);
         return; 
     }
 
-    var mnu_id = parseInt(document.getElementById("_idmnu"+mnu_ID).value);
-    var sub_uuid = parseInt(document.getElementById("_idsub"+mnu_ID).value);
+    txt = txt.trim();
+
+    var sub_uuid = parseInt(document.getElementById("_sub_"+mnu_id).value);
     
     if (sub_uuid == "") {
         id = 0;
     }
 
+    // remove first three chars
+    _mnuid = mnu_id.toString().substring(3);
+
     var data = {
-        "txt": txt,
-        "mnu_id": mnu_id,
-        "sub_uuid": sub_uuid,
+        mnu_id: parseInt(_mnuid),
+        sub_uuid: parseInt(sub_uuid),
+        val: txt,
     };
-    // alert(JSON.stringify(data));
+
+    var url = "/"+mnu_TYPE+"/addupd";
+    // alert(JSON.stringify(data)+" "+url);
     try {
-        const response = await fetch("/"+is_edit+"/addupd", {
+        const response = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
@@ -205,7 +129,7 @@ async function subAddUpd(mnu_id) {
         
         window.location.reload();
     } catch (error) {
-        alert("Add/Update "+is_edit+" failed: " + error.message);
+        alert("Add/Update "+mnu_TYPE+" failed: " + error.message);
     }
 }
 
@@ -229,7 +153,7 @@ async function lstDel(mnu_id) {
     };
 
     try {
-        const response = await fetch("/"+is_edit+"/delete", {
+        const response = await fetch("/"+mnu_TYPE+"/delete", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
@@ -242,7 +166,7 @@ async function lstDel(mnu_id) {
 
         window.location.reload();
     } catch (error) {
-        alert("Delete "+is_edit+" failed: " + error.message);
+        alert("Delete "+mnu_TYPE+" failed: " + error.message);
         window.location.reload();
     }
 }

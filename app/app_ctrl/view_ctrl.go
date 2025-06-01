@@ -18,9 +18,8 @@ func MainMenu(c *gin.Context) {
 		"title":   app_conf.AppName,
 		"user":    c.Keys["user"],
 		"appinfo": appinfo,
-		})
+	})
 }
-
 
 func Start(c *gin.Context) {
 
@@ -39,7 +38,7 @@ func Start(c *gin.Context) {
 func ToolsTitles(c *gin.Context) {
 
 	menu := app_db.Get_MenuTitles()
-	stats, c_stats := Stat_GetStatusSubItems()
+	sta := Sta_GetStatuses()
 
 	c.HTML(http.StatusOK, "tools_titles.html", gin.H{
 		"title":   app_conf.AppName + " - Titles",
@@ -48,18 +47,8 @@ func ToolsTitles(c *gin.Context) {
 		"appinfo": appinfo,
 
 		"menu":  menu,
-		"menu0": menu[0],
-		"menu1": menu[1],
-		"menu2": menu[2],
-		"menu3": menu[3],
-		"menu4": menu[4],
-		"menu5": menu[5],
-		"menu6": menu[6],
-		"menu7": menu[7],
-		"menu8": menu[8],
+		"sta":  sta,
 
-		"stats":   stats,
-		"c_stats": c_stats,
 	})
 }
 

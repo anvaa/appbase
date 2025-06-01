@@ -7,9 +7,9 @@ import (
 
 var StartTime int64
 
-var Company string = "Your Company"
-var AppName string = "MYAPP"
-var AppNameLong string = "This Is My App"
+var Company string = "Raadig AS"
+var AppName string = "Recensio"
+var AppNameLong string = "Recensio - Ditt andre liv"
 var Version string = time.Now().Format("060102")
 
 type appInfo struct {

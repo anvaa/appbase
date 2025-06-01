@@ -45,6 +45,7 @@ span {
     color: var(--color-span);
     background: var(--color-button-bg);
     margin-right: 5px;
+    text-align: center;
     vertical-align: middle;
     align-content: center;
     text-decoration: none;

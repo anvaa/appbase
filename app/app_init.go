@@ -1,7 +1,7 @@
 package app
 
 import (
-
+	"fmt"
 	"log"
 
 	"app/app_conf"
@@ -46,20 +46,18 @@ func AppInit(app_folder string) error {
 
 func setStatusNewId() {
 	// Get the next status ID
-	newid := app_db.Sta_GetStatusIdByType("[D]")
-	app_conf.SetVal("status_default", newid)
+	sta_def := app_db.Sta_GetStaSubUUIDByType("[D]")
+	for _, v := range sta_def {
+		newid := v.UUID
+		_txt := fmt.Sprintf("stadef%d", v.StatusID)
+		app_conf.SetVal(_txt, newid)
+	}
 
-	mnu0 := app_db.Mnu_GetSubItemIdByType(1, "[D]")
-	app_conf.SetVal("sub0_default", mnu0)
-	mnu1 := app_db.Mnu_GetSubItemIdByType(2, "[D]")
-	app_conf.SetVal("sub1_default", mnu1)
-	mnu2 := app_db.Mnu_GetSubItemIdByType(3, "[D]")
-	app_conf.SetVal("sub2_default", mnu2)
-	mnu3 := app_db.Mnu_GetSubItemIdByType(4, "[D]")
-	app_conf.SetVal("sub3_default", mnu3)
-	mnu4 := app_db.Mnu_GetSubItemIdByType(5, "[D]")
-	app_conf.SetVal("sub4_default", mnu4)
-	mnu5 := app_db.Mnu_GetSubItemIdByType(6, "[D]")
-	app_conf.SetVal("sub5_default", mnu5)
+	_mnu := app_db.Mnu_GetMnuSubUUIDByType("[D]")
+	for _, v := range _mnu {
+		newid := v.UUID
+		_txt := fmt.Sprintf("mnudef%d", v.MenuID)
+		app_conf.SetVal(_txt, newid)
+	}
 
 }

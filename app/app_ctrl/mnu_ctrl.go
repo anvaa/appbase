@@ -22,8 +22,8 @@ func Mnu_UpdTitels(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("Mnu_UpdTitels body:", body)
-	if body.Mnu_id != 200 || body.Sub_uuid == 0 {
+	fmt.Println("Mnu_UpdTitels:", body)
+	if body.Mnu_id != 500 || body.Sub_uuid == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid menu ID or submenu UUID"})
 		return
 	}

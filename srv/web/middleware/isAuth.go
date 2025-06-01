@@ -1,17 +1,23 @@
 package middleware
 
-// import (
-// 	"usr"
+import (
 
-// 	"github.com/gin-gonic/gin"
-// )
+	"github.com/gin-gonic/gin"
 
-// func IsAuth(c *gin.Context) {
+	"app/app_models"
 
-// 	user := c.MustGet("user").(users.Users)
-// 	if !user.IsAuth {
-// 		OnErr(c)
-// 		return
-// 	}
-// 	c.Next()
-// }
+)
+
+func IsAuth(c *gin.Context) {
+
+	user := c.MustGet("user").(*app_models.Users)
+	if user == nil || !user.IsAuth {
+		c.HTML(401, "error.html", gin.H{
+			"error": "Unauthorized access. Please log in.",
+		})
+		c.Abort() // Stop further processing
+		return
+	}
+	// User is authenticated, proceed with the request
+	c.Next()
+}
