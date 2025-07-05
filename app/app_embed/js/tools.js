@@ -70,22 +70,23 @@ async function TitlesUpd() {
 async function subAddUpd(mnu_id) {
     const txtElem = document.getElementById(`_txt_${mnu_id}`);
     const subElem = document.getElementById(`_sub_${mnu_id}`);
-    let txt = txtElem ? txtElem.value.trim() : "";
+    const idElem = document.getElementById(`_id_${mnu_id}`);
+    let _txt = txtElem ? txtElem.value.trim() : "";
 
-    if (!txt) {
-        alert("Nothing to add or update" + mnu_id);
+    if (!_txt) {
+        alert("Nothing to add or update");
         return;
     }
 
-    const sub_uuid = subElem ? parseInt(subElem.value, 10) : 0;
-    const _mnuid = mnu_id.toString().substring(3);
+    const _sub_uuid = subElem ? parseInt(subElem.value, 10) : 0;
+    const _mnuid = parseInt(idElem, 10) || 0;
 
     const data = {
-        mnu_id: parseInt(_mnuid, 10),
-        sub_uuid,
-        val: txt,
+        mnu_id: _mnuid,
+        sub_uuid: _sub_uuid,
+        val: _txt,
     };
-
+    // alert(JSON.stringify(data));
     const url = `/${mnu_TYPE}/addupd`;
     try {
         const response = await fetch(url, {

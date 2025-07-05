@@ -1,6 +1,8 @@
 package app_models
 
 import (
+	"time"
+	
 	"gorm.io/gorm"
 
 	"github.com/google/uuid"
@@ -10,6 +12,14 @@ type BaseModel struct {
 	gorm.Model
 	ID   int `gorm:"primaryKey,autoIncrement" json:"id"`
 	UUID int `gorm:"index,unique" json:"uuid"`
+
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+
+	CreatedBy int `json:"created_by,omitempty"`
+	UpdatedBy int `json:"updated_by,omitempty"`
+	DeletedBy int `json:"deleted_by,omitempty"`
 }
 
 // BeforeCreate sets a UUID before creating a record.
@@ -30,28 +40,37 @@ type Users struct {
 type Status struct {
 	BaseModel
 	Title  string   `gorm:"size:50" json:"title"`
-	StaSub []StaSub `gorm:"foreignKey:StatusID" json:"sta_sub"`
+	Stasub []Stasub `gorm:"foreignKey:StatusID" json:"stasub"`
 }
 
-type StaSub struct {
+type Stasub struct {
 	BaseModel
 	Name     string `gorm:"size:50" json:"name"`
 	Type     string `gorm:"size:5" json:"type"`
-	StatusID int    `gorm:"foreignKey:StatusID" json:"status_id"`
+	StatusID int    `json:"status_id"`
+}
+type Type struct {
+	BaseModel
+	Name   string   `gorm:"size:50" json:"name"`
+	Typsub []Typsub `gorm:"foreignKey:TypeID" json:"typsub"`
 }
 
-// Menu represents a menu with subMenu.
+type Typsub struct {
+	BaseModel
+	Name   string `gorm:"size:50" json:"name"`
+	TypeID int    `json:"type_id"`
+}
+
 type Menu struct {
 	BaseModel
 	Title   string    `gorm:"size:50" json:"title"`
 	Type    string    `gorm:"size:5" json:"type"`
-	MenuSub []MenuSub `gorm:"foreignKey:MenuID" json:"menu_sub"`
+	Menusub []Menusub `gorm:"foreignKey:MenuID" json:"menu_sub"`
 }
 
-// SubMenu represents a submenu linked to menu.
-type MenuSub struct {
+type Menusub struct {
 	BaseModel
 	Name   string `gorm:"size:50" json:"name"`
 	Type   string `gorm:"size:5" json:"type"`
-	MenuID int    `gorm:"foreignKey:MenuID" json:"menu_id"`
+	MenuID int    `json:"menu_id"`
 }

@@ -22,7 +22,7 @@ func Upd_MenuTitle(mnu_id int, value string) error {
 func Get_MenuTitles() []app_models.Menu {
 	// Get all menu titles and theis submenu items. Order by submenu name ascending
 	var menu []app_models.Menu
-	err := AppDB.Preload("MenuSub").Find(&menu).Error
+	err := AppDB.Preload("Menusub").Find(&menu).Error
 	if err != nil {
 		log.Println("Error getting menu titles:", err)
 		return nil
@@ -34,8 +34,8 @@ func Get_MenuTitles() []app_models.Menu {
 func sortMenusTitles(menu []app_models.Menu) []app_models.Menu {
 	// Sort each menu's submenu by name ascending
 	for i := range menu {
-		sort.Slice(menu[i].MenuSub, func(i2, j int) bool {
-			return menu[i].MenuSub[i2].Name < menu[i].MenuSub[j].Name
+		sort.Slice(menu[i].Menusub, func(i2, j int) bool {
+			return menu[i].Menusub[i2].Name < menu[i].Menusub[j].Name
 		})
 	}
 	return menu
@@ -43,7 +43,7 @@ func sortMenusTitles(menu []app_models.Menu) []app_models.Menu {
 
 func Upd_MenuSubItems(mnuid int, name string) error {
 	// Update the menu item title
-	menu := app_models.MenuSub{}
+	menu := app_models.Menusub{}
 	err := AppDB.Model(&menu).Where("uuid = ?", mnuid).Update("name", name).Error
 	if err != nil {
 		log.Println("Error updating menu item title:", err)
@@ -52,9 +52,9 @@ func Upd_MenuSubItems(mnuid int, name string) error {
 	return nil
 }
 
-func Mnu_GetMnuSubUUIDByType(subtype any) []app_models.MenuSub {
+func Mnu_GetMnuSubUUIDByType(subtype any) []app_models.Menusub {
 	// Get the submenu ID by type to get defaults
-	var subitem []app_models.MenuSub
+	var subitem []app_models.Menusub
 	err := AppDB.Where("type = ?", subtype).Find(&subitem).Error
 	if err != nil {
 		log.Println("Error getting submenu ID by type:", err)
@@ -75,7 +75,7 @@ func Mnu_GetMenuTitle(id any) string {
 }
 
 func Sub_GetName(id any) string {
-	var sub app_models.MenuSub
+	var sub app_models.Menusub
 	AppDB.Where("id = ?", id).First(&sub)
 
 	if sub.ID == 0 {

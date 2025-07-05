@@ -14,7 +14,7 @@ import (
 
 func Sta_GetStatuses() []app_models.Status {
 	var stats []app_models.Status
-	err := app_db.AppDB.Preload("StaSub").Find(&stats).Error
+	err := app_db.AppDB.Preload("Stasub").Find(&stats).Error
 	if err != nil {
 		log.Println("Error getting statuses:", err)
 		return nil
@@ -26,8 +26,8 @@ func Sta_GetStatuses() []app_models.Status {
 func sortStatuses(menu []app_models.Status) []app_models.Status {
 	// Sort each menu's submenu by name ascending
 	for i := range menu {
-		sort.Slice(menu[i].StaSub, func(i2, j int) bool {
-			return menu[i].StaSub[i2].Name < menu[i].StaSub[j].Name
+		sort.Slice(menu[i].Stasub, func(i2, j int) bool {
+			return menu[i].Stasub[i2].Name < menu[i].Stasub[j].Name
 		})
 	}
 	return menu
@@ -47,11 +47,11 @@ func Sta_AddUpd(c *gin.Context) {
 
 	body.Val = strings.TrimSpace(body.Val)
 
-	var sub app_models.StaSub
+	var sub app_models.Stasub
 	if body.Sub_uuid != 0 {
 		// If Sub_uuid exists, update
 		if err := app_db.AppDB.Where("uuid = ?", body.Sub_uuid).First(&sub).Error; err != nil {
-			c.JSON(404, gin.H{"error": "StaSub not found"})
+			c.JSON(404, gin.H{"error": "Stasub not found"})
 			return
 		}
 
@@ -70,9 +70,9 @@ func Sta_AddUpd(c *gin.Context) {
 			return
 		}
 
-		sub = app_models.StaSub{
-			Name:      body.Val,
-			StatusID:  body.Mnu_id,
+		sub = app_models.Stasub{
+			Name:     body.Val,
+			StatusID: body.Mnu_id,
 		}
 
 		if err := app_db.AppDB.Create(&sub).Error; err != nil {
@@ -102,7 +102,7 @@ func Sta_Delete(c *gin.Context) {
 	}
 
 	// if not type = "[D", delete
-	var sta app_models.StaSub
+	var sta app_models.Stasub
 	if err := app_db.AppDB.Where("uuid = ?", body.Sub_uuid).First(&sta).Error; err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return

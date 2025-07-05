@@ -14,15 +14,17 @@ func SyncAppDB(db *gorm.DB) {
 		&app_models.Users{},
 
 		&app_models.Status{},
-		&app_models.StaSub{},
+		&app_models.Stasub{},
 		&app_models.Menu{},
-		&app_models.MenuSub{},
-		// &app_models.StatusHistory{},
+		&app_models.Menusub{},
+		&app_models.Type{},
+		&app_models.Typsub{},
 	)
 
 	seedUsers(db)
 	seedMenus(db)
 	seedStatus(db)
+	seedTypes(db)
 }
 
 func seedUsers(db *gorm.DB) {
@@ -80,23 +82,23 @@ func seedMenus(db *gorm.DB) {
 
 	// Seed the database with initial data
 	menus := []app_models.Menu{
-		{Title: "Title0", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title1", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title2", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title3", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title4", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title5", Type: "sub", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title6", Type: "mnu", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title7", Type: "mnu", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title8", Type: "mnu", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title9", Type: "mnu", MenuSub: []app_models.MenuSub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title0", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title1", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title2", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title3", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title4", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title5", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title6", Type: "mnu", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title7", Type: "mnu", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title8", Type: "mnu", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
+		{Title: "Title9", Type: "mnu", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
 	}
 
 	for i := range menus {
 		db.Create(&menus[i])
 	}
 
-	fmt.Println("Menus and MenuSub Seeded")
+	fmt.Println("Menus and Menusub Seeded")
 
 }
 
@@ -110,15 +112,15 @@ func seedStatus(db *gorm.DB) {
 	}
 
 	status := []app_models.Status{
-		{Title: "Status0", StaSub: []app_models.StaSub{
+		{Title: "Status0", Stasub: []app_models.Stasub{
 			{Name: "Ny", Type: "[D]"},
 			{Name: "Notat0", Type: ""},
 		}},
-		{Title: "Status1", StaSub: []app_models.StaSub{
+		{Title: "Status1", Stasub: []app_models.Stasub{
 			{Name: "Ny", Type: "[D]"},
 			{Name: "Notat1", Type: ""},
 		}},
-		{Title: "Status2", StaSub: []app_models.StaSub{
+		{Title: "Status2", Stasub: []app_models.Stasub{
 			{Name: "Ny", Type: "[D]"},
 			{Name: "Notat2", Type: ""},
 		}},
@@ -129,5 +131,30 @@ func seedStatus(db *gorm.DB) {
 	}
 
 	fmt.Println("Statuses Seeded")
+
+}
+
+func seedTypes(db *gorm.DB) {
+	// Check if number of types are > 0
+	var count int64
+	db.Model(&app_models.Type{}).Count(&count)
+	if count > 0 {
+		fmt.Println("Types already seeded")
+		return
+	}
+
+	types := []app_models.Type{
+		{Name: "Type 1", Typsub: []app_models.Typsub{
+			{Name: "type11"},
+			{Name: "type12"}}},
+		{Name: "Type 2", Typsub: []app_models.Typsub{
+			{Name: "type21"},
+			{Name: "type22"}}},
+	}
+
+	for i := range types {
+		db.Create(&types[i])
+	}
+	fmt.Println("Types Seeded")
 
 }

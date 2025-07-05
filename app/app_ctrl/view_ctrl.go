@@ -39,6 +39,7 @@ func ToolsTitles(c *gin.Context) {
 
 	menu := app_db.Get_MenuTitles()
 	sta := Sta_GetStatuses()
+	typ := Typ_GetTypes()
 
 	c.HTML(http.StatusOK, "tools_titles.html", gin.H{
 		"title":   app_conf.AppName + " - Titles",
@@ -48,6 +49,7 @@ func ToolsTitles(c *gin.Context) {
 
 		"menu":  menu,
 		"sta":  sta,
+		"typ":  typ,
 
 	})
 }

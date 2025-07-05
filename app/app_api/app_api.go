@@ -35,21 +35,21 @@ func App_Api(r *gin.Engine) *gin.Engine {
 
 	}
 
-	manGrp := r.Group("/menu")
-	{
-		manGrp.Use(middleware.RequireAuth)
-
-		manGrp.POST("/addupd", app_ctrl.Sub_AddUpd)
-		manGrp.POST("/delete", app_ctrl.Sub_Delete)
-
-	}
-
 	staGrp := r.Group("/status")
 	{
 		staGrp.Use(middleware.RequireAuth)
 
 		staGrp.POST("/addupd", app_ctrl.Sta_AddUpd)
 		staGrp.POST("/delete", app_ctrl.Sta_Delete)
+
+	}
+
+	typGrp := r.Group("/type")
+	{
+		typGrp.Use(middleware.RequireAuth)
+
+		typGrp.POST("/addupd", app_ctrl.Typ_AddUpd)
+		typGrp.POST("/delete", app_ctrl.Typ_Delete)
 
 	}
 

@@ -1,9 +1,9 @@
 package app_ctrl
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
-	"fmt"
 
 	"app/app_db"
 	"app/app_models"
@@ -25,11 +25,11 @@ func Sub_AddUpd(c *gin.Context) {
 
 	body.Val = strings.TrimSpace(body.Val)
 
-	var sub app_models.MenuSub
+	var sub app_models.Menusub
 	if body.Sub_uuid != 0 {
 		// If Sub_uuid exists, update
 		if err := app_db.AppDB.Where("uuid = ?", body.Sub_uuid).First(&sub).Error; err != nil {
-			c.JSON(404, gin.H{"error": "StaSub not found"})
+			c.JSON(404, gin.H{"error": "Stasub not found"})
 			return
 		}
 
@@ -48,9 +48,9 @@ func Sub_AddUpd(c *gin.Context) {
 			return
 		}
 
-		sub = app_models.MenuSub{
-			Name:      body.Val,
-			MenuID:  body.Mnu_id,
+		sub = app_models.Menusub{
+			Name:   body.Val,
+			MenuID: body.Mnu_id,
 		}
 
 		if err := app_db.AppDB.Create(&sub).Error; err != nil {
@@ -74,7 +74,7 @@ func Sub_Delete(c *gin.Context) {
 		return
 	}
 
-	var sub app_models.MenuSub
+	var sub app_models.Menusub
 	if err := app_db.AppDB.Where("uuid = ?", body.Sub_uuid).First(&sub).Error; err != nil {
 		c.JSON(404, gin.H{"error": "SubItem not found"})
 		return
