@@ -1,5 +1,4 @@
 {{ template "tools_menu.html" . }}
-
 <div  class="flex-container">
     <div>
         <div class="div-header-bold">Statuses</div>
@@ -119,7 +118,7 @@
                 onclick="subAddUpd('{{$M_ID}}')" class="tools-btn"/>
             </div>
             <div >
-                <select Name="_status{{$M_ID}}" size="8" class="tools-select" >
+                <select Name="_menu{{$M_ID}}" size="8" class="tools-select" >
                     {{ range .Menusub }}
                     <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
                         onclick="subSel('{{.UUID}}','{{$M_ID}}','menu')">{{.Name}} {{.Type}}</option>

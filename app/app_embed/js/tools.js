@@ -28,7 +28,7 @@ function subSel(sub_uuid, mnu_id, mnu_type) {
     mnu_ID = mnu_id;
     sub_UUID = parseInt(sub_uuid, 10);
     mnu_TYPE = mnu_id === 500 ? "titles" : mnu_type;
-
+    // alert(`Selected: ${sub_UUID} ${mnu_ID} ${mnu_TYPE}`);
     const optElem = document.getElementById(`_opt_${sub_UUID}`);
     const txtElem = document.getElementById(`_txt_${mnu_ID}`);
     const subElem = document.getElementById(`_sub_${mnu_ID}`);
@@ -36,6 +36,7 @@ function subSel(sub_uuid, mnu_id, mnu_type) {
     sel_TXT = optElem ? optElem.value : "";
     if (txtElem) txtElem.value = sel_TXT;
     if (subElem) subElem.value = sub_UUID;
+    document.getElementById("_tooltest").innerHTML = `Selected: ${sel_TXT} _opt_${sub_UUID}`;
 }
 
 async function TitlesUpd() {
@@ -72,15 +73,15 @@ async function subAddUpd(mnu_id) {
     const subElem = document.getElementById(`_sub_${mnu_id}`);
     const idElem = document.getElementById(`_id_${mnu_id}`);
     let _txt = txtElem ? txtElem.value.trim() : "";
-
+    
     if (!_txt) {
         alert("Nothing to add or update");
         return;
     }
 
     const _sub_uuid = subElem ? parseInt(subElem.value, 10) : 0;
-    const _mnuid = parseInt(idElem, 10) || 0;
-
+    const _mnuid = parseInt(idElem.value, 10) || 0;
+    
     const data = {
         mnu_id: _mnuid,
         sub_uuid: _sub_uuid,
