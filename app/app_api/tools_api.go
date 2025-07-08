@@ -2,7 +2,7 @@ package app_api
 
 import (
 	
-	"srv/web/middleware"
+	"srv/middleware"
 
 	"app/app_ctrl"
 

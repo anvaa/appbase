@@ -14,6 +14,8 @@ import (
 	"log"
 	"time"
 	"os"
+
+	"github.com/google/uuid"
 )
 
 var CertFile string
@@ -114,4 +116,12 @@ func GenerateTLS(keySize int) error {
 	}
 
 	return nil
+}
+
+func UUID_Int() int {
+	return int(uuid.New().ID())
+}
+
+func UUID_String() string {
+	return uuid.New().String()
 }

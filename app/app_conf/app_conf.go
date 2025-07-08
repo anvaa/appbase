@@ -16,7 +16,7 @@ var (
 	fileType string = "yaml"
 
 	CookieName          = strings.Replace(AppName, " ", "", -1) + "_Auth"
-	CookieExpire int    = 12 * 60 * 60 // 12 hours
+	CookieExpire int    = 24 * 60 * 60 // 24 hours 
 	UserKey      string = uuid.New().String()
 )
 
@@ -29,12 +29,13 @@ func init() {
 func WriteDefaultConfig(appRoot string) {
 	// SetDefault sets the default value for the key.
 	appConf.SetDefault("app_db", "data/app.db")
-	appConf.SetDefault("start_url", "/app/start")
 	appConf.SetDefault("print_height", 24)
 	appConf.SetDefault("print_width", 160)
 	appConf.SetDefault("print_margin", 3)
 	appConf.SetDefault("print_font_size", 16)
 	appConf.SetDefault("print_txt", 1)
+	appConf.SetDefault("session_expire", time.Hour*24*1) // 1 day
+	appConf.SetDefault("start_url", "/app/start") // Default start page
 
 	err := appConf.WriteConfigAs(fileName)
 	if err != nil {
@@ -67,6 +68,10 @@ func GetTime(key string) time.Time {
 
 func GetBool(key string) bool {
 	return appConf.GetBool(key)
+}
+
+func GetDuration(key string) time.Duration {
+	return appConf.GetDuration(key)
 }
 
 func SetVal(key string, val any) {
@@ -110,4 +115,9 @@ func AppConf() app_models.AppConf {
 		StartPageFocus: GetString("start_page_focus"),
 	}
 	return conf
+}
+
+func SessionExpire() time.Duration {
+	// Get the session expire time from the config
+	return appConf.GetDuration("session_expire")
 }

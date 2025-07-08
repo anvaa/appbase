@@ -1,4 +1,5 @@
 package users
+
 import (
 	"app/app_conf"
 
@@ -7,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
 func Root(c *gin.Context) {
 	c.Redirect(http.StatusMovedPermanently, "/login")
 }
@@ -75,22 +77,22 @@ func View_NewUsers(c *gin.Context) {
 }
 
 func View_ManageUsers(c *gin.Context) {
-	
-	authusers, cauth, _ := Users_GetAuth()
-	unauthusers, cunauth, _ := Users_GetUnAuth()
-	delusers, cdel, _ := Users_GetDeleted()
+
+	auth_users, c_auth, _ := Users_GetAuth()
+	unauth_users, c_unauth, _ := Users_GetUnAuth()
+	del_users, c_del, _ := Users_GetDeleted()
 
 	c.HTML(http.StatusOK, "users.html", gin.H{
-		"title":       "Manage All Users",
-		"user":        c.Keys["user"],
-		"js":          "users.js",
+		"title": "Manage Users",
+		"user":  c.Keys["user"],
+		"js":    "users.js",
 
-		"authusers":   authusers,
-		"countauth":   cauth,
-		"unauthusers": unauthusers,
-		"countunauth": cunauth,
-		"delusers":    delusers,
-		"countdel":    cdel,
+		"authusers":   auth_users,
+		"countauth":   c_auth,
+		"unauthusers": unauth_users,
+		"countunauth": c_unauth,
+		"delusers":    del_users,
+		"countdel":    c_del,
 	})
 }
 
@@ -104,22 +106,20 @@ func View_EditUser(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "user_edit.html", gin.H{
-		"title":   "Edit User",
-		"js":      "users.js",	
-		"user":    c.Keys["user"],
+		"title": "Edit User",
+		"js":    "users.js",
+		"user":  c.Keys["user"],
 
 		"edituid": edit_user,
-		
 	})
 }
 
 func View_MyAccount(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "myaccount.html", gin.H{
-		"title":   "My Account",
-		"css":     "",
-		"js":      "myaccount.js",
-		"user":    c.Keys["user"],
-
+		"title": "My Account",
+		"css":   "",
+		"js":    "myaccount.js",
+		"user":  c.Keys["user"],
 	})
 }

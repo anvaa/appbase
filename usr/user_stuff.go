@@ -8,33 +8,43 @@ import (
 	"app/app_models"
 )
 
+var (
+	// ErrUserNotFound is returned when a user is not found
+	ErrUserNotFound = errors.New("user: something went wrong")
+	dbUser = app_models.Users{}
+	dbUsers = []app_models.Users{}
+)
+
+
+
+
 func User_GetById(id any) (app_models.Users, error) {
-	var userbyid app_models.Users
-	err := app_db.AppDB.Where("id = ?", id).First(&userbyid)
+	//var userbyid app_models.Users
+	err := app_db.AppDB.Where("id = ?", id).First(&dbUser)
 	if err.Error != nil {
-		log.Println("Error getting user by ID:", id, err.Error)
-		return userbyid, err.Error
+		log.Println("Error getting user by ID:", id, ErrUserNotFound)
+		return dbUser, ErrUserNotFound
 	}
 
-	return userbyid, nil
+	return dbUser, nil
 }
 
 func User_GetEmailById(userid any) (string, error) {
-	var emailbyid app_models.Users
-	err := app_db.AppDB.Select("email").First(&emailbyid, userid)
+	//var emailbyid app_models.Users
+	err := app_db.AppDB.Select("email").First(&dbUser, userid)
 	if err.Error != nil {
-		return "", err.Error
+		return "", ErrUserNotFound
 	}
-	return emailbyid.Email, nil
+	return dbUser.Email, nil
 }
 
 func User_GetByEmail(email string) (app_models.Users, error) {
-	var userbyemail app_models.Users
-	err := app_db.AppDB.Where("email = ?", email).First(&userbyemail)
+	//var userbyemail app_models.Users
+	err := app_db.AppDB.Where("email = ?", email).First(&dbUser)
 	if err.Error != nil {
-		return userbyemail, err.Error
+		return dbUser, ErrUserNotFound
 	}
-	return userbyemail, nil
+	return dbUser, nil
 }
 
 func Users_Count() int {
@@ -51,7 +61,8 @@ func CreateNewUser(nu *app_models.Users) error {
 		FirstOrCreate(&nu)
 
 	if res.Error != nil {
-		return errors.New("error creating user")
+		log.Println("Error creating user:", res.Error)
+		return ErrUserNotFound
 	}
 
 	if res.RowsAffected == 0 { // if user already exists
@@ -62,12 +73,12 @@ func CreateNewUser(nu *app_models.Users) error {
 }
 
 func Users_GetAll() ([]app_models.Users, error) {
-	var all_users []app_models.Users
-	err := *app_db.AppDB.Find(&all_users)
+	//var all_users []app_models.Users
+	err := *app_db.AppDB.Find(&dbUsers)
 	if err.Error != nil {
-		return all_users, err.Error
+		return dbUsers, ErrUserNotFound
 	}
-	return all_users, nil
+	return dbUsers, nil
 }
 
 func User_Delete(uuid any) error {
@@ -117,56 +128,56 @@ func user_SetNewPassword(uuid any, password string) error {
 }
 
 func User_GetEmailFromId(id any) (string, error) {
-	var user_email app_models.Users
-	err := *app_db.AppDB.Where("id = ?", id).First(&user_email)
+	//var user_email app_models.Users
+	err := *app_db.AppDB.Where("id = ?", id).First(&dbUser)
 	if err.Error != nil {
 		return "", err.Error
 	}
-	return user_email.Email, nil
+	return dbUser.Email, nil
 }
 
 func User_GetRoleFromId(id any) (string, error) {
-	var role_user *app_models.Users
-	err := app_db.AppDB.Where("id = ?", id).First(&role_user)
+	// var role_user app_models.Users
+	err := app_db.AppDB.Where("id = ?", id).First(&dbUser)
 	if err.Error != nil {
 		return "", err.Error
 	}
-	return role_user.Role, nil
+	return dbUser.Role, nil
 }
 
 func Users_GetAuth() ([]app_models.Users, int, error) {
-	var auth_users *[]app_models.Users
-	err := *app_db.AppDB.Where("is_auth = ?", true).Find(&auth_users)
+	//var auth_users []app_models.Users
+	err := *app_db.AppDB.Where("is_auth = ?", true).Find(&dbUsers)
 	if err.Error != nil {
-		return *auth_users, 0, err.Error
+		return dbUsers, 0, err.Error
 	}
-	return *auth_users, len(*auth_users), nil
+	return dbUsers, len(dbUsers), nil
 }
 
 func Users_GetUnAuth() ([]app_models.Users, int, error) {
-	var unauth_users *[]app_models.Users
-	err := *app_db.AppDB.Where("is_auth = ?", false).Find(&unauth_users)
+	//var unauth_users []app_models.Users
+	err := *app_db.AppDB.Where("is_auth = ?", false).Find(&dbUsers)
 	if err.Error != nil {
-		return *unauth_users, 0, err.Error
+		return dbUsers, 0, err.Error
 	}
-	return *unauth_users, len(*unauth_users), nil
+	return dbUsers, len(dbUsers), nil
 }
 
 func Users_GetDeleted() ([]app_models.Users, int, error) {
-	var del_users *[]app_models.Users
-	err := *app_db.AppDB.Unscoped().Where("deleted_at IS NOT NULL").Find(&del_users)
+	//var del_users []app_models.Users
+	err := *app_db.AppDB.Unscoped().Where("deleted_at IS NOT NULL").Find(&dbUsers)
 	if err.Error != nil {
-		return *del_users, 0, err.Error
+		return dbUsers, 0, err.Error
 	}
 
-	return *del_users, len(*del_users), nil
+	return dbUsers, len(dbUsers), nil
 }
 
 func Users_GetNew() ([]app_models.Users, int, error) {
-	var new_users []app_models.Users
-	err := app_db.AppDB.Where("created_at = updated_at and is_auth = false").Find(&new_users)
+	//var new_users []app_models.Users
+	err := app_db.AppDB.Where("created_at = updated_at and is_auth = false").Find(&dbUsers)
 	if err.Error != nil {
-		return new_users, 0, err.Error
+		return dbUsers, 0, err.Error
 	}
-	return new_users, len(new_users), nil
+	return dbUsers, len(dbUsers), nil
 }

@@ -2,7 +2,7 @@ package app_api
 
 import (
 	"srv/srv_conf"
-	"srv/web/middleware"
+	"srv/middleware"
 
 	"app/app_ctrl"
 
@@ -24,7 +24,13 @@ func App_Api(r *gin.Engine) *gin.Engine {
 
 	r.LoadHTMLGlob(static_dir + "/html/*.html")
 
-	tools_Api(r) // register tools API routes
+	// r.Use(middleware.SetDefaultHeaders) // set default headers
+	// r.Use(middleware.SetDefaultCookies) // set default cookies
+	// r.Use(middleware.SetDefaultSession) // set default session
+	// r.Use(middleware.SetDefaultLocale)  // set default locale
+
+	// Import API routes
+	r = tools_Api(r) // register tools API routes
 
 	// SET app routes
 	appGrp := r.Group("/app")

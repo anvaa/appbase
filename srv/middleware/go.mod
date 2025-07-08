@@ -1,4 +1,4 @@
-module srv/web/middleware
+module srv/middleware
 
 go 1.24.0
 

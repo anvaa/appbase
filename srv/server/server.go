@@ -2,24 +2,12 @@ package server
 
 import (
 	"fmt"
-	"usr/user_api"
-
+	
 	"app/app_api"
-
 	"srv/srv_conf"
-
+	
 	"github.com/gin-gonic/gin"
 )
-
-func setupRoutes(r *gin.Engine) *gin.Engine {
-	// Set up the users routes
-	r = user_api.User_Api(r) // sets the routes for the users package
-
-	// Set up the app routes
-	r = app_api.App_Api(r) // sets the routes for the app package
-
-	return r
-}
 
 func InitWebServer() *gin.Engine {
 
@@ -48,6 +36,16 @@ func InitWebServer() *gin.Engine {
 	ginLoggerDatabase(r)
 
 	setupRoutes(r)
+
+	return r
+}
+
+func setupRoutes(r *gin.Engine) *gin.Engine {
+	// Set up the users routes
+	r = app_api.User_Api(r) // sets the routes for the users package
+
+	// Set up the app routes
+	r = app_api.App_Api(r) // sets the routes for the app package
 
 	return r
 }

@@ -10,8 +10,8 @@ import (
 
 func IsAuth(c *gin.Context) {
 
-	user := c.MustGet("user").(*app_models.Users)
-	if user == nil || !user.IsAuth {
+	user := c.MustGet("user").(app_models.Users)
+	if user.ID == 0 || !user.IsAuth {
 		c.HTML(401, "error.html", gin.H{
 			"error": "Unauthorized access. Please log in.",
 		})

@@ -1,4 +1,4 @@
-package user_api
+package app_api
 
 import (
 
@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"srv/web/middleware"
+	"srv/middleware"
 	"srv/srv_conf"
 
 	"usr"

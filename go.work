@@ -17,8 +17,7 @@ use (
 	./srv/filefunc
 	./srv/global
 	./srv/server
-
-	./srv/web/middleware
+	./srv/middleware
 
 	./usr
 	./usr/user_api

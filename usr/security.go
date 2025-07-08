@@ -3,18 +3,9 @@ package users
 import (
 	"errors"
 	"regexp"
-	"srv/srv_sec"
 
 	"golang.org/x/crypto/bcrypt"
 
-	"app/app_conf"
-	"app/app_models"
-	"net/http"
-	"time"
-
-	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
 )
 
 var (
@@ -103,29 +94,3 @@ func CheckPasswordHash(password string, hash string) bool {
 	return err == nil
 }
 
-func NewUuid() int {
-	return int(uuid.New().ID())
-}
-
-func SetJWT(c *gin.Context, user *app_models.Users) (*gin.Context, error) {
-	// Generate a new JWT token
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": user.ID,
-		"exp": time.Now().Add(time.Second * time.Duration(app_conf.CookieExpire)).Unix(),
-		"iat": time.Now().Unix(),
-		"email": user.Email,
-		"role": user.Role,
-		"isauth": user.IsAuth,
-	})
-
-	tokenString, err := token.SignedString([]byte(srv_sec.JwtSecret))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to generate"})
-		return nil, err
-	}
-
-	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie(app_conf.CookieName, tokenString, app_conf.CookieExpire, "/", "", true, true)
-
-	return c, nil
-}

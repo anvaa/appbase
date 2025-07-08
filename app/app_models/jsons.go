@@ -1,5 +1,14 @@
 package app_models
 
+import "time"
+
+type Session struct {
+	SessionID string    `json:"session_id"`
+	UserID    int       `json:"user_id"`
+	UserUUID  int       `json:"user_uuid"`
+	Locale    string    `json:"locale"`
+	Expire    time.Time `json:"expire"`
+}
 type PrinterConf struct {
 	Height   int `json:"height"`
 	Width    int `json:"width"`

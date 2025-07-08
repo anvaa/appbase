@@ -3,7 +3,7 @@ package middleware
 import (
 	"srv/srv_sec"
 	"app/app_conf"
-	"usr"
+	"app/app_models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -35,10 +35,10 @@ func RequireAuth(c *gin.Context) {
 		return
 	}
 
-	user, exists := users.User_GetById(claims["sub"])
-	if exists != nil {
-		redirectToLogin(c)
-		return
+	// Extract user information from the claims
+	user := &app_models.Users{
+		Role:    claims["role"].(string),
+		IsAuth:  claims["auth"].(bool),
 	}
 
 	// Check if the user is authenticated
