@@ -20,7 +20,6 @@ use (
 	./srv/middleware
 
 	./usr
-	./usr/user_api
 	./usr/user_embed
 	
 )

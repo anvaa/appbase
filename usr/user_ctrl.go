@@ -4,13 +4,12 @@ import (
 	"app/app_conf"
 	"app/app_models"
 	"srv/middleware"
-	
+
 	"log"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
-
 )
 
 var (
@@ -122,16 +121,17 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c, err = middleware.SetJWT(c, &user)
+	err = middleware.SetJWT(c, &user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to set JWT"})
 		return
 	}
 
+	User_SetLastLogin(user.UUID)
+
 	url = app_conf.GetString("start_url")
 	c.JSON(http.StatusOK, gin.H{"url": url, "message": "success"})
 }
-
 
 
 func GetAllUsers(c *gin.Context) {

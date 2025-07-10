@@ -2,7 +2,7 @@ package app_models
 
 import (
 	"time"
-	
+
 	"gorm.io/gorm"
 
 	"github.com/google/uuid"
@@ -30,11 +30,12 @@ func (b *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
 
 type Users struct {
 	BaseModel
-	Email    string `gorm:"unique, size:255" json:"email"`
-	Password string `gorm:"not null, size:255" json:"password"`
-	Role     string `gorm:"default:user, size:20" json:"role"`
-	IsAuth   bool   `gorm:"default:false" json:"is_auth"`
-	Note     string `gorm:"size:255" json:"note"`
+	Email     string    `gorm:"unique, size:255" json:"email"`
+	Password  string    `gorm:"not null, size:255" json:"password"`
+	Role      string    `gorm:"default:user, size:20" json:"role"`
+	IsAuth    bool      `gorm:"default:false" json:"is_auth"`
+	LastLogin time.Time `json:"last_login,omitempty"`
+	Note      string    `gorm:"size:255" json:"note"`
 }
 
 type Status struct {

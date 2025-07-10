@@ -41,9 +41,7 @@ func InitWebServer() *gin.Engine {
 }
 
 func setupRoutes(r *gin.Engine) *gin.Engine {
-	// Set up the users routes
-	r = app_api.User_Api(r) // sets the routes for the users package
-
+	
 	// Set up the app routes
 	r = app_api.App_Api(r) // sets the routes for the app package
 

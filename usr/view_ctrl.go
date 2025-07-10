@@ -77,10 +77,13 @@ func View_NewUsers(c *gin.Context) {
 }
 
 func View_ManageUsers(c *gin.Context) {
-
+	fmt.Println("View_ManageUsers called")
 	auth_users, c_auth, _ := Users_GetAuth()
+	fmt.Println("auth_users count:", c_auth)
 	unauth_users, c_unauth, _ := Users_GetUnAuth()
+	fmt.Println("unauth_users count:", c_unauth)
 	del_users, c_del, _ := Users_GetDeleted()
+	fmt.Println("del_users count:", c_del)
 
 	c.HTML(http.StatusOK, "users.html", gin.H{
 		"title": "Manage Users",
@@ -97,7 +100,7 @@ func View_ManageUsers(c *gin.Context) {
 }
 
 func View_EditUser(c *gin.Context) {
-	edit_id := c.Param("edituid")
+	edit_id := c.Param("uid")
 
 	edit_user, err := User_GetById(edit_id)
 	if err != nil {

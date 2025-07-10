@@ -14,22 +14,23 @@ func App_Api(r *gin.Engine) *gin.Engine {
 
 	// SET app paths
 	static_dir := srv_conf.StaticDir
-
+	r.Static("/media", static_dir+"/media")
 	r.Static("/css", static_dir+"/css")
 	r.Static("/js", static_dir+"/js")
-	// r.Static("/media", static_dir+"/media")
-
 	r.Static("/assets", srv_conf.AssetsDir)
 	
-
 	r.LoadHTMLGlob(static_dir + "/html/*.html")
 
-	// r.Use(middleware.SetDefaultHeaders) // set default headers
-	// r.Use(middleware.SetDefaultCookies) // set default cookies
-	// r.Use(middleware.SetDefaultSession) // set default session
-	// r.Use(middleware.SetDefaultLocale)  // set default locale
+	r.GET("/favicon.ico", func(c *gin.Context) {
+		c.File("/media/favicon.ico")
+	})
+	r.GET("/robots.txt", func(c *gin.Context) {
+		c.File("/media/robots.txt")
+	})
 
 	// Import API routes
+	r = error_Api(r) // register error API routes
+	r = user_Api(r) // register user API routes
 	r = tools_Api(r) // register tools API routes
 
 	// SET app routes

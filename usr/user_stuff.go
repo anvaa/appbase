@@ -47,6 +47,16 @@ func User_GetByEmail(email string) (app_models.Users, error) {
 	return dbUser, nil
 }
 
+func User_SetLastLogin(uuid int) error {
+	// Update the last login time of the user
+	err := app_db.AppDB.Model(&app_models.Users{}).Where("uuid = ?", uuid).Update("last_login", app_db.AppDB.NowFunc())
+	if err.Error != nil {
+		log.Println("Error updating last login:", err.Error)
+		return err.Error
+	}
+	return nil
+}
+
 func Users_Count() int {
 	var users_count int64
 	app_db.AppDB.Model(&app_models.Users{}).Count(&users_count)
