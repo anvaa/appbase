@@ -1,136 +1,59 @@
 {{ template "tools_menu.html" . }}
-<div  class="flex-container">
-    <div>
-        <div class="div-header-bold">Statuses</div>
-        <div class="flex-container">
-        {{ range .sta }}
-        <div class="tools-box">
-            <div class="div-header">{{.Title}} ({{ len .Stasub }})</div>
-            {{$S_ID := printf "sta%d" .ID}}
-            <div>
-                <div>
-                    <input type="text" id="_txt_{{$S_ID}}" value="" class="tools-txt" 
-                        onkeydown="isEdit('status','{{$S_ID}}')" />
-                    
-                        <input type="hidden" id="_id_{{$S_ID}}" value="{{.ID}}" />
-                    <input type="hidden" id="_sub_{{$S_ID}}" value="0" />
-                </div>
-                <div style="text-align: center;">
-                    <input type="button" value="Add/Edit" 
-                    onclick="subAddUpd('{{$S_ID}}')" class="tools-btn"/>
-                </div>
-                <div >
-                    <select Name="_status{{$S_ID}}" size="4" class="tools-select" >
-                        {{ range .Stasub }}
-                        <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
-                            onclick="subSel('{{.UUID}}','{{$S_ID}}','status')">{{.Name}} {{.Type}}</option>
-                        {{ end }}
-                    </select> 
-                </div>
-                <div style="text-align: center;">
-                    <input type="button" value="Delete" onclick="lstDel('{{$S_ID}}')" class="tools-btn-del"/>
-                </div>
-            </div>
-        </div>
-        {{ end }}
-        </div>
-    </div>
-
-    <div>
-        <div class="div-header-bold">Types</div>
-        <div class="flex-container">
-        {{ range .typ }}
-        <div class="tools-box">
-            <div class="div-header">{{.Name}} ({{ len .Typsub }})</div>
-            {{$T_ID := printf "typ%d" .ID}}
-            <div>
-                <div>
-                    <input type="text" id="_txt_{{$T_ID}}" value="" class="tools-txt" 
-                        onkeydown="isEdit('type','{{$T_ID}}')" />
-                    
-                        <input type="hidden" id="_id_{{$T_ID}}" value="{{.ID}}" />
-                    <input type="hidden" id="_sub_{{$T_ID}}" value="0" />
-                </div>
-                <div style="text-align: center;">
-                    <input type="button" value="Add/Edit" 
-                    onclick="subAddUpd('{{$T_ID}}')" class="tools-btn"/>
-                </div>
-                <div >
-                    <select Name="_type{{$T_ID}}" size="4" class="tools-select" >
-                        {{ range .Typsub }}
-                        <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
-                            onclick="subSel('{{.UUID}}','{{$T_ID}}','type')">{{.Name}}</option>
-                        {{ end }}
-                    </select> 
-                </div>
-                <div style="text-align: center;">
-                    <input type="button" value="Delete" onclick="lstDel('{{$T_ID}}')" class="tools-btn-del"/>
-                </div>
-            </div>
-        </div>
-        {{ end }}
-        </div>
-    </div>
-</div>
-
-
-
-<br>
 <div class="div-header-bold">Titles & Dropdowns</div>
-<div class="flex-container" style="flex-wrap: wrap;">
-    <div class="tools-box">
-        <div class="div-header">Menu Titles ({{ len .menu }})</div>
-        <div>
-            <div >
-                <input type="text" id="_txt_500" value="" class="tools-txt" maxlength="12" title="max 12 char" onkeydown="isEdit('titles','500')" />
-                <input type="hidden" id="_id_500" value="500" />
-                <input type="hidden" id="_sub_500" value="0" />
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Edit" onclick="TitlesUpd()" class="tools-btn"/>
-            </div>
-            <div >
-                <select Name="_mnuts" size="9" class="tools-select" >
-                    {{ range .menu }}
-                    <option id="_opt_{{.UUID}}" value="{{.Title}}" 
-                    onclick="subSel('{{.UUID}}','500')">{{.Title}}</option>
-                    {{ end }}
-                </select> 
-            </div>
-        </div>
-    </div>
-    
-    {{ range .menu }}
-    {{ if eq .Type "sub" }}
-    <div class="tools-box">
-        <div class="div-header">{{.Title}} ({{ len .Menusub }})</div>
-        {{$M_ID := printf "mnu%d" .ID}}
-        <div>
+    <div class="flex-container" style="flex-wrap: wrap;">
+        <div class="tools-box">
+            <div class="div-header">Menu Titles ({{ len .menu }})</div>
             <div>
-                <input type="text" id="_txt_{{$M_ID}}" value="" class="tools-txt" 
-                    onkeydown="isEdit('menu','{{$M_ID}}')" />
-                
-                    <input type="hidden" id="_id_{{$M_ID}}" value="{{.ID}}" />
-                <input type="hidden" id="_sub_{{$M_ID}}" value="0" />
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Add/Edit" 
-                onclick="subAddUpd('{{$M_ID}}')" class="tools-btn"/>
-            </div>
-            <div >
-                <select Name="_menu{{$M_ID}}" size="8" class="tools-select" >
-                    {{ range .Menusub }}
-                    <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
-                        onclick="subSel('{{.UUID}}','{{$M_ID}}','menu')">{{.Name}} {{.Type}}</option>
-                    {{ end }}
-                </select> 
-            </div>
-            <div style="text-align: center;">
-                <input type="button" value="Delete" onclick="lstDel('{{$M_ID}}')" class="tools-btn-del"/>
+                <div >
+                    <input type="text" id="_txt_500" value="" class="tools-txt" maxlength="12" title="max 12 char" onkeydown="isEdit('titles','500')" />
+                    <input type="hidden" id="_id_500" value="500" />
+                    <input type="hidden" id="_sub_500" value="0" />
+                </div>
+                <div style="text-align: center;">
+                    <input type="button" value="Edit" onclick="TitlesUpd()" class="tools-btn"/>
+                </div>
+                <div >
+                    <select Name="_mnuts" size="9" class="tools-select" >
+                        {{ range .menu }}
+                        <option id="_opt_{{.UUID}}" value="{{.Title}}" 
+                        onclick="subSel('{{.UUID}}','500')">{{.Title}}</option>
+                        {{ end }}
+                    </select> 
+                </div>
             </div>
         </div>
+        
+        {{ range .menu }}
+        {{ if eq .Type "sub" }} 
+        <div class="tools-box">
+            <div class="div-header">{{.Title}} ({{ len .Menusub }})</div>
+            {{$M_ID := printf "mnu%d" .ID}}
+            <div>
+                <div>
+                    <input type="text" id="_txt_{{$M_ID}}" value="" class="tools-txt" 
+                        onkeydown="isEdit('menu','{{$M_ID}}')" />
+                    
+                        <input type="hidden" id="_id_{{$M_ID}}" value="{{.ID}}" />
+                    <input type="hidden" id="_sub_{{$M_ID}}" value="0" />
+                </div>
+                <div style="text-align: center;">
+                    <input type="button" value="Add/Edit" 
+                    onclick="subAddUpd('{{$M_ID}}')" class="tools-btn"/>
+                </div>
+                <div >
+                    <select Name="_menu{{$M_ID}}" size="8" class="tools-select" >
+                        {{ range .Menusub }}
+                        <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
+                            onclick="subSel('{{.UUID}}','{{$M_ID}}','menu')">{{.Name}} {{.Type}}</option>
+                        {{ end }}
+                    </select> 
+                </div>
+                <div style="text-align: center;">
+                    <input type="button" value="Delete" onclick="lstDel('{{$M_ID}}')" class="tools-btn-del"/>
+                </div>
+            </div>
+        </div>
+        {{ end }}
+        {{ end }}
+        
     </div>
-    {{ end }}
-    {{ end }}
-
-</div>

@@ -2,7 +2,7 @@
     <table>
         <thead>
             <td class="div-header-bold" colspan="3">
-                New Users ({{ .countnew }})
+                New Users ({{ len .new_users }})
             </td>    
             <tr>
                 <th class="th-lst">ID</th>
@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <body>
-            {{ range .newusers }}
+            {{ range .new_users }}
             <tr>
                 <form class="authform">
                     <td class="td-lst" title="User UUID">

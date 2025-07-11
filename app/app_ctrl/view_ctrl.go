@@ -38,8 +38,8 @@ func Start(c *gin.Context) {
 func ToolsTitles(c *gin.Context) {
 
 	menu := app_db.Get_MenuTitles()
-	sta := Sta_GetStatuses()
-	typ := Typ_GetTypes()
+	//sta := Sta_GetStatuses()
+	//typ := Typ_GetTypes()
 
 	c.HTML(http.StatusOK, "tools_titles.html", gin.H{
 		"title":   app_conf.AppName + " - Titles",
@@ -48,24 +48,44 @@ func ToolsTitles(c *gin.Context) {
 		"appinfo": appinfo,
 
 		"menu":  menu,
-		"sta":  sta,
-		"typ":  typ,
+		//"sta":  sta,
+		//"typ":  typ,
 
 	})
 }
 
-func ToolsConf(c *gin.Context) {
+func ToolsStatus(c *gin.Context) {
+	
+	//menu := app_db.Get_MenuTitles()
+	sta := Sta_GetStatuses()
+	//typ := Typ_GetTypes()
 
-	printConf := app_conf.PrintConf()
-	appConf := app_conf.AppConf()
-
-	c.HTML(http.StatusOK, "tools_conf.html", gin.H{
-		"title":   app_conf.AppName + " - Config",
+	c.HTML(http.StatusOK, "tools_status.html", gin.H{
+		"title":   app_conf.AppName + " - Statuses",
 		"js":      "tools.js",
 		"user":    c.Keys["user"],
 		"appinfo": appinfo,
 
-		"printConf": printConf,
-		"appConf":   appConf,
+		//"menu":  menu,
+		"sta":  sta,
+		//"typ":  typ,
+	})
+}
+
+func ToolsTypes(c *gin.Context) {
+
+	//menu := app_db.Get_MenuTitles()
+	//sta := Sta_GetStatuses()
+	typ := Typ_GetTypes()
+
+	c.HTML(http.StatusOK, "tools_types.html", gin.H{
+		"title":   app_conf.AppName + " - Types",
+		"js":      "tools.js",
+		"user":    c.Keys["user"],
+		"appinfo": appinfo,
+
+		//"menu":  menu,
+		//"sta":  sta,
+		"typ":  typ,
 	})
 }

@@ -1,18 +1,19 @@
 {{ template "menu.html" . }}
 
 <div class="div-header-bold">Start Page</div>
-
-<br>
-<div>Titles & Menu test</div>
+<div id="_msg"></div>
+<h5>Titles & Menu test</h5>
 <b>{{.menu0.Title}}</b>
 {{ range .menu0.Menusub }}
 <ul>{{.Name}}</ul>
 {{ end }}
 
-<br><br>
-<div>JS Test</div>
+<br>
+<h5>JS Test</h5>
 <div class="flex-container" style="width: 100px;; margin-top: 3px;">
     <input type="text" id="_text" placeholder="Write something" />
     <input type="button" value="Show text" class="menubutton" onclick="ShowText()" />
 </div>
 <div id="_show"></div>
+
+{{ template "footer.html" . }}

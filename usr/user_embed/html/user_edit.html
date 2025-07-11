@@ -19,7 +19,7 @@
     <!-- <input type="hidden" id="_id" value="{{ .edituid.ID }}" /> -->
     <input type="hidden" id="_email" value="{{ .edituid.Email }}" />
 
-    <div>
+    <div class="tools-box">
         <form id="changepassword" action="/user/psw" method="post"  class="lst-box">
             <table>
                 <tr>
@@ -47,7 +47,7 @@
     </div>
  
     {{ if ne .edituid.UUID .user.UUID }}
-    <div class="lst-box">
+    <div class="tools-box">
         <div>
             <label for="_role">Role</label>
             <select id="_role" >

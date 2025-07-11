@@ -39,8 +39,12 @@ function toolsTitles() {
     window.location.href = "/tools/titles";
 }
 
-function toolsAppConf() {
-    window.location.href = "/tools/conf";
+function toolsStatus() {
+    window.location.href = "/tools/status";
+}
+
+function toolsTypes() {
+    window.location.href = "/tools/types";
 }
 
 

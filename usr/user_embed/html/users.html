@@ -1,7 +1,7 @@
 {{ template "user_menu.html" . }}
 <table>
     <thead>
-        <td class="div-header-bold" colspan="3">Authorized Users ({{ .countauth }})</td>
+        <td class="div-header-bold" colspan="3">Authorized Users ({{ len .auth_users }})</td>
     <tr>
         <th class="th-lst">ID</th>
         <th class="th-lst">User (edit)</th>
@@ -12,7 +12,7 @@
     </tr>
     </thead>
     <body>
-        {{ range .authusers }}
+        {{ range .auth_users }}
         <tr>
             <form class="authform">
                 <td class="td-lst">
@@ -46,7 +46,7 @@
 <br>
 <table>
     <thead>
-        <td class="div-header-bold" colspan="3">Unauthorized Users ({{ .countunauth }})</td>
+        <td class="div-header-bold" colspan="3">Unauthorized Users ({{ len .unauth_users }})</td>
     <tr>
         <th class="th-lst">ID</th>
         <th class="th-lst">User (edit)</th>
@@ -58,7 +58,7 @@
     </tr>
     </thead>
     <body>
-        {{ range .unauthusers }}
+        {{ range .unauth_users }}
         <tr>
             <form class="authform">
                 <td class="td-lst">
@@ -90,7 +90,7 @@
 <br>
 <table>
     <thead>
-        <td class="div-header-bold" colspan="3">Deleted Users ({{ .countdel }})</td>
+        <td class="div-header-bold" colspan="3">Deleted Users ({{ len .del_users }})</td>
     <tr>
         <th class="th-lst">ID</th>
         <th class="th-lst">User</th>
@@ -102,7 +102,7 @@
     </tr>
     </thead>
     <body>
-        {{ range .delusers }}
+        {{ range .del_users }}
         <tr>
             <form class="authform">
                 <td class="td-lst">

@@ -65,37 +65,30 @@ func View_Login(c *gin.Context) {
 }
 
 func View_NewUsers(c *gin.Context) {
-	newusers, cnewusers, _ := Users_GetNew()
+	new_users, _ := Users_GetNew()
 
 	c.HTML(http.StatusOK, "users_new.html", gin.H{
 		"title":    "New users",
 		"user":     c.Keys["user"],
 		"js":       "users.js",
-		"newusers": newusers,
-		"countnew": cnewusers,
+		"new_users": new_users,
 	})
 }
 
 func View_ManageUsers(c *gin.Context) {
-	fmt.Println("View_ManageUsers called")
-	auth_users, c_auth, _ := Users_GetAuth()
-	fmt.Println("auth_users count:", c_auth)
-	unauth_users, c_unauth, _ := Users_GetUnAuth()
-	fmt.Println("unauth_users count:", c_unauth)
-	del_users, c_del, _ := Users_GetDeleted()
-	fmt.Println("del_users count:", c_del)
+
+	auth_users, _ := Users_GetAuth()
+	unauth_users, _ := Users_GetUnAuth()
+	del_users, _ := Users_GetDeleted()
 
 	c.HTML(http.StatusOK, "users.html", gin.H{
 		"title": "Manage Users",
 		"user":  c.Keys["user"],
 		"js":    "users.js",
 
-		"authusers":   auth_users,
-		"countauth":   c_auth,
-		"unauthusers": unauth_users,
-		"countunauth": c_unauth,
-		"delusers":    del_users,
-		"countdel":    c_del,
+		"auth_users":   auth_users,
+		"unauth_users": unauth_users,
+		"del_users":    del_users,
 	})
 }
 
@@ -111,6 +104,7 @@ func View_EditUser(c *gin.Context) {
 	c.HTML(http.StatusOK, "user_edit.html", gin.H{
 		"title": "Edit User",
 		"js":    "users.js",
+		"css":   "tools.css",
 		"user":  c.Keys["user"],
 
 		"edituid": edit_user,

@@ -47,7 +47,7 @@ func seedUsers(db *gorm.DB) {
 		{Email: "super@app.loc",
 			Password: "$2a$10$7PcHWQCFWYX8K.k8GwI8WeSCc8s/Xyly.HM0FfyUm2BE8tGTcfOYy", // Psddword: superuser
 			IsAuth:   false,
-			Note:     "Default SuperUser",
+			Note:     "Default Superuser",
 			Role:     "superuser"},
 
 		{Email: "user@app.loc",
