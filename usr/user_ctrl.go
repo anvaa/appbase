@@ -127,7 +127,12 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	User_SetLastLogin(user.UUID)
+	err = User_SetLastLogin(user.UUID)
+	if err != nil {
+		log.Println("Error setting last login:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to set last login"})
+		return
+	}
 
 	url = app_conf.GetString("start_url")
 	c.JSON(http.StatusOK, gin.H{"url": url, "message": "success"})

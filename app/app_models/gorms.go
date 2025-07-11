@@ -13,13 +13,13 @@ type BaseModel struct {
 	ID   int `gorm:"primaryKey,autoIncrement" json:"id"`
 	UUID int `gorm:"index,unique" json:"uuid"`
 
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+	CreatedAt time.Time      `gorm:"autoCreateTime" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 
-	CreatedBy int `json:"created_by,omitempty"`
-	UpdatedBy int `json:"updated_by,omitempty"`
-	DeletedBy int `json:"deleted_by,omitempty"`
+	CreatedBy int `gorm:"default:0" json:"created_by,omitempty"`
+	UpdatedBy int `gorm:"default:0" json:"updated_by,omitempty"`
+	DeletedBy int `gorm:"default:0" json:"deleted_by,omitempty"`
 }
 
 // BeforeCreate sets a UUID before creating a record.
@@ -34,7 +34,7 @@ type Users struct {
 	Password  string    `gorm:"not null, size:255" json:"password"`
 	Role      string    `gorm:"default:user, size:20" json:"role"`
 	IsAuth    bool      `gorm:"default:false" json:"is_auth"`
-	LastLogin time.Time `json:"last_login,omitempty"`
+	LastLogin time.Time `gorm:"autoUpdateTime" json:"last_login"`
 	Note      string    `gorm:"size:255" json:"note"`
 }
 

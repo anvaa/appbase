@@ -3,6 +3,7 @@ package users
 import (
 	"errors"
 	"log"
+	"time"
 
 	"app/app_db"
 	"app/app_models"
@@ -47,11 +48,12 @@ func User_GetByEmail(email string) (app_models.Users, error) {
 
 func User_SetLastLogin(uuid int) error {
 	// Update the last login time of the user
-	err := app_db.AppDB.Model(&app_models.Users{}).Where("uuid = ?", uuid).Update("last_login", app_db.AppDB.NowFunc())
+	err := app_db.AppDB.Model(&app_models.Users{}).Where("uuid = ?", uuid).Update("last_login", time.Now())
 	if err.Error != nil {
 		log.Println("Error updating last login:", err.Error)
 		return err.Error
 	}
+	//log.Println("Last login updated successfully for user", uuid, time.Now())
 	return nil
 }
 

@@ -10,7 +10,7 @@ import (
 
 var (
 	emailRegex    = regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
-	ErrSqlInText = regexp.MustCompile(`(?i)(SELECT|INSERT|UPDATE|DELETE|DROP|--|;)`)
+	ErrSqlInText = regexp.MustCompile(`(?i)(SELECT|WHERE|INSERT|UPDATE|DELETE|DROP|--|;)`)
 	ErrIsAlphanumeric = regexp.MustCompile(`^[a-zA-Z0-9]+$`)
 	ErrIsAlphanumericWithSpace = regexp.MustCompile(`^[a-zA-Z0-9 ]+$`)
 	ErrIsAlphanumericWithUnderscore = regexp.MustCompile(`^[a-zA-Z0-9_]+$`)
