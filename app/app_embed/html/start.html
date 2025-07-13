@@ -5,7 +5,7 @@
 <div class="flex-container" style="margin-bottom: 10px;flex-wrap: wrap;flex-direction: row;">
     {{ range .projects }}
     <div class="lst-box">
-        <div onclick="fetchPage('/proj/edit/{{.UUID}}')">
+        <div onclick="fetchPage('/proj/{{.UUID}}')">
         <div class="btn-project">
             {{.Name}}
         </div>

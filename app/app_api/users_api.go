@@ -26,7 +26,7 @@ func user_Api(r *gin.Engine) *gin.Engine {
 
 	userRoutes := r.Group("/user")
 	{
-		userRoutes.Use(middleware.RequireAuth)
+		userRoutes.Use(middleware.IsAuth)
 
 		userRoutes.POST("/psw", users.User_SetNewPassword)
 
@@ -43,7 +43,7 @@ func user_Api(r *gin.Engine) *gin.Engine {
 
 	viewRoutes := r.Group("/v")
 	{
-		viewRoutes.Use(middleware.RequireAuth)
+		viewRoutes.Use(middleware.IsAuth)
 
 		// is users
 		viewRoutes.GET("/myaccount", users.View_MyAccount)

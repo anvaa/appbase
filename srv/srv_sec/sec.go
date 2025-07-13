@@ -12,8 +12,8 @@ import (
 	"math/big"
 
 	"log"
-	"time"
 	"os"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -124,4 +124,17 @@ func UUID_Int() int {
 
 func UUID_String() string {
 	return uuid.New().String()
+}
+
+func GetCSRFSecret() string {
+	// Generate a cryptographically secure 32-byte key for CSRF protection
+	const keyLength = 32
+	key := make([]byte, keyLength)
+	_, err := rand.Read(key)
+	if err != nil {
+		// Fallback to UUID if crypto/rand fails
+		log.Printf("Warning: Using UUID fallback for CSRF secret: %v", err)
+		return uuid.New().String()
+	}
+	return base64.URLEncoding.EncodeToString(key)
 }

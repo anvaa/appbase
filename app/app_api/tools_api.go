@@ -11,7 +11,7 @@ import (
 
 func tools_Api(r *gin.Engine) *gin.Engine {
 
-	r.Use(middleware.RequireAuth)
+	r.Use(middleware.IsAuth)
 	r.Use(middleware.IsAdmin)
 
 	mnuGrp := r.Group("/menu")

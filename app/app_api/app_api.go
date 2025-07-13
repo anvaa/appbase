@@ -7,10 +7,16 @@ import (
 	"app/app_ctrl"
 
 	"github.com/gin-gonic/gin"
+	
 )
 
 // SetupRouter sets up the routes for the application
 func App_Api(r *gin.Engine) *gin.Engine {
+
+	// Set up CSRF protection
+	r.Use(middleware.CSRFProtection())
+	// Set up session management
+	r.Use(middleware.CSRF())
 
 	// SET app paths
 	static_dir := srv_conf.StaticDir
@@ -18,7 +24,6 @@ func App_Api(r *gin.Engine) *gin.Engine {
 	r.Static("/css", static_dir+"/css")
 	r.Static("/js", static_dir+"/js")
 	r.Static("/assets", srv_conf.AssetsDir)
-	
 	r.LoadHTMLGlob(static_dir + "/html/*.html")
 
 	r.GET("/favicon.ico", func(c *gin.Context) {
@@ -36,7 +41,7 @@ func App_Api(r *gin.Engine) *gin.Engine {
 	// SET app routes
 	appGrp := r.Group("/app")
 	{
-		appGrp.Use(middleware.RequireAuth)
+		appGrp.Use(middleware.IsAuth)
 
 		appGrp.GET("/", app_ctrl.MainMenu)
 		appGrp.GET("/start", app_ctrl.Start)
@@ -45,10 +50,10 @@ func App_Api(r *gin.Engine) *gin.Engine {
 
 	projGrp := r.Group("/proj")
 	{
-		projGrp.Use(middleware.RequireAuth)
+		projGrp.Use(middleware.IsAuth)
 
-		projGrp.GET("/edit/:id", app_ctrl.Proj_Edit) // edit project page
-		//projGrp.POST("/addupd", app_ctrl.Proj_Edit) // add or update project
+		projGrp.GET("/:id", app_ctrl.Proj_Edit) // edit project page
+		projGrp.POST("/addupd", app_ctrl.Proj_Update) // add or update project
 		//projGrp.GET("/new", app_ctrl.Proj_Edit)	 // new project page
 		projGrp.DELETE("/delete", app_ctrl.Proj_Delete) // delete project
 	

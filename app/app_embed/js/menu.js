@@ -48,26 +48,18 @@ function toolsTypes() {
 }
 
 
-function fetchPage(url,js) {
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(html => {
-            // Replace the content of the main element with the fetched HTML
-            const content = document.getElementById("content");
-            // emty whole window before loading new content
-            document.body.innerHTML = ""; 
-
-            document.getElementById("content").innerHTML = html;
-        })
-        .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
-            ShowMsg("Error loading page: " + error.message, "error");
-        });
+async function fetchPage(url) {
+    // Get url
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        window.location.href = url;
+    } catch (error) {
+        console.error("Error fetching page:", error);
+        ShowMsg("Failed to load page", "error");
+    }
 }
 
 

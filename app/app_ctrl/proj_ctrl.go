@@ -2,6 +2,7 @@ package app_ctrl
 
 import (
 	"app/app_db"
+	"app/app_models"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -46,6 +47,28 @@ func Proj_Delete(c *gin.Context) {
 		c.HTML(500, "error.html", gin.H{
 			"title": "Delete Error",
 			"error": fmt.Sprintf("Failed to delete project: %v", err),
+		})
+		return
+	}
+
+	c.Redirect(302, "/app/start")
+}
+
+func Proj_Update (c *gin.Context) {
+	project := app_models.Project{}
+
+	if project.Name == "" {
+		c.HTML(400, "error.html", gin.H{
+			"title": "Validation Error",
+			"error": "Project name cannot be empty.",
+		})
+		return
+	}
+
+	if err := app_db.AppDB.Save(&project).Error; err != nil {
+		c.HTML(500, "error.html", gin.H{
+			"title": "Database Error",
+			"error": fmt.Sprintf("Failed to save project: %v", err),
 		})
 		return
 	}
