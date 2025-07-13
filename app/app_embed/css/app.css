@@ -4,7 +4,9 @@
     --color-background: #f0f0f0;
     --color-text: #000;
     --color-border: #282828;
-    --color-th: #a0a0a0;
+    --color-th: #a0a0a0cf;
+
+    --color-meta: #636363;
 }
 
 /* General styles */
@@ -29,12 +31,14 @@ body {
 input[type="text"],
 input[type="date"],
 input[type="number"],
+input[type="email"],
+input[type="password"],
 input[type="search"] {
     border-radius: 5px;
     background: var(--color-background);
     color: var(--color-text);
-    text-align: left;
     font-size: large;
+    width: 150px;
 }
 
 a {
@@ -50,8 +54,8 @@ select {
     width: 140px;
 }
 
-.th-lst,
-.td-lst {
+th,
+td {
     padding: 2px 4px;
     border: 2px solid var(--color-primary);
     border-radius: 5px;
@@ -59,11 +63,11 @@ select {
     background: transparent;
 }
 
-.th-lst {
+th {
     background-color: var(--color-th);
 }
 
-.td-lst {
+td {
     vertical-align: middle;
 }
 
@@ -84,4 +88,60 @@ select {
 
 .div-header-bold {
     font-weight: bold;
+}
+
+.div-meta {
+    font-weight: normal;
+    font-size: medium;
+    
+    color: var(--color-meta);
+    background: transparent;
+
+    vertical-align: middle;
+}
+
+.div-meta > div {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.lst-text-area {
+    width: 100%;
+    
+    padding: 1px;
+    border-radius: 5px;
+    
+    background-color: var(--color-background);
+    color: var(--color-text);
+    
+}
+
+.lst-box {
+    padding: 2px;
+    margin: 3px 5px;
+
+    border-radius: 5px;
+    border: 2px solid rgb(160, 160, 160);
+    background-color: rgb(200, 200, 200);
+
+    width: fit-content; 
+
+}
+
+.btn-project {
+    padding: 2px 5px;
+    margin: 0 5px;
+    border-radius: 5px;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-secondary);
+    color: var(--color-text);
+
+    font-weight: bold;
+    text-align: center;
+    
+    cursor: pointer;
+}
+.btn-project:hover {
+    background-color: var(--color-background);
+    color: var(--color-text);
 }

@@ -5,7 +5,14 @@ import (
 	
 )
 
+func Sta_GetAllStasub(sta int) []app_models.Stasub {
+	var stasub []app_models.Stasub
+	if err := AppDB.Where("status_id = ?", sta).Find(&stasub).Error; err != nil {
+		return nil
+	}
 
+	return stasub
+}
 
 func Sta_GetNameById(id any) string {
 	var sta app_models.Stasub

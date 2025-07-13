@@ -75,16 +75,20 @@
     <br><br>
     <div class="content">
         <div style="text-align: center;">
+            <div class="company-info">
+                {{ .info.Company }}
+            </div>
+            <br>
             <div class="app-info">
-                {{ .info.AppName }} v{{ .info.Version }}
+                {{ .info.AppName }}
             </div>
             <div class="app-info-long">
                 {{ .info.AppNameLong }}
             </div>
-            <div class="company-info">
-                {{ .info.Company }}
+            <div class="app-info-long">
+                v{{ .info.Version }}
             </div>
-           
+
         </div>
     </div>
     <div class="timetxt">{{ .apptime }}</div>

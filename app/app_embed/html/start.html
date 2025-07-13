@@ -1,19 +1,56 @@
 {{ template "menu.html" . }}
 
-<div class="div-header-bold">Start Page</div>
-<div id="_msg"></div>
-<h5>Titles & Menu test</h5>
-<b>{{.menu0.Title}}</b>
-{{ range .menu0.Menusub }}
-<div>{{.Name}}</div>
-{{ end }}
+{{ if .projects }}
+<div class="div-header-bold" style="border: 0px;">Prosjekter ({{ len .projects }})</div>
+<div class="flex-container" style="margin-bottom: 10px;flex-wrap: wrap;flex-direction: row;">
+    {{ range .projects }}
+    <div class="lst-box">
+        <div onclick="fetchPage('/proj/edit/{{.UUID}}')">
+        <div class="btn-project">
+            {{.Name}}
+        </div>
+        </div>
+        <div class="flex-container" style="flex-direction: column;">
+            <div>
+                <div class="flex-container div-meta" style="justify-content: space-between;">
+                    <div title="Status">
+                        <img src="/media/status.svg">
+                        {{ .Stasub.Name }}
+                    </div>
+                    <div title="Type">
+                        <img src="/media/type.svg">
+                        {{ .Typsub.Name }}
+                    </div>
+                </div>
 
-<br>
-<h5>JS Test</h5>
-<div class="flex-container" style="width: 100px;; margin-top: 3px;">
-    <input type="text" id="_text" placeholder="Write something" />
-    <input type="button" value="Show text" class="menubutton" onclick="ShowText()" />
+                <div title="Sist Oppdatert" class="flex-container div-meta">
+                    <div><img src="/media/calendar-day.svg"></div>
+                    <div>{{.UpdatedAt.Format "2006-01-02 15:04"}}</div>
+                </div>
+
+                <div class="flex-container div-meta" style="justify-content: space-between;">
+                    <div><img src="/media/mailbox-flag.svg"></div>
+                    <div><img src="/media/at.svg"></div>
+                    <div><img src="/media/phone.svg"></div>
+                    <div><img src="/media/person.svg"></div> 
+                </div>
+
+                <div>
+                {{ if .Note }}
+                <div class="lst-text-area">{{.Note}}</div>
+                {{ end }}
+                </div>
+
+                
+            </div>
+        </div>
+        
+    </div>
+    {{ end }}
 </div>
-<div id="_show"></div>
 
-{{ template "footer.html" . }}
+{{ else }}
+<div class="div-error">
+    <span class="error">Ingen prosjekter funnet.</span>
+</div>
+{{ end }}

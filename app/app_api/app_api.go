@@ -29,9 +29,9 @@ func App_Api(r *gin.Engine) *gin.Engine {
 	})
 
 	// Import API routes
-	r = error_Api(r) // register error API routes
-	r = user_Api(r) // register user API routes
-	r = tools_Api(r) // register tools API routes
+	error_Api(r) // register error API routes
+	user_Api(r) // register user API routes
+	tools_Api(r) // register tools API routes
 
 	// SET app routes
 	appGrp := r.Group("/app")
@@ -43,6 +43,16 @@ func App_Api(r *gin.Engine) *gin.Engine {
 		
 	}
 
+	projGrp := r.Group("/proj")
+	{
+		projGrp.Use(middleware.RequireAuth)
+
+		projGrp.GET("/edit/:id", app_ctrl.Proj_Edit) // edit project page
+		//projGrp.POST("/addupd", app_ctrl.Proj_Edit) // add or update project
+		//projGrp.GET("/new", app_ctrl.Proj_Edit)	 // new project page
+		projGrp.DELETE("/delete", app_ctrl.Proj_Delete) // delete project
+	
+	}
 	
 
 	return r

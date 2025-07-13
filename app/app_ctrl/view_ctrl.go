@@ -10,6 +10,7 @@ import (
 )
 
 var (
+	appname = app_conf.AppName
 	appinfo = app_conf.AppInfo()
 )
 
@@ -23,15 +24,17 @@ func MainMenu(c *gin.Context) {
 
 func Start(c *gin.Context) {
 
-	menu := app_db.Get_MenuTitles()
+	projects := app_db.GetAllProjects()
+
 
 	c.HTML(http.StatusOK, "start.html", gin.H{
-		"title":   app_conf.AppName,
+		"title":   appname,
 		"js":      "start.js",
 		"user":    c.Keys["user"],
 		"appinfo": appinfo,
 
-		"menu0": menu[0],
+		"projects": projects,
+	
 	})
 }
 

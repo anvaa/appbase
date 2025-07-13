@@ -30,12 +30,16 @@ func (b *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
 
 type Users struct {
 	BaseModel
-	Email     string    `gorm:"unique, size:255" json:"email"`
-	Password  string    `gorm:"not null, size:255" json:"password"`
-	Role      string    `gorm:"default:user, size:20" json:"role"`
-	IsAuth    bool      `gorm:"default:false" json:"is_auth"`
-	LastLogin time.Time `gorm:"autoUpdateTime" json:"last_login"`
-	Note      string    `gorm:"size:255" json:"note"`
+	Email    string `gorm:"unique, size:255" json:"email"`
+	Password string `gorm:"not null, size:255" json:"password"`
+
+	Role     string    `gorm:"default:user, size:20" json:"role"`
+	IsAuth   bool      `gorm:"default:false" json:"is_auth"`
+	Acc      int       `gorm:"default:0" json:"acc"`
+	FromDate time.Time `gorm:"default:0" json:"from_date"`
+	ToDate   time.Time `gorm:"default:0" json:"to_date"`
+	LastLogin time.Time `gorm:"default:0" json:"last_login"`
+	Note     string    `gorm:"size:255" json:"note"`
 }
 
 type Status struct {

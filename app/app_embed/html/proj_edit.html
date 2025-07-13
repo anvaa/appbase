@@ -1,0 +1,43 @@
+{{ template "menu.html" . }}
+
+{{ $typ := .typ }}
+{{ $sta := .sta }}
+
+{{ if .project }}
+<div class="div-header-bold" style="border: 0px;">Edit Project {{ .project.UUID }}</div>
+<div class="lst-box">
+    <div>
+        Navn
+        <input type="text" id="_name" value="{{ .project.Name }}" required>
+        Type
+        
+        <select id="_type">
+            {{ range $typ }}
+                <option value="{{ .ID }}" {{ if eq .ID $.project.TypsubID }}selected{{ end }}>{{ .Name }}</option>
+            {{ end }}
+        </select>
+        Status
+        <select id="_status">
+            {{ range $sta }}
+            <option value="{{ .ID }}" {{ if eq .ID $.project.StasubID }}selected{{ end }}>{{ .Name }}</option>
+            {{ end }}
+        </select>
+    </div>
+    <div>
+        Note
+        <textarea id="_note">{{ .project.Note }}</textarea>
+    </div>
+    <div>
+        <button type="submit">Save Changes</button>
+    </div>
+</div>
+
+    
+
+{{else}}
+<div class="div-error">
+    <span class="error">Project not found.</span>
+</div>
+{{ end }}
+
+{{ template "footer.html" . }}
