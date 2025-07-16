@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var userKey = app_conf.UserKey
+
 func Root(c *gin.Context) {
 	c.Redirect(http.StatusMovedPermanently, "/login")
 }
@@ -69,7 +71,7 @@ func View_NewUsers(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "users_new.html", gin.H{
 		"title":    "New users",
-		"user":     c.Keys["user"],
+		"user":     c.Keys[userKey],
 		"js":       "users.js",
 		"new_users": new_users,
 	})
@@ -83,7 +85,7 @@ func View_ManageUsers(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "users.html", gin.H{
 		"title": "Manage Users",
-		"user":  c.Keys["user"],
+		"user":  c.Keys[userKey],
 		"js":    "users.js",
 
 		"auth_users":   auth_users,
@@ -105,7 +107,7 @@ func View_EditUser(c *gin.Context) {
 		"title": "Edit User",
 		"js":    "users.js",
 		"css":   "tools.css",
-		"user":  c.Keys["user"],
+		"user":  c.Keys[userKey],
 
 		"edituid": edit_user,
 	})
@@ -117,6 +119,6 @@ func View_MyAccount(c *gin.Context) {
 		"title": "My Account",
 		"css":   "",
 		"js":    "myaccount.js",
-		"user":  c.Keys["user"],
+		"user":  c.Keys[userKey],
 	})
 }

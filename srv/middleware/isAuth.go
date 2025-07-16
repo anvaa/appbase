@@ -9,7 +9,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-const userKey = "user"
+var (
+	userKey = app_conf.UserKey
+	UserUUID int
+)
 
 func IsAuth(c *gin.Context) {
 	// Get the JWT string from the header
@@ -49,6 +52,7 @@ func IsAuth(c *gin.Context) {
 
 	// Attach the user to the context
 	c.Set(userKey, user)
+	UserUUID = user.UUID
 	c.Next()
 }
 

@@ -1,22 +1,22 @@
 package app_api
 
 import (
-	"srv/srv_conf"
+	
 	"srv/middleware"
+	"srv/srv_conf"
 
 	"app/app_ctrl"
 
 	"github.com/gin-gonic/gin"
-	
 )
 
 // SetupRouter sets up the routes for the application
 func App_Api(r *gin.Engine) *gin.Engine {
 
 	// Set up CSRF protection
-	r.Use(middleware.CSRFProtection())
-	// Set up session management
-	r.Use(middleware.CSRF())
+	r.Use(middleware.CSRFProtection()) // set up store
+	r.Use(middleware.CSRF()) // set up CSRF middleware
+	r.Use(middleware.CSRFToken()) // add to context
 
 	// SET app paths
 	static_dir := srv_conf.StaticDir
@@ -53,8 +53,8 @@ func App_Api(r *gin.Engine) *gin.Engine {
 		projGrp.Use(middleware.IsAuth)
 
 		projGrp.GET("/:id", app_ctrl.Proj_Edit) // edit project page
-		projGrp.POST("/addupd", app_ctrl.Proj_Update) // add or update project
 		//projGrp.GET("/new", app_ctrl.Proj_Edit)	 // new project page
+		projGrp.POST("/addupd", app_ctrl.Proj_AddUpd) // add or update project
 		projGrp.DELETE("/delete", app_ctrl.Proj_Delete) // delete project
 	
 	}

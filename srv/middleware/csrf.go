@@ -23,7 +23,7 @@ func CSRFProtection() gin.HandlerFunc {
 func CSRF() gin.HandlerFunc {
 	// Get the CSRF secret (base64 encoded)
 	secretStr := srv_sec.GetCSRFSecret()
-
+	
 	// Decode the base64 secret
 	csrfKey, err := base64.URLEncoding.DecodeString(secretStr)
 	if err != nil {
@@ -83,6 +83,24 @@ func CSRFToken() gin.HandlerFunc {
 		c.Header("X-CSRF-Token", token)
 		c.Next()
 	}
+}
+
+func ValidateCSRFToken(c *gin.Context) {
+	// Get the CSRF token from the request header
+	token := c.GetHeader("X-CSRF-Token")
+	if token == "" {
+		c.Abort()
+		return // Token is missing
+	}
+
+	// CSRF validation is handled by the middleware, so this function should only check presence.
+	// Optionally, you can compare the token from the header and csrf.Token(c.Request).
+	if token == "" || token != csrf.Token(c.Request) {
+		c.Abort()
+		return // Token is invalid or missing
+	}
+
+	c.Next()
 }
 
 // shouldSkipCSRF determines if CSRF protection should be skipped for this request

@@ -4,13 +4,16 @@
 {{ $sta := .sta }}
 
 {{ if .project }}
-<div class="div-header-bold" style="border: 0px;">Project {{ .project.UUID }}</div>
-<div class="lst-box">
+<div class="div-header-bold" style="border: 0px;">Edit Project</div>
+<div class="box">
     <div>
         Navn
-        <input type="text" id="_name" value="{{ .project.Name }}" required>
+        <input type="text" id="_name" 
+            style="width: auto; margin-bottom: 4px;"
+            value="{{ .project.Name }}" required>
+    </div>
+    <div>    
         Type
-        
         <select id="_type">
             {{ range $typ }}
                 <option value="{{ .ID }}" {{ if eq .ID $.project.TypsubID }}selected{{ end }}>{{ .Name }}</option>
@@ -24,15 +27,42 @@
         </select>
     </div>
     <div>
-        Note
-        <textarea id="_note">{{ .project.Note }}</textarea>
+        <div>Note</div>
+        <textarea id="_note" maxlength="255" class="box-text-area">
+            {{ .project.Note }}
+        </textarea>
     </div>
-    <div>
-        <button type="submit">Save Changes</button>
+    <div class="flex-container" style="justify-content: space-between;">
+        <div>
+            <button class="box-btn" onclick="projUpd('{{ .project.UUID }}')">
+                <img src="/media/floppy.svg" class="box-img">
+                Save
+            </button>
+        </div>
+        <div>
+            <button class="box-btn-del" onclick="projDel('{{ .project.UUID }}')">
+                <img src="/media/trash.svg" class="box-img">
+                Delete
+            </button>
+        </div>
+    </div>
+    <div class="flex-container div-meta" style="justify-content: space-between;">
+        <div>
+            <img src="/media/person-fill-add.svg" class="box-img">
+            {{.project.CreatedBy}}
+        </div>
+        <div>
+            <img src="/media/person-fill-down.svg" class="box-img">
+            {{.project.UpdatedBy}}
+        </div>
+        {{if gt .project.DeletedBy 0}}
+        <div>
+            <img src="/media/person-fill-slash.svg" class="box-img">
+            {{.project.DeletedBy}}
+        </div>
+        {{end}}
     </div>
 </div>
-
-    
 
 {{else}}
 <div class="div-error">

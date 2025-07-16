@@ -7,6 +7,20 @@
     --color-th: #a0a0a0cf;
 
     --color-meta: #636363;
+    --color-text-background: whitesmoke;
+
+    --color-box-border: rgb(160, 160, 160);
+    --color-box-background: rgba(200, 200, 200, 0.863);
+    --color-box-text: rgb(40, 40, 40);
+    --color-box-text-background: rgb(240, 240, 240);
+    --color-box-btn-text: rgb(40, 40, 40);
+    --color-box-btn-border: rgb(80, 80, 80);
+    --color-box-btn: rgb(220, 220, 220);
+    --color-box-btn-del: rgb(256, 10, 10);
+    --color-box-btn-hover: rgb(192, 191, 191);
+    --color-box-btn-del-hover: rgb(255, 0, 0);
+    --color-box-btn-del-text: rgb(200, 200, 200);
+    --color-box-btn-del-text-hover: rgb(256, 10, 10);
 }
 
 /* General styles */
@@ -35,9 +49,10 @@ input[type="email"],
 input[type="password"],
 input[type="search"] {
     border-radius: 5px;
-    background: var(--color-background);
+    background: var(--color-text-background);
     color: var(--color-text);
-    font-size: large;
+    
+    padding: 2px;
     width: 150px;
 }
 
@@ -50,7 +65,8 @@ select {
     margin: 0;
     padding: 2px;
     border: 1px solid var(--color-text);
-    background: var(--color-background);
+    border-radius: 5px;
+    background: var(--color-text-background);
     width: 140px;
 }
 
@@ -105,27 +121,85 @@ td {
     margin-right: 5px;
 }
 
-.lst-text-area {
+.box-text-area {
     width: 100%;
+    height: 80px;
     
     padding: 1px;
     border-radius: 5px;
+
+    line-height: normal;
     
-    background-color: var(--color-background);
+    background-color: var(--color-text-background);
     color: var(--color-text);
     
 }
 
-.lst-box {
+.box {
     padding: 2px;
-    margin: 3px 5px;
 
     border-radius: 5px;
-    border: 2px solid rgb(160, 160, 160);
-    background-color: rgb(200, 200, 200);
+    border: 2px solid var(--color-box-border);
+    background-color: var(--color-box-background);
 
     width: fit-content; 
 
+}
+
+.box-btn {
+    margin-top: 0px;
+    margin-bottom: 2px;
+    padding: 0px;
+
+    vertical-align: middle;
+    text-align: center;
+    
+    width: 100px;
+    height: 28px;
+    
+    border-radius: 5px;
+    
+    border: 1px solid var(--color-box-btn-border);
+    background: var(--color-box-btn);
+    color: var(--color-box-btn-text);
+
+    cursor: pointer;
+
+}
+.box-btn:hover {
+    background: var(--color-box-btn-hover);
+}
+
+.box-btn-del {
+    margin-top: auto;
+    margin-bottom: auto;
+
+    padding: 0px;
+
+    width: 100px;
+    height: 28px;
+    
+    border-radius: 5px;
+    
+    border: 1px solid var(--color-box-btn-border);
+    background: var(--color-box-btn);
+    color: var(--color-box-btn-text);
+
+    cursor: pointer;
+
+}
+.box-btn-del:hover {
+    background: var(--color-box-btn-del-hover);
+    
+}
+
+.box-img {
+    width: 14px;
+    height: 14px;
+    padding: 0px;
+    margin-left: 3px;
+    margin-right: 3px;
+    background: transparent;
 }
 
 .btn-project {

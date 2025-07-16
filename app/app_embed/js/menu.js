@@ -64,7 +64,7 @@ async function fetchPage(url) {
 
 
 
-function ShowMsg(val, type) {
+function ShowMsg(type, val) {
     const msgEl = document.getElementById("_msg");
     if (!msgEl) return;
 
@@ -107,6 +107,6 @@ function ShowMsg(val, type) {
             msgEl.style.opacity = "1"; // reset opacity for next message
             document.body.style.pointerEvents = "auto"; // unlock page for input
         }, 500);
-    }, 3000);
+    }, 5000);
 
 }

@@ -26,10 +26,10 @@ func SetJWT(c *gin.Context, user *app_models.Users) error {
 
 	setSecurityHeaders(c)
 	setCSRFCookie(c)
-	if err := setSession(c, user); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to set session"})
-		return err
-	}
+	// if err := setSession(c, user); err != nil {
+	// 	c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to set session"})
+	// 	return err
+	// }
 
 	return nil
 }
@@ -50,28 +50,28 @@ func generateJWT(user *app_models.Users) (string, error) {
 }
 
 // setSession attaches session and user info to the context.
-func setSession(c *gin.Context, user *app_models.Users) error {
-	expire := time.Now().Add(app_conf.SessionExpire())
-	if expire.IsZero() || expire.Before(time.Now()) {
-		expire = time.Now().Add(24 * time.Hour)
-	}
+// func setSession(c *gin.Context, user *app_models.Users) error {
+// 	expire := time.Now().Add(app_conf.SessionExpire())
+// 	if expire.IsZero() || expire.Before(time.Now()) {
+// 		expire = time.Now().Add(24 * time.Hour)
+// 	}
 
-	locale := c.GetHeader("Accept-Language")
-	if locale == "" {
-		locale = "en-US"
-	}
+// 	locale := c.GetHeader("Accept-Language")
+// 	if locale == "" {
+// 		locale = "en-US"
+// 	}
 
-	session := app_models.Session{
-		SessionID: srv_sec.UUID_String(),
-		UserID:    user.ID,
-		UserUUID:  user.UUID,
-		Locale:    locale,
-		Expire:    expire,
-	}
-	c.Set("session", session)
+// 	session := app_models.Session{
+// 		SessionID: srv_sec.UUID_String(),
+// 		UserID:    user.ID,
+// 		UserUUID:  user.UUID,
+// 		Locale:    locale,
+// 		Expire:    expire,
+// 	}
+// 	c.Set("appsession", session)
 	
-	return nil
-}
+// 	return nil
+// }
 
 // setSecurityHeaders sets recommended security headers.
 func setSecurityHeaders(c *gin.Context) {

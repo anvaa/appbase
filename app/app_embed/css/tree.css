@@ -1,0 +1,26 @@
+
+ul {
+    list-style: none;
+    padding-left: 20px;
+}
+
+.node {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.node svg,
+.node img {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+.children {
+    display: none;
+}
+
+.expanded > .children {
+    display: block;
+}

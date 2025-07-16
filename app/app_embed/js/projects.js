@@ -1,20 +1,40 @@
 
-async function projUpd() {
-    const _uuid = document.getElementById('_uuid').value;
+async function projUpd(_uuid) {
+
     const _name = document.getElementById('_name').value;
     const _note = document.getElementById('_note').value;
-    const _stasub_id = document.getElementById('_status').value;
-    const _typsub_id = document.getElementById('_type').value;
-
-    const _csrf = document.getElementById('_csrf').value;
-    const url = `/app/proj/addupd`;
-
+    const _staid = document.getElementById('_status').value;
+    const _typid = document.getElementById('_type').value;
+    
     const data = {
-        uuid: _uuid,
-        name: _name,
-        note: _note,
-        stasub_id: _stasub_id,
-        typsub_id: _typsub_id,
-        csrf: _csrf
+        uuid: parseInt(_uuid),
+        name: String(_name).trim(),
+        note: String(_note).trim(),
+        staid: parseInt(_staid),
+        typid: parseInt(_typid),
     };
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+    //alert(JSON.stringify(data));
+    try {
+        const response = await fetch(`/proj/addupd`, options);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        if (result.message === 'success') {
+            window.location.href = result.redirect;
+        } else {
+            ShowMsg('error',result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        ShowMsg('error','An error occurred while updating the project. Please try again.');
+    }
 }

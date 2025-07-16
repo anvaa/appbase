@@ -1,24 +1,27 @@
 {{ template "header.html" . }}
+
+{{ $user := .apibase.User }}
+
 <div class="menu-flex-container">
     <div class="menubox-logo" onclick="AppInfo()">
-        <img src="/media/logo.png" class="menu-logo" alt="Info">
+        <img src="/media/brilliance.svg" class="menu-logo" alt="Info">
     </div>
 
     <button class="menubutton" onclick="Start()" title="ctrl + 1">
-        <img src="/media/table.svg" class="btn-img" alt="">
-        <span>Start</span>
+        <img src="/media/diagram.svg" class="btn-img" alt="">
+        <span>Projects</span>
     </button>
     
     <div style="flex-grow: 1;"></div>
 
-    {{ if or (eq .user.Role "admin") (eq .user.Role "superuser") }}
+    {{ if or (eq $user.Role "admin") (eq $user.Role "superuser") }}
     <button class="menubutton" onclick="Tools()">
         <img src="/media/tools.svg" class="btn-img" alt="">
-        <span>Tools</span>
+        Tools
     </button>
     {{ end }}
 
-    {{ if eq .user.Role "admin" }}
+    {{ if eq $user.Role "admin" }}
     <button class="menubutton" onclick="Users()">
         <img src="/media/person-gear.svg" class="btn-img" alt="">
         <span>Users</span>
@@ -26,7 +29,7 @@
     {{ end }}
 
     <button class="menubutton" onclick="MyAccount()">
-        <span style="padding: 3px;">{{ .user.Email }}</span>
+        <span style="padding: 3px;">{{ $user.Email }}</span>
     </button>
 
     <button class="menubutton" onclick="Logout()" title="ctrl + q">

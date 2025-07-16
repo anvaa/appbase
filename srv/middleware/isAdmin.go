@@ -4,11 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"app/app_models"
+
 )
 
 func IsAdmin(c *gin.Context) {
 
-	user := c.MustGet("user").(app_models.Users)
+	user := c.MustGet(userKey).(app_models.Users)
 	if user.ID == 0 || user.Role != "admin" {
 		c.HTML(403, "error.html", gin.H{
 			"error": "Forbidden: You do not have permission to access this resource.",
@@ -22,7 +23,7 @@ func IsAdmin(c *gin.Context) {
 
 func IsSuper(c *gin.Context) {
 
-	user := c.MustGet("user").(app_models.Users)
+	user := c.MustGet(userKey).(app_models.Users)
 	if user.ID == 0 || user.Role != "superuser" {
 		c.HTML(403, "error.html", gin.H{
 			"error": "Forbidden: You do not have permission to access this resource.",

@@ -2,6 +2,7 @@ package app_conf
 
 import (
 	"app/app_models"
+	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -17,7 +18,9 @@ var (
 
 	CookieName          = strings.ReplaceAll(AppName, " ", "") + "_Auth"
 	CookieExpire int    = 24 * 60 * 60 // 24 hours 
-	UserKey      string = uuid.New().String()
+	UserKey      string = GetUserKey()
+
+	DBName string
 )
 
 func init() {
@@ -29,6 +32,7 @@ func init() {
 func WriteDefaultConfig(appRoot string) {
 	// SetDefault sets the default value for the key.
 	appConf.SetDefault("app_db", "data/app.db")
+	appConf.SetDefault("app_dir", appRoot)
 	appConf.SetDefault("print_height", 24)
 	appConf.SetDefault("print_width", 160)
 	appConf.SetDefault("print_margin", 3)
@@ -119,5 +123,16 @@ func AppConf() app_models.AppConf {
 
 func SessionExpire() time.Duration {
 	// Get the session expire time from the config
-	return appConf.GetDuration("session_expire")
+	return GetDuration("session_expire")
+}
+
+func GetDBName() string {
+	// Get app_dir and app_db from the 
+	dbname := fmt.Sprintf("%s/%s", GetString("start_url"), GetString("app_db"))
+	return dbname
+}
+
+func GetUserKey() string {
+	// Generate a unique user key if not set
+	return fmt.Sprintf("%d", uuid.New().ID())
 }
