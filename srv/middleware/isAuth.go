@@ -12,6 +12,7 @@ import (
 var (
 	userKey = app_conf.UserKey
 	UserUUID int
+	UserID int
 )
 
 func IsAuth(c *gin.Context) {
@@ -38,7 +39,7 @@ func IsAuth(c *gin.Context) {
 		return
 	}
 
-	user, exists := app_db.User_GetById(claims["sub"])
+	user, exists := app_db.User_GetByUUID(claims["sub"])
 	if exists != nil {
 		redirectToLogin(c)
 		return
@@ -52,6 +53,7 @@ func IsAuth(c *gin.Context) {
 
 	// Attach the user to the context
 	c.Set(userKey, user)
+	UserID = user.ID
 	UserUUID = user.UUID
 	c.Next()
 }

@@ -13,6 +13,11 @@ func GetAllProjects() []app_models.Project {
 		//Preload("Phones").
 		//Preload("Addresses").
 		//Preload("Emails").
+		
+		Preload("CreatedBy").
+		Preload("UpdatedBy").
+		Preload("DeletedBy").
+
 		Preload("Stasub").
 		Preload("Typsub").
 		Order("Stasub_id ASC").
@@ -29,6 +34,9 @@ func GetProjectByUUID(uuid any) (*app_models.Project, error) {
 		//Preload("Phones").
 		//Preload("Addresses").
 		//Preload("Emails").
+		Preload("CreatedBy").
+		Preload("UpdatedBy").
+		Preload("DeletedBy").
 		First(&project, "uuid = ?", uuid).Error; err != nil {
 		return nil, fmt.Errorf("error fetching project with UUID %d: %w", uuid, err)
 	}

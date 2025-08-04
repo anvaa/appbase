@@ -1,12 +1,4 @@
 package app_models
-
-// type Session struct {
-// 	SessionID string    `json:"session_id"`
-// 	UserID    int       `json:"user_id"`
-// 	UserUUID  int       `json:"user_uuid"`
-// 	Locale    string    `json:"locale"`
-// 	Expire    time.Time `json:"expire"`
-// }
 type PrinterConf struct {
 	Height   int `json:"height"`
 	Width    int `json:"width"`
@@ -17,6 +9,15 @@ type PrinterConf struct {
 
 type AppConf struct {
 	StartPageFocus string `json:"start_page_focus"`
+}
+
+type TableActions struct {
+	CreatedBy string `json:"created_by"`
+	UpdatedBy string `json:"updated_by"`
+	DeletedBy string `json:"deleted_by"`
+	Created   string `json:"created"`
+	Updated   string `json:"updated"`
+	Deleted   string `json:"deleted"`
 }
 
 type PrintQR struct {

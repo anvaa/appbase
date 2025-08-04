@@ -17,13 +17,13 @@ func seedProject(db *gorm.DB) {
 	}
 
 	projects := []app_models.Project{
-		{Name: "Project Alpha", Note: "First project", StasubID : 1, TypsubID: 1},
-		{Name: "Project Beta", Note: "", StasubID: 2, TypsubID: 2},
+		{Name: "Project Alpha", Note: "First project", StasubID : 1, TypsubID: 1, CreatedbyID: 1, UpdatedbyID: 1, DeletedbyID: 1},
+		{Name: "Project Beta", Note: "", StasubID: 2, TypsubID: 2, CreatedbyID: 1, UpdatedbyID: 1, DeletedbyID: 1},
 	}
 
 	for i := range projects {
 		db.Create(&projects[i])
 	}
 
-	fmt.Println("Projects Seeded:", projects[0].Name, projects[1].Name)
+	fmt.Println("Projects Seeded:")
 }

@@ -2,6 +2,7 @@ package users
 
 import (
 	"app/app_conf"
+	"app/app_db"
 
 	"fmt"
 	"net/http"
@@ -67,7 +68,7 @@ func View_Login(c *gin.Context) {
 }
 
 func View_NewUsers(c *gin.Context) {
-	new_users, _ := Users_GetNew()
+	new_users, _ := app_db.Users_GetNew()
 
 	c.HTML(http.StatusOK, "users_new.html", gin.H{
 		"title":    "New users",
@@ -79,9 +80,9 @@ func View_NewUsers(c *gin.Context) {
 
 func View_ManageUsers(c *gin.Context) {
 
-	auth_users, _ := Users_GetAuth()
-	unauth_users, _ := Users_GetUnAuth()
-	del_users, _ := Users_GetDeleted()
+	auth_users, _ := app_db.Users_GetAuth()
+	unauth_users, _ := app_db.Users_GetUnAuth()
+	del_users, _ := app_db.Users_GetDeleted()
 
 	c.HTML(http.StatusOK, "users.html", gin.H{
 		"title": "Manage Users",
@@ -97,7 +98,7 @@ func View_ManageUsers(c *gin.Context) {
 func View_EditUser(c *gin.Context) {
 	edit_id := c.Param("uid")
 
-	edit_user, err := User_GetById(edit_id)
+	edit_user, err := app_db.User_GetByUUID(edit_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get user"})
 		return

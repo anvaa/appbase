@@ -2,6 +2,7 @@ package users
 
 import (
 	"app/app_conf"
+	"app/app_db"
 	"app/app_models"
 	"srv/middleware"
 
@@ -52,7 +53,7 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	user, err := User_GetByEmail(email)
+	user, err := app_db.User_GetByEmail(email)
 	if err != nil {
 		log.Println("User not found >> New User")
 	}
@@ -78,7 +79,7 @@ func SignUp(c *gin.Context) {
 		Note:     "Nil",
 	}
 
-	if err := CreateNewUser(&user); err != nil {
+	if err := app_db.CreateNewUser(&user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -115,7 +116,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	user, err := User_GetByEmail(email)
+	user, err := app_db.User_GetByEmail(email)
 	if err != nil || !user.IsAuth || user.Email == "" || !CheckPasswordHash(password, user.Password) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": errmsg, "url": url})
 		return
@@ -127,7 +128,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	err = User_SetLastLogin(user.UUID)
+	err = app_db.User_SetLastLogin(user.UUID)
 	if err != nil {
 		log.Println("Error setting last login:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to set last login"})
@@ -140,7 +141,7 @@ func Login(c *gin.Context) {
 
 
 func GetAllUsers(c *gin.Context) {
-	users, err := Users_GetAll()
+	users, err := app_db.Users_GetAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get users"})
 		return
@@ -151,7 +152,7 @@ func GetAllUsers(c *gin.Context) {
 
 func GetUser(c *gin.Context) {
 	id := c.Param("id")
-	user, err := User_GetById(id)
+	user, err := app_db.User_GetByUUID(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get user"})
 		return
@@ -170,7 +171,7 @@ func User_DeleteUser(c *gin.Context) {
 		return
 	}
 
-	if err := User_Delete(body.Uuid); err != nil {
+	if err := app_db.User_Delete(body.Uuid); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to delete user"})
 		return
 	}
@@ -195,7 +196,7 @@ func User_UpdateAuth(c *gin.Context) {
 		body.Auth = true
 	}
 
-	if err := user_UpdateAuth(body.Uuid, body.Auth); err != nil {
+	if err := app_db.User_UpdateAuth(body.Uuid, body.Auth); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update auth"})
 		return
 	}
@@ -214,7 +215,7 @@ func User_UpdateRole(c *gin.Context) {
 		return
 	}
 
-	if err := user_UpdateRole(body.Uuid, body.Role); err != nil {
+	if err := app_db.User_UpdateRole(body.Uuid, body.Role); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update role"})
 		return
 	}
@@ -245,7 +246,7 @@ func User_SetNewPassword(c *gin.Context) {
 		return
 	}
 
-	if err := user_SetNewPassword(body.Uuid, string(hashedPassword)); err != nil {
+	if err := app_db.User_SetNewPassword(body.Uuid, string(hashedPassword)); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update password"})
 		return
 	}
@@ -265,7 +266,7 @@ func User_UpdOrg(c *gin.Context) {
 	}
 
 	orgname := strings.TrimSpace(body.Orgname)
-	if err := user_UpdateOrg(body.Uuid, orgname); err != nil {
+	if err := app_db.User_UpdateOrg(body.Uuid, orgname); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update orgname time"})
 		return
 	}

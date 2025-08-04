@@ -13,6 +13,7 @@ import (
 var (
 	appname = app_conf.AppName
 	appinfo = app_conf.AppInfo()
+	CurUserID int
 	CurUserUUID int
 )
 
@@ -23,6 +24,7 @@ type api_base struct {
 
 func setApiBase(c *gin.Context) any {
 	CurUserUUID = middleware.UserUUID
+	CurUserID = middleware.UserID
 	apibase := api_base{
 		User:    c.Keys[app_conf.UserKey],
 		Appinfo: appinfo,

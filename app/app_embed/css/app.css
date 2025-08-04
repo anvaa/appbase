@@ -194,11 +194,11 @@ td {
 }
 
 .box-img {
-    width: 14px;
-    height: 14px;
+    /* width: 16px;
+    height: 16px; */
     padding: 0px;
-    margin-left: 3px;
-    margin-right: 3px;
+    margin-left: 2px;
+    margin-right: 2px;
     background: transparent;
 }
 

@@ -9,7 +9,14 @@ type Project struct {
 	Stasub   Stasub `gorm:"foreignKey:StasubID" json:"stasub"`
 
 	TypsubID int    `gorm:"default:0" json:"typsub_id"`
-	Typsub   Typsub `gorm:"foreignKey:TypsubID;references:ID" json:"typsub"`
+	Typsub   Typsub `gorm:"foreignKey:TypsubID" json:"typsub"`
+
+	CreatedbyID int `gorm:"default:0" json:"createdby_id"`
+	CreatedBy   Users `gorm:"foreignKey:CreatedbyID" json:"created_by"`
+	UpdatedbyID int `gorm:"default:0" json:"updatedby_id"`
+	UpdatedBy   Users `gorm:"foreignKey:UpdatedbyID" json:"updated_by"`
+	DeletedbyID int `gorm:"default:0" json:"deletedby_id"`
+	DeletedBy   Users `gorm:"foreignKey:DeletedbyID" json:"deleted_by"`
 
 	//Persons   []Person  `gorm:"foreignKey:ProjectID" json:"persons"`
 	//Phones    []Phone   `gorm:"foreignKey:ProjectID" json:"phones"`

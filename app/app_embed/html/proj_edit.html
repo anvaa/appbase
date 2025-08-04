@@ -47,18 +47,18 @@
         </div>
     </div>
     <div class="flex-container div-meta" style="justify-content: space-between;">
-        <div>
+        <div title="Created By">
             <img src="/media/person-fill-add.svg" class="box-img">
-            {{.project.CreatedBy}}
+            {{.project.CreatedBy.Email}}
         </div>
-        <div>
+        <div title="Updated By">
             <img src="/media/person-fill-down.svg" class="box-img">
-            {{.project.UpdatedBy}}
+            {{.project.UpdatedBy.Email}}
         </div>
-        {{if gt .project.DeletedBy 0}}
-        <div>
+        {{if gt .project.DeletedbyID 0}}
+        <div title="Deleted By">
             <img src="/media/person-fill-slash.svg" class="box-img">
-            {{.project.DeletedBy}}
+            {{.project.DeletedBy.Email}}
         </div>
         {{end}}
     </div>

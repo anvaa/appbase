@@ -1,7 +1,37 @@
 
+:root {
+
+    --color-primary: #282828;
+    --color-secondary: #d3d3d3;
+    --color-background: #f0f0f0;
+    --color-text: #000;
+    --color-border: #282828;
+
+    --color-tree-text: #f8f9fa;
+    --color-tree-border: rgb(160, 160, 160);
+    --color-tree-background: #e8e8ea;
+}
+
+/* Tree View Styles */
+.treeview {
+    font-family: Arial, sans-serif;
+    background-color: var(--color-tree-background);
+
+    width: 300px;
+
+    padding: 0px;
+    margin-bottom: 10px;
+
+    border-radius: 5px;
+
+    border-top: 3px solid var(--color-tree-border);
+    border-left: 2px solid var(--color-tree-border);
+}
+
+
 ul {
     list-style: none;
-    padding-left: 20px;
+    padding-left: 0px;
 }
 
 .node {
@@ -14,7 +44,7 @@ ul {
 .node img {
     width: 16px;
     height: 16px;
-    margin-right: 5px;
+    margin-right: 2px;
 }
 
 .children {

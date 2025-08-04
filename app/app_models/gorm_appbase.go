@@ -16,10 +16,6 @@ type BaseModel struct {
 	CreatedAt time.Time      `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
-
-	CreatedBy int `gorm:"default:0" json:"created_by"`
-	UpdatedBy int `gorm:"default:0" json:"updated_by"`
-	DeletedBy int `gorm:"default:0" json:"deleted_by"`
 }
 
 // BeforeCreate sets a UUID before creating a record.

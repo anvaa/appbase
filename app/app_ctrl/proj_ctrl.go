@@ -14,6 +14,7 @@ import (
 func Proj_Edit(c *gin.Context) {
 
 	project, err := app_db.GetProjectByUUID(c.Param("id"))
+	
 	if err != nil {
 		c.HTML(404, "error.html", gin.H{
 			"title": "Project Not Found",
@@ -86,9 +87,8 @@ func Proj_AddUpd(c *gin.Context) {
 		Note:     strings.TrimSpace(body.Note),
 		StasubID: body.Staid,
 		TypsubID: body.Typid,
+		UpdatedbyID: CurUserID,
 	}
-
-	_proj.UpdatedBy = CurUserUUID // Set the current user ID
 
 	if body.UUID > 0 {
 		// Update existing project
@@ -101,7 +101,7 @@ func Proj_AddUpd(c *gin.Context) {
 		}
 	} else {
 		// Add new project
-		_proj.CreatedBy = CurUserUUID // Set the current user ID for creation
+		_proj.CreatedbyID = CurUserID
 		
 		if err := app_db.AppDB.Create(&_proj).Error; err != nil {
 			c.HTML(500, "error.html", gin.H{

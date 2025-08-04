@@ -4,7 +4,7 @@
 <div class="div-header-bold" style="border: 0px;">Prosjekter ({{ len .projects }})</div>
 
 <!-- Tree View start -->
-<div id="treeView" style="margin-bottom: 20px;" class="box">
+<div id="treeView" class="treeview">
     <ul style="list-style-type: none; padding-left: 0;">
         {{ range .projects }}
         <li style="margin-bottom: 8px;">
@@ -42,7 +42,7 @@
                         <li>
                             <span style="cursor: pointer;">
                                 <img src="/media/person.svg" alt="Updated By" style="width: 16px; height: 16px; margin-right: 4px;">
-                                {{.UpdatedBy}}
+                                {{.UpdatedBy.Email}}
                             </span>
                         </li>
                     </ul>
