@@ -52,8 +52,8 @@ func App_Api(r *gin.Engine) *gin.Engine {
 	{
 		projGrp.Use(middleware.IsAuth)
 
-		projGrp.GET("/:id", app_ctrl.Proj_Edit) // edit project page
-		//projGrp.GET("/new", app_ctrl.Proj_Edit)	 // new project page
+		projGrp.GET("/:id", app_ctrl.Proj_View) // view project page
+		projGrp.GET("/edit/:id", app_ctrl.Proj_Edit)	 // edit project page
 		projGrp.POST("/addupd", app_ctrl.Proj_AddUpd) // add or update project
 		projGrp.DELETE("/delete", app_ctrl.Proj_Delete) // delete project
 	

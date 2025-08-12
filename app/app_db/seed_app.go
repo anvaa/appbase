@@ -27,3 +27,19 @@ func seedProject(db *gorm.DB) {
 
 	fmt.Println("Projects Seeded:")
 }
+
+func seedEmails(db *gorm.DB ,email string, projid int) app_models.Email {
+	emailModel := app_models.Email{
+		
+		Address:   email,
+		ProjectID: projid,
+	}
+
+	if err := db.Create(&emailModel).Error; err != nil {
+		fmt.Println("Error seeding email:", err)
+		return app_models.Email{}
+	}
+
+	fmt.Println("Email Seeded:", emailModel.Address)
+	return emailModel
+}	

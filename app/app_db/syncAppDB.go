@@ -30,6 +30,7 @@ func SyncAppDB(db *gorm.DB) {
 	seedTypes(db)
 
 	// App models
+	//seedEmails(db)
 	seedProject(db)
 }
 

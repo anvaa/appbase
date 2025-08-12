@@ -23,3 +23,10 @@ type Project struct {
 	//Addresses []Address `gorm:"foreignKey:ProjectID" json:"addresses"`
 	//Emails    []Email   `gorm:"foreignKey:ProjectID" json:"emails"`
 }
+
+type Email struct {
+	BaseModel
+	Address string `gorm:"size:100;unique" json:"address"`
+	ProjectID int `gorm:"default:0" json:"project_id"`
+	Project   Project `gorm:"foreignKey:ProjectID" json:"project"`
+}

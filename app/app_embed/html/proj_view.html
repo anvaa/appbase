@@ -1,0 +1,103 @@
+{{ template "menu.html" . }}
+
+{{ if .project }}
+
+<div class="box">
+{{ with .project }}
+<div class="box-header">
+    <h5>{{.Name}}</h5>
+    
+    <div class="box-tools">
+        <img src="/media/status.svg" title="Status" style="width: 16px; height: 16px; margin-right: 4px;"> {{.Stasub.Name}}
+        <img src="/media/type.svg" title="Type" style="width: 16px; height: 16px; margin-right: 4px;"> {{.Typsub.Name}}
+    </div>
+    
+    <div class="flex-container" style="justify-content: space-between;">
+        <input type="button" class="box-btn" value="Edit" onclick="fetchPage('/proj/edit/{{.UUID}}')">
+        <input type="button" class="box-btn-del" value="Delete" onclick="deleteProject('{{.UUID}}')">
+    </div>
+</div>
+</div>
+{{ if .Note }}
+    <div class="box-tools">
+        <img src="/media/pencil-square.svg" title="Note" style="width: 16px; height: 16px; margin-right: 4px;">
+        Note
+    </div>
+{{ end }}
+{{ end }}   
+
+
+<!-- Tree View start -->
+<div id="treeView" class="treeview">
+    <ul style="list-style-type: none; padding-left: 0;">
+        {{ with .project }}
+        
+        <li>
+            <span onclick="toggleTreeView('sub-{{.UUID}}')" ondblclick="fetchPage('/proj/{{.UUID}}')" style="cursor: pointer; display: flex; align-items: center;">
+                <img src="/media/exclamation-circle.svg" alt="Project Meta" style="width: 16px; height: 16px; margin-right: 4px;">
+                Info
+            </span>
+            <ul id="tree-sub-{{.UUID}}" style="list-style-type: none; margin-left: 24px; display: none;">
+                
+                <li>
+                    <span style="cursor: pointer;">
+                        <img src="/media/calendar-day.svg" title="Last Update" style="width: 16px; height: 16px; margin-right: 4px;">
+                        {{.UpdatedAt.Format "2006-01-02 15:04"}} 
+                        <img src="/media/person.svg" title="Updated By" style="width: 16px; height: 16px; margin-right: 4px;">
+                        {{.UpdatedBy.Email}}
+                    </span>
+                </li>
+                <li>
+                    <span style="cursor: pointer;">
+                        <img src="/media/calendar-day.svg" title="Created Time" style="width: 16px; height: 16px; margin-right: 4px;">
+                        {{.CreatedAt.Format "2006-01-02 15:04"}}
+                        <img src="/media/person.svg" title="Created By" style="width: 16px; height: 16px; margin-right: 4px;">
+                        {{.CreatedBy.Email}}
+                    </span>
+                </li>
+            </ul>
+        </li>
+        
+        <li style="margin-bottom: 8px;">
+            <span onclick="toggleTreeView('{{.UUID}}')" style="cursor: pointer; font-weight: bold; display: flex; align-items: center;">
+                <img src="/media/diagram.svg" alt="Type" style="width: 18px; height: 18px; margin-right: 6px;">
+                {{.Name}}
+            </span>
+
+            <ul id="tree-{{.UUID}}" style="list-style-type: none; margin-left: 24px; display: none;">
+                
+                
+                <li>
+                    <span onclick="toggleTreeView('sub-{{.UUID}}001')" style="cursor: pointer; display: flex; align-items: center;">
+                        <img src="/media/envelope.svg" alt="Addresses" style="width: 16px; height: 16px; margin-right: 4px;">
+                        0
+                    </span>
+                    <ul id="tree-sub-{{.UUID}}001" style="list-style-type: none; margin-left: 24px; display: none;">
+                        <li>
+                            <span style="cursor: pointer;" onclick="fetchPage('/addr/{{.UUID}}')">
+                                <img src="/media/envelope.svg" alt="address" style="width: 16px; height: 16px; margin-right: 4px;">
+                                Home address
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        {{ end }}
+    </ul>
+</div>
+<script>
+function toggleTreeView(uuid) {
+    var el = document.getElementById('tree-' + uuid);
+    if (!el) el = document.getElementById('tree-sub-' + uuid);
+    if (el) {
+        el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
+    }
+}
+</script>
+<!-- Tree View end -->
+{{ else }}
+<div class="div-error">
+    <span class="error">Ingen prosjekter funnet.</span>
+</div>
+{{ end }}

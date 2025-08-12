@@ -11,6 +11,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func Proj_View(c *gin.Context) {
+	project, err := app_db.GetProjectByUUID(c.Param("id"))
+	if err != nil {
+		c.HTML(404, "error.html", gin.H{
+			"title": "Project Not Found",
+			"error": "The project you are trying to view does not exist.",
+		})
+		return
+	}
+
+	c.HTML(200, "proj_view.html", gin.H{
+		"apibase": setApiBase(c),
+		"js":      "projects.js",
+
+		"project": project,
+	})
+}
+
 func Proj_Edit(c *gin.Context) {
 
 	project, err := app_db.GetProjectByUUID(c.Param("id"))
