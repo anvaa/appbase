@@ -1,4 +1,4 @@
-{{ template "menu.html" . }}
+
 
 {{ $typ := .typ }}
 {{ $sta := .sta }}
@@ -9,7 +9,7 @@
     <div>
         Navn
         <input type="text" id="_name" 
-            style="width: auto; margin-bottom: 4px;"
+            style="width: 330px; margin-bottom: 8px;"
             value="{{ .project.Name }}" required>
     </div>
     <div>    
@@ -26,13 +26,8 @@
             {{ end }}
         </select>
     </div>
-    <div>
-        <div>Note</div>
-        <textarea id="_note" maxlength="255" class="box-text-area">
-            {{ .project.Note }}
-        </textarea>
-    </div>
-    <div class="flex-container" style="justify-content: space-between;">
+    
+    <div class="flex-container" style="justify-content: space-between; margin-top: 8px;">
         <div>
             <button class="box-btn" onclick="projUpd('{{ .project.UUID }}')">
                 <img src="/media/floppy.svg" class="box-img">
@@ -69,5 +64,3 @@
     <span class="error">Project not found.</span>
 </div>
 {{ end }}
-
-{{ template "footer.html" . }}

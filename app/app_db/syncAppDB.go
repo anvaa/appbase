@@ -20,6 +20,7 @@ func SyncAppDB(db *gorm.DB) {
 
 		// App models
 		&app_models.Project{},
+		&app_models.Notes{},
 	)
 
 	// Seed the database with initial data
@@ -30,7 +31,7 @@ func SyncAppDB(db *gorm.DB) {
 	seedTypes(db)
 
 	// App models
-	//seedEmails(db)
 	seedProject(db)
+	seedNotes(db)
 }
 

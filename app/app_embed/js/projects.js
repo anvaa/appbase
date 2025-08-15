@@ -2,14 +2,12 @@
 async function projUpd(_uuid) {
 
     const _name = document.getElementById('_name').value;
-    const _note = document.getElementById('_note').value;
     const _staid = document.getElementById('_status').value;
     const _typid = document.getElementById('_type').value;
     
     const data = {
         uuid: parseInt(_uuid),
         name: String(_name).trim(),
-        note: String(_note).trim(),
         staid: parseInt(_staid),
         typid: parseInt(_typid),
     };

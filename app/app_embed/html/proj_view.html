@@ -1,89 +1,82 @@
 {{ template "menu.html" . }}
 
 {{ if .project }}
-
-<div class="box">
+<div class="flex-container">
+<div style="margin: 5px; margin-bottom: auto;">
 {{ with .project }}
-<div class="box-header">
-    <h5>{{.Name}}</h5>
-    
-    <div class="box-tools">
-        <img src="/media/status.svg" title="Status" style="width: 16px; height: 16px; margin-right: 4px;"> {{.Stasub.Name}}
-        <img src="/media/type.svg" title="Type" style="width: 16px; height: 16px; margin-right: 4px;"> {{.Typsub.Name}}
+<div class="box">
+    <div class="flex-container" style="align-items: center; margin-top: 8px;"> 
+        <h5>{{.Name}}</h5>
+        <div style="margin-left: 10px; margin-top: -5px; width: 50px; text-align: right;"> 
+            <img src="/media/floppy.svg" title="Edit" onclick="treeData('/proj/edit/{{.UUID}}')">
+        </div>
     </div>
-    
-    <div class="flex-container" style="justify-content: space-between;">
-        <input type="button" class="box-btn" value="Edit" onclick="fetchPage('/proj/edit/{{.UUID}}')">
-        <input type="button" class="box-btn-del" value="Delete" onclick="deleteProject('{{.UUID}}')">
+    <div style="display: flex; justify-content: space-between;">
+        <div><img src="/media/status.svg" title="Status"> {{.Stasub.Name}}</div>
+        <div><img src="/media/type.svg" title="Type"> {{.Typsub.Name}}</div>
     </div>
 </div>
-</div>
-{{ if .Note }}
-    <div class="box-tools">
-        <img src="/media/pencil-square.svg" title="Note" style="width: 16px; height: 16px; margin-right: 4px;">
-        Note
-    </div>
-{{ end }}
+    
+
+
 {{ end }}   
 
 
 <!-- Tree View start -->
 <div id="treeView" class="treeview">
     <ul style="list-style-type: none; padding-left: 0;">
-        {{ with .project }}
-        
+        {{with .project}}
         <li>
-            <span onclick="toggleTreeView('sub-{{.UUID}}')" ondblclick="fetchPage('/proj/{{.UUID}}')" style="cursor: pointer; display: flex; align-items: center;">
-                <img src="/media/exclamation-circle.svg" alt="Project Meta" style="width: 16px; height: 16px; margin-right: 4px;">
+            <span onclick="toggleTreeView('sub-info')" style="cursor: pointer;" title="Project Meta">
+                <img src="/media/exclamation-circle.svg">
                 Info
             </span>
-            <ul id="tree-sub-{{.UUID}}" style="list-style-type: none; margin-left: 24px; display: none;">
-                
+            <ul id="tree-sub-info" style="list-style-type: none; margin-left: 0px; display: none;">
                 <li>
                     <span style="cursor: pointer;">
-                        <img src="/media/calendar-day.svg" title="Last Update" style="width: 16px; height: 16px; margin-right: 4px;">
+                        <img src="/media/calendar-day.svg" title="Last Update">
                         {{.UpdatedAt.Format "2006-01-02 15:04"}} 
-                        <img src="/media/person.svg" title="Updated By" style="width: 16px; height: 16px; margin-right: 4px;">
+                        <img src="/media/person.svg" title="Updated By">
                         {{.UpdatedBy.Email}}
                     </span>
                 </li>
                 <li>
                     <span style="cursor: pointer;">
-                        <img src="/media/calendar-day.svg" title="Created Time" style="width: 16px; height: 16px; margin-right: 4px;">
+                        <img src="/media/calendar-day.svg" title="Created Time">
                         {{.CreatedAt.Format "2006-01-02 15:04"}}
-                        <img src="/media/person.svg" title="Created By" style="width: 16px; height: 16px; margin-right: 4px;">
+                        <img src="/media/person.svg" title="Created By">
                         {{.CreatedBy.Email}}
                     </span>
                 </li>
             </ul>
         </li>
-        
-        <li style="margin-bottom: 8px;">
-            <span onclick="toggleTreeView('{{.UUID}}')" style="cursor: pointer; font-weight: bold; display: flex; align-items: center;">
-                <img src="/media/diagram.svg" alt="Type" style="width: 18px; height: 18px; margin-right: 6px;">
-                {{.Name}}
-            </span>
+        {{end}}
 
-            <ul id="tree-{{.UUID}}" style="list-style-type: none; margin-left: 24px; display: none;">
-                
-                
+        {{ $notes := .project.Notes }}
+        <li>
+            <span onclick="toggleTreeView('sub-notes')" style="cursor: pointer;" title="Notes">
+                <img src="/media/pencil-square.svg">
+                Notes ({{len $notes}})
+            </span>
+            <ul id="tree-sub-notes" style="list-style-type: none; margin-left: 0px; display: none;">
                 <li>
-                    <span onclick="toggleTreeView('sub-{{.UUID}}001')" style="cursor: pointer; display: flex; align-items: center;">
-                        <img src="/media/envelope.svg" alt="Addresses" style="width: 16px; height: 16px; margin-right: 4px;">
-                        0
+                    <span style="cursor: pointer;font-family: monospace;" onclick="fetchPage('/note/add/{{.project.UUID}}')">
+                        <img src="/media/plus-circle.svg" title="Add Note">
+                        Add Note
                     </span>
-                    <ul id="tree-sub-{{.UUID}}001" style="list-style-type: none; margin-left: 24px; display: none;">
-                        <li>
-                            <span style="cursor: pointer;" onclick="fetchPage('/addr/{{.UUID}}')">
-                                <img src="/media/envelope.svg" alt="address" style="width: 16px; height: 16px; margin-right: 4px;">
-                                Home address
-                            </span>
-                        </li>
-                    </ul>
                 </li>
+                {{range $notes}}
+                <li>
+                    <span style="cursor: pointer;" onclick="fetchPage('/note/edit/{{.UUID}}')">
+                        <img src="/media/pencil-square.svg" title="Note">
+                        {{.Typsub.Name}}
+                    </span>
+                </li>
+                {{end}}
+                
             </ul>
         </li>
-        {{ end }}
+        
     </ul>
 </div>
 <script>
@@ -96,6 +89,11 @@ function toggleTreeView(uuid) {
 }
 </script>
 <!-- Tree View end -->
+</div>
+<div id="_viewTreeData" class="viewTreeData" style="margin: 5px; margin-bottom: auto;">
+    
+</div>
+</div>
 {{ else }}
 <div class="div-error">
     <span class="error">Ingen prosjekter funnet.</span>

@@ -141,6 +141,11 @@ func seedTypes(db *gorm.DB) {
 			{Name: "work"},
 			{Name: "Other"},
 		}},
+		{Name: "Notes", Typsub: []app_models.Typsub{
+			{Name: "Note type 1"},
+			{Name: "Note type 2"},
+			{Name: "Other"},
+		}},
 	}
 
 	for i := range types {

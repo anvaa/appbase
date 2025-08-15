@@ -58,11 +58,27 @@ async function fetchPage(url) {
         window.location.href = url;
     } catch (error) {
         console.error("Error fetching page:", error);
-        ShowMsg("Failed to load page", "error");
+        ShowMsg("error", "Failed to load page");
     }
 }
 
-
+async function treeData(url) {
+    // Get html go template and open it in div id '_viewTreeData'
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const html = await response.text();
+        const viewData = document.getElementById("_viewTreeData");
+        if (viewData) {
+            viewData.innerHTML = html;
+        }
+    } catch (error) {
+        console.error("Error fetching tree data:", error);
+        ShowMsg("error", "Failed to load tree data");
+    }
+}
 
 function ShowMsg(type, val) {
     const msgEl = document.getElementById("_msg");

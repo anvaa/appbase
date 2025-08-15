@@ -228,3 +228,12 @@ td {
     background-color: var(--color-background);
     color: var(--color-text);
 }
+
+.viewTreeData {
+    border-left: 2px solid var(--color-border);
+
+    background-color: transparent;
+
+    margin-left: 5px;
+    padding-left: 10px;
+}

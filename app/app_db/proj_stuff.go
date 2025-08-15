@@ -31,15 +31,13 @@ func GetAllProjects() []app_models.Project {
 func GetProjectByUUID(uuid any) (*app_models.Project, error) {
 	var project app_models.Project
 	if err := AppDB.
-		//Preload("Persons").
-		//Preload("Phones").
-		//Preload("Addresses").
-		//Preload("Emails").
 		Preload("CreatedBy").
 		Preload("UpdatedBy").
 		Preload("DeletedBy").
 		Preload("Stasub").
 		Preload("Typsub").
+		Preload("Notes.Typsub").
+
 		First(&project, "uuid = ?", uuid).Error; err != nil {
 		return nil, fmt.Errorf("error fetching project with UUID %d: %w", uuid, err)
 	}

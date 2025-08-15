@@ -76,7 +76,6 @@ func Proj_AddUpd(c *gin.Context) {
 	var body struct {
 		UUID  int    `json:"uuid"`
 		Name  string `json:"name"`
-		Note  string `json:"note"`
 		Staid int    `json:"staid"`
 		Typid int    `json:"typid"`
 		UID   int    `json:"uid"` // Current user ID
@@ -102,7 +101,6 @@ func Proj_AddUpd(c *gin.Context) {
 	// Prepare project data
 	_proj := app_models.Project{
 		Name:     strings.TrimSpace(body.Name),
-		Note:     strings.TrimSpace(body.Note),
 		StasubID: body.Staid,
 		TypsubID: body.Typid,
 		UpdatedbyID: CurUserID,
