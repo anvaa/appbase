@@ -29,13 +29,13 @@ type Users struct {
 	Email    string `gorm:"unique, size:255" json:"email"`
 	Password string `gorm:"not null, size:255" json:"password"`
 
-	Role     string    `gorm:"default:user, size:20" json:"role"`
-	IsAuth   bool      `gorm:"default:false" json:"is_auth"`
-	Acc      int       `gorm:"default:0" json:"acc"`
-	FromDate time.Time `gorm:"default:0" json:"from_date"`
-	ToDate   time.Time `gorm:"default:0" json:"to_date"`
+	Role      string    `gorm:"default:user, size:20" json:"role"`
+	IsAuth    bool      `gorm:"default:false" json:"is_auth"`
+	Acc       int       `gorm:"default:0" json:"acc"`
+	FromDate  time.Time `gorm:"default:0" json:"from_date"`
+	ToDate    time.Time `gorm:"default:0" json:"to_date"`
 	LastLogin time.Time `gorm:"default:0" json:"last_login"`
-	Note     string    `gorm:"size:255" json:"note"`
+	Note      string    `gorm:"size:255" json:"note"`
 }
 
 type Status struct {
@@ -59,6 +59,7 @@ type Type struct {
 type Typsub struct {
 	BaseModel
 	Name   string `gorm:"size:50" json:"name"`
+	Type   string `gorm:"size:5" json:"type"`
 	TypeID int    `json:"type_id"`
 }
 

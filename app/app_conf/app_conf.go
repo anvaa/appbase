@@ -90,29 +90,6 @@ func StatusDefault() int {
 	return GetInt("status_default")
 }
 
-func GetSubDefaults() []int {
-	var defs []int
-	defs = append(defs, GetInt("sub0_default"))
-	defs = append(defs, GetInt("sub1_default"))
-	defs = append(defs, GetInt("sub2_default"))
-	defs = append(defs, GetInt("sub3_default"))
-	defs = append(defs, GetInt("sub4_default"))
-	defs = append(defs, GetInt("sub5_default"))
-	return defs
-}
-
-func PrintConf() app_models.PrinterConf {
-	// Get the print size from the config
-	conf := app_models.PrinterConf{
-		Height:   GetInt("print_height"),
-		Width:    GetInt("print_width"),
-		Margin:   GetInt("print_margin"),
-		FontSize: GetInt("print_font_size"),
-		Prnttxt:  GetInt("print_txt"),
-	}
-	return conf
-}
-
 func AppConf() app_models.AppConf {
 	// Get the app config
 	conf := app_models.AppConf{

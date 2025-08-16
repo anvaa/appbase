@@ -10,6 +10,21 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
+// hide div with id '_add_project'
+function hideAddProject(hide = true) {
+    const addProjectButton = document.getElementById("_add_project");
+
+    if (hide) {
+        addProjectButton.style.display = "none";
+    } else {
+        addProjectButton.style.display = "block";
+    }
+
+
+}
+
+
+
 function Start() {
     window.location.href = "/app/start";
 }

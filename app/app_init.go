@@ -40,24 +40,35 @@ func AppInit(app_folder string) error {
 
 	// get default values fro DB
 	setStatusNewId()
+	setTypesNewId()
 
 	return nil
 }
 
 func setStatusNewId() {
 	// Get the next status ID
-	sta_def := app_db.Sta_GetStaSubUUIDByType("[D]")
+	sta_def := app_db.Sta_GetStaSubIDByType("[D]")
 	for _, v := range sta_def {
-		newid := v.UUID
+		newid := v.ID
 		_txt := fmt.Sprintf("stadef%d", v.StatusID)
 		app_conf.SetVal(_txt, newid)
 	}
 
-	_mnu := app_db.Mnu_GetMnuSubUUIDByType("[D]")
+	_mnu := app_db.Mnu_GetMnuSubIDByType("[D]")
 	for _, v := range _mnu {
-		newid := v.UUID
+		newid := v.ID
 		_txt := fmt.Sprintf("mnudef%d", v.MenuID)
 		app_conf.SetVal(_txt, newid)
 	}
 
+}
+
+func setTypesNewId() {
+	// Get the next type ID
+	typ_def := app_db.Typ_GetTypSubIDByType("[D]")
+	for _, v := range typ_def {
+		newid := v.ID
+		_txt := fmt.Sprintf("typdef%d", v.TypeID)
+		app_conf.SetVal(_txt, newid)
+	}
 }

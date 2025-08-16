@@ -13,3 +13,12 @@ func Typ_GetAllTypsub(typ int) []app_models.Typsub {
 
 	return typsub
 }
+
+func Typ_GetTypSubIDByType(typ string) []app_models.Typsub {
+	var typsub []app_models.Typsub
+	if err := AppDB.Where("type = ?", typ).Find(&typsub).Error; err != nil {
+		return nil
+	}
+
+	return typsub
+}

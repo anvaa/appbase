@@ -1,6 +1,7 @@
 package app_ctrl
 
 import (
+	"app/app_conf"
 	"app/app_db"
 	"app/app_models"
 
@@ -52,7 +53,7 @@ func Proj_Edit(c *gin.Context) {
 }
 
 func Proj_Delete(c *gin.Context) {
-	project, err := app_db.GetProjectByUUID(c.PostForm("id"))
+	project, err := app_db.GetProjectByUUID(c.Param("id"))
 	if err != nil {
 		c.HTML(404, "error.html", gin.H{
 			"title": "Project Not Found",
@@ -69,7 +70,10 @@ func Proj_Delete(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(302, "/app/start")
+	c.JSON(200, gin.H{
+		"message":  "success",
+		"redirect": "/app/start",
+	})
 }
 
 func Proj_AddUpd(c *gin.Context) {
@@ -90,12 +94,18 @@ func Proj_AddUpd(c *gin.Context) {
 	}
 
 	// Validate project name
-	if body.Name == "" || body.Staid == 0 || body.Typid == 0 {
+	if body.Name == "" {
 		c.HTML(400, "error.html", gin.H{
 			"title": "Validation Error",
 			"error": "Project cannot be empty.",
 		})
 		return
+	}
+
+	// set default status and type if not provided
+	if body.Staid == 0 || body.Typid == 0 {
+		body.Staid = app_conf.GetInt("stadef1")
+		body.Typid = app_conf.GetInt("typdef1")
 	}
 
 	// Prepare project data
@@ -118,6 +128,9 @@ func Proj_AddUpd(c *gin.Context) {
 	} else {
 		// Add new project
 		_proj.CreatedbyID = CurUserID
+		_proj.UpdatedbyID = CurUserID // Set the updater as well
+		_proj.DeletedbyID = 1 // set default to admin
+		fmt.Println(_proj.Name, _proj.StasubID, _proj.TypsubID, _proj.CreatedbyID, _proj.UpdatedbyID)
 		
 		if err := app_db.AppDB.Create(&_proj).Error; err != nil {
 			c.HTML(500, "error.html", gin.H{

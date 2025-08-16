@@ -52,7 +52,7 @@ func Upd_MenuSubItems(mnuid int, name string) error {
 	return nil
 }
 
-func Mnu_GetMnuSubUUIDByType(subtype any) []app_models.Menusub {
+func Mnu_GetMnuSubIDByType(subtype any) []app_models.Menusub {
 	// Get the submenu ID by type to get defaults
 	var subitem []app_models.Menusub
 	err := AppDB.Where("type = ?", subtype).Find(&subitem).Error

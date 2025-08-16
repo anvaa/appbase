@@ -42,6 +42,7 @@ span {
 
 /* Button and logo styles */
 .menubutton,
+.menubutton-add,
 .submenubutton,
 .menu-logo {
     border: 1px solid var(--color-border);
@@ -63,6 +64,12 @@ span {
     background: var(--color-hover);
     border-color: var(--color-span);
 }
+
+.menubutton-add:hover {
+    background: rgb(1, 180, 1);
+}
+
+
 
 .submenubutton {
     padding: 2px;

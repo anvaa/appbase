@@ -8,10 +8,15 @@
     </div>
 
     <button class="menubutton" onclick="Start()" title="ctrl + 1">
-        <img src="/media/diagram.svg" class="btn-img" alt="">
-        <span>Projects</span>
+        <img src="/media/diagram-3.svg" class="btn-img" alt="">
+        Projects
     </button>
-    
+
+    <button id="_add_project" class="menubutton-add" onclick="projAddUpd('0')">
+        <img src="/media/plus-circle.svg" class="btn-img">
+        Add Project
+    </button>
+
     <div style="flex-grow: 1;"></div>
 
     {{ if or (eq $user.Role "admin") (eq $user.Role "superuser") }}
@@ -24,7 +29,7 @@
     {{ if eq $user.Role "admin" }}
     <button class="menubutton" onclick="Users()">
         <img src="/media/person-gear.svg" class="btn-img" alt="">
-        <span>Users</span>
+        Users
     </button>
     {{ end }}
 
@@ -34,9 +39,13 @@
 
     <button class="menubutton" onclick="Logout()" title="ctrl + q">
         <img src="/media/lock.svg" class="btn-img" alt="">
-        <span>Logout</span>
+        Logout
     </button>
 </div>
 
 <div id="_msg"></div>
 <input type="hidden" id="_page" value="" />
+
+<script>
+    hideAddProject(true);
+</script>

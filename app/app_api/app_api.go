@@ -54,8 +54,9 @@ func App_Api(r *gin.Engine) *gin.Engine {
 
 		projGrp.GET("/:id", app_ctrl.Proj_View) // view project page
 		projGrp.GET("/edit/:id", app_ctrl.Proj_Edit)	 // edit project page
-		projGrp.POST("/addupd", app_ctrl.Proj_AddUpd) // add or update project
-		projGrp.DELETE("/delete", app_ctrl.Proj_Delete) // delete project
+		
+		projGrp.POST("/addupd", app_ctrl.Proj_AddUpd) // add or update project function
+		projGrp.DELETE("/:id", app_ctrl.Proj_Delete) // delete project function
 	
 	}
 	

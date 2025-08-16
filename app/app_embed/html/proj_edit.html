@@ -29,7 +29,7 @@
     
     <div class="flex-container" style="justify-content: space-between; margin-top: 8px;">
         <div>
-            <button class="box-btn" onclick="projUpd('{{ .project.UUID }}')">
+            <button class="box-btn" onclick="projAddUpd('{{ .project.UUID }}')">
                 <img src="/media/floppy.svg" class="box-img">
                 Save
             </button>
@@ -41,17 +41,26 @@
             </button>
         </div>
     </div>
-    <div class="flex-container div-meta" style="justify-content: space-between;">
+    <div style="margin: 8px; border-top: 2px solid black; width: 96%; text-align: right;">
         <div title="Created By">
+            Created
+            <img src="/media/calendar-day.svg" class="box-img">
+            {{.project.CreatedAt.Format "2006-01-02 15:04"}}
             <img src="/media/person-fill-add.svg" class="box-img">
             {{.project.CreatedBy.Email}}
         </div>
         <div title="Updated By">
+            Updated
+            <img src="/media/calendar-day.svg" class="box-img">
+            {{.project.UpdatedAt.Format "2006-01-02 15:04"}}
             <img src="/media/person-fill-down.svg" class="box-img">
             {{.project.UpdatedBy.Email}}
         </div>
-        {{if gt .project.DeletedbyID 0}}
+        {{if gt .project.DeletedbyID 1}}
         <div title="Deleted By">
+            Deleted
+            <img src="/media/calendar-day.svg" class="box-img">
+            {{.project.DeletedAt.Format "2006-01-02 15:04"}}
             <img src="/media/person-fill-slash.svg" class="box-img">
             {{.project.DeletedBy.Email}}
         </div>
