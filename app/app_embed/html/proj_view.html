@@ -4,79 +4,30 @@
 <div class="flex-container">
 <div style="margin: 5px; margin-bottom: auto;">
 {{ with .project }}
+<input type="hidden" id="_projid" value="{{ .ID }}">
 <div class="box">
-    <div class="flex-container" style="align-items: center; margin-top: 8px;"> 
-        <h5>{{.Name}}</h5>
-        <div style="margin-left: 10px; margin-top: -5px; width: 50px; text-align: right;"> 
-            <img src="/media/floppy.svg" title="Edit" onclick="treeData('/proj/edit/{{.UUID}}')">
-        </div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-        <div><img src="/media/status.svg" title="Status"> {{.Stasub.Name}}</div>
-        <div><img src="/media/type.svg" title="Type"> {{.Typsub.Name}}</div>
+    <div class="flex-container" > 
+        <div class="div-header-bold" style="border: 0px; margin-top: 3px">{{.Name}}</div>
+        <button class="edit-btn" title="Edit Project" onclick="treeData('/proj/edit/{{ .UUID }}')">
+            <img src="/media/arrow-right-circle.svg">
+        </button>
     </div>
 </div>
-    
-
-
-{{ end }}   
-
-
+<div class="flex-container" style="align-items: center; justify-content: space-between;">
+    <div><img src="/media/type.svg">{{.Typsub.Name}}</div>
+    <div><img src="/media/status.svg">{{.Stasub.Name}}</div>
+</div>
+{{ end }}
 <!-- Tree View start -->
 <div id="treeView" class="treeview">
     <ul style="list-style-type: none; padding-left: 0;">
-        {{with .project}}
-        <li>
-            <span onclick="toggleTreeView('sub-info')" style="cursor: pointer;" title="Project Meta">
-                <img src="/media/exclamation-circle.svg">
-                Info
-            </span>
-            <ul id="tree-sub-info" style="list-style-type: none; margin-left: 0px; display: none;">
-                <li>
-                    <span style="cursor: pointer;">
-                        <img src="/media/calendar-day.svg" title="Last Update">
-                        {{.UpdatedAt.Format "2006-01-02 15:04"}} 
-                        <img src="/media/person.svg" title="Updated By">
-                        {{.UpdatedBy.Email}}
-                    </span>
-                </li>
-                <li>
-                    <span style="cursor: pointer;">
-                        <img src="/media/calendar-day.svg" title="Created Time">
-                        {{.CreatedAt.Format "2006-01-02 15:04"}}
-                        <img src="/media/person.svg" title="Created By">
-                        {{.CreatedBy.Email}}
-                    </span>
-                </li>
-            </ul>
-        </li>
-        {{end}}
-
         {{ $notes := .project.Notes }}
-        <li>
-            <span onclick="toggleTreeView('sub-notes')" style="cursor: pointer;" title="Notes">
+        <li>    
+            <span onclick="treeData('/note/{{.project.ID}}')" style="cursor: pointer;" title="Notes">
                 <img src="/media/pencil-square.svg">
                 Notes ({{len $notes}})
             </span>
-            <ul id="tree-sub-notes" style="list-style-type: none; margin-left: 0px; display: none;">
-                <li>
-                    <span style="cursor: pointer;font-family: monospace;" onclick="fetchPage('/note/add/{{.project.UUID}}')">
-                        <img src="/media/plus-circle.svg" title="Add Note">
-                        Add Note
-                    </span>
-                </li>
-                {{range $notes}}
-                <li>
-                    <span style="cursor: pointer;" onclick="fetchPage('/note/edit/{{.UUID}}')">
-                        <img src="/media/pencil-square.svg" title="Note">
-                        {{.Typsub.Name}}
-                    </span>
-                </li>
-                {{end}}
-                
-            </ul>
         </li>
-        
     </ul>
 </div>
 <script>

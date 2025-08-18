@@ -48,7 +48,7 @@ func Start(c *gin.Context) {
 		"apibase": setApiBase(c),
 
 		"title": appname,
-		"js":    "projects.js",
+		"js":    "proj.js",
 
 		"projects": projects,
 	})

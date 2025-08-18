@@ -24,7 +24,8 @@ func Proj_View(c *gin.Context) {
 
 	c.HTML(200, "proj_view.html", gin.H{
 		"apibase": setApiBase(c),
-		"js":      "projects.js",
+		"css":     "app.css",
+		"js":      "proj.js",
 
 		"project": project,
 	})
@@ -44,7 +45,7 @@ func Proj_Edit(c *gin.Context) {
 
 	c.HTML(200, "proj_edit.html", gin.H{
 		"apibase": setApiBase(c),
-		"js":      "projects.js",
+		"js":      "proj.js",
 
 		"project": project,
 		"sta":     app_db.Sta_GetAllStasub(1),
@@ -61,6 +62,8 @@ func Proj_Delete(c *gin.Context) {
 		})
 		return
 	}
+
+	project.DeletedbyID = CurUserID // Set the deleter as the current user
 
 	if err := app_db.AppDB.Delete(&project).Error; err != nil {
 		c.HTML(500, "error.html", gin.H{

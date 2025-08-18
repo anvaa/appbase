@@ -5,41 +5,52 @@
     --color-text: #000;
     --color-border: #282828;
     --color-th: #a0a0a0cf;
-
-    --color-meta: #636363;
+    --color-meta: #3e3d3d;
     --color-text-background: whitesmoke;
-
-    --color-box-border: rgb(160, 160, 160);
-    --color-box-background: rgba(200, 200, 200, 0.863);
-    --color-box-text: rgb(40, 40, 40);
-    --color-box-text-background: rgb(240, 240, 240);
-    --color-box-btn-text: rgb(40, 40, 40);
-    --color-box-btn-border: rgb(80, 80, 80);
-    --color-box-btn: rgb(220, 220, 220);
-    --color-box-btn-del: rgb(256, 10, 10);
-    --color-box-btn-hover: rgb(192, 191, 191);
-    --color-box-btn-del-hover: rgb(255, 0, 0);
-    --color-box-btn-del-text: rgb(200, 200, 200);
-    --color-box-btn-del-text-hover: rgb(256, 10, 10);
+    --color-box-border: #a0a0a0;
+    --color-box-background: rgba(200, 200, 200, 0.86);
+    --color-box-text: #282828;
+    --color-box-text-background: #f0f0f0;
+    --color-box-btn-text: #282828;
+    --color-box-btn-border: #505050;
+    --color-box-btn: #dcdcdc;
+    --color-box-btn-del: #ff0a0a;
+    --color-box-btn-hover: #c0bfbf;
+    --color-box-btn-del-hover: #ff0000;
+    --color-box-btn-del-text: #c8c8c8;
+    --color-box-btn-del-text-hover: #ff0a0a;
 }
 
-/* General styles */
 html, body {
     margin: 0;
     padding: 0;
     font-size: medium;
     color: var(--color-text);
-    background-color: var(--color-background);
+    background: var(--color-background);
     height: 100%;
 }
 
-* {
+*, *::before, *::after {
     box-sizing: border-box;
 }
 
 body {
     padding: 5px;
-    font-family: Arial, Helvetica, sans-serif, monospace;
+    font-family: Arial, Helvetica, monospace, sans-serif;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+select {
+    border-radius: 5px;
+    background: var(--color-text-background);
+    color: var(--color-text);
+    padding: 2px;
+    border: 1px solid var(--color-text);
 }
 
 input[type="text"],
@@ -48,26 +59,17 @@ input[type="number"],
 input[type="email"],
 input[type="password"],
 input[type="search"] {
-    border-radius: 5px;
-    background: var(--color-text-background);
-    color: var(--color-text);
-    
-    padding: 2px;
     width: 150px;
+}
+
+select {
+    width: 140px;
+    margin: 0;
 }
 
 a {
     color: var(--color-secondary);
     text-decoration: none;
-}
-
-select {
-    margin: 0;
-    padding: 2px;
-    border: 1px solid var(--color-text);
-    border-radius: 5px;
-    background: var(--color-text-background);
-    width: 140px;
 }
 
 th,
@@ -80,7 +82,7 @@ td {
 }
 
 th {
-    background-color: var(--color-th);
+    background: var(--color-th);
 }
 
 td {
@@ -109,10 +111,8 @@ td {
 .div-meta {
     font-weight: normal;
     font-size: medium;
-    
     color: var(--color-meta);
     background: transparent;
-
     vertical-align: middle;
 }
 
@@ -121,60 +121,48 @@ td {
     margin-right: 5px;
 }
 
-.box-text-area {
+.box-text-area,
+.box-note {
     width: 100%;
-    height: 80px;
-    
-    padding: 1px;
     border-radius: 5px;
-
-    line-height: normal;
-    
-    background-color: var(--color-text-background);
+    background: var(--color-text-background);
     color: var(--color-text);
-    
+}
+
+.box-text-area {
+    height: 80px;
+    padding: 1px;
+    line-height: normal;
 }
 
 .box-note {
     padding: 2px;
-    border-radius: 5px;
-    background-color: var(--color-text-background);
-    color: var(--color-text);
-
     max-width: 350px;
 }
 
 .box {
     padding: 2px;
-
     border-radius: 5px;
     border: 2px solid var(--color-box-border);
-    background-color: var(--color-box-background);
-
-    width: fit-content; 
-
+    background: var(--color-box-background);
+    width: fit-content;
 }
 
-.box-btn {
-    margin-top: 0px;
-    margin-bottom: 2px;
-    padding: 0px;
-
-    vertical-align: middle;
-    text-align: center;
-    
+.box-btn,
+.box-btn-del {
+    margin: 0 0 2px 0;
+    padding: 0;
     width: 100px;
     height: 28px;
-    
     border-radius: 5px;
-    
     border: 1px solid var(--color-box-btn-border);
     background: var(--color-box-btn);
     color: var(--color-box-btn-text);
-
     cursor: pointer;
-
+    vertical-align: middle;
+    text-align: center;
 }
+
 .box-btn:hover {
     background: var(--color-box-btn-hover);
 }
@@ -182,33 +170,10 @@ td {
 .box-btn-del {
     margin-top: auto;
     margin-bottom: auto;
-
-    padding: 0px;
-
-    width: 100px;
-    height: 28px;
-    
-    border-radius: 5px;
-    
-    border: 1px solid var(--color-box-btn-border);
-    background: var(--color-box-btn);
-    color: var(--color-box-btn-text);
-
-    cursor: pointer;
-
 }
+
 .box-btn-del:hover {
     background: var(--color-box-btn-del-hover);
-    
-}
-
-.box-img {
-    /* width: 16px;
-    height: 16px; */
-    padding: 0px;
-    margin-left: 2px;
-    margin-right: 2px;
-    background: transparent;
 }
 
 .btn-project {
@@ -216,24 +181,78 @@ td {
     margin: 0 5px;
     border-radius: 5px;
     border: 2px solid var(--color-border);
-    background-color: var(--color-secondary);
+    background: var(--color-secondary);
     color: var(--color-text);
-
     font-weight: bold;
     text-align: center;
-    
     cursor: pointer;
 }
+
 .btn-project:hover {
-    background-color: var(--color-background);
+    background: var(--color-background);
     color: var(--color-text);
+}
+
+.edit-btn {
+    width: 30px;
+    height: 30px;
+
+    margin-left: 10px;
+    margin-top: 0px;
+    padding: 0px;
+    
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background: transparent;
+
+    cursor: pointer;
+}
+.edit-btn:hover {
+    border-color: var(--color-border);
 }
 
 .viewTreeData {
     border-left: 2px solid var(--color-border);
-
-    background-color: transparent;
-
+    background: transparent;
     margin-left: 5px;
     padding-left: 10px;
+}
+
+.box-info {
+    
+    padding: 2px;
+    border: 0px solid var(--color-border);
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: small;
+    color: var(--color-meta);
+    cursor: auto;
+    width: fit-content;
+}
+
+.box-info img {
+    width: 10px;
+    height: 10px;
+    margin-right: -2px;
+    margin-top: -2px;
+    padding: 0;
+    background: transparent;
+}
+
+.note-view {
+    width: 400px;
+
+    
+    margin-top: 8px;
+    padding: 2px;
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    background: var(--color-background);
+}
+
+.note-view-content {
+    padding: 2px;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-text-background);
 }

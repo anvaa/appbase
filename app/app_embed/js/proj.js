@@ -2,11 +2,13 @@
 async function projAddUpd(_uuid) {
 
     _uuid = parseInt(_uuid);
+    var _projid = 0;
     var _name = "";
     var _staid = 0;
     var _typid = 0;
 
     if (_uuid > 0) {
+        _projid = parseInt(document.getElementById('_projid').value);
         _name = document.getElementById('_name').value;
         _staid = document.getElementById('_status').value;
         _typid = document.getElementById('_type').value;
@@ -17,6 +19,7 @@ async function projAddUpd(_uuid) {
     }
 
     const data = {
+        projid: _projid,
         uuid: _uuid,
         name: String(_name).trim(),
         staid: parseInt(_staid),

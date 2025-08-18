@@ -1,5 +1,4 @@
 
-
 {{ $typ := .typ }}
 {{ $sta := .sta }}
 
@@ -41,31 +40,42 @@
             </button>
         </div>
     </div>
-    <div style="margin: 8px; border-top: 2px solid black; width: 96%; text-align: right;">
-        <div title="Created By">
-            Created
-            <img src="/media/calendar-day.svg" class="box-img">
-            {{.project.CreatedAt.Format "2006-01-02 15:04"}}
-            <img src="/media/person-fill-add.svg" class="box-img">
-            {{.project.CreatedBy.Email}}
+</div>
+
+<div class="box-info">
+    {{ with .project}}
+    <div class="flex-container">
+        <div style="margin-right: 5px;">Created</div>
+        <div>
+            <img src="/media/calendar-day.svg">
+            {{.CreatedAt.Format "2006-01-02 15:04"}}
+            <img src="/media/person-fill-add.svg">
+            {{.CreatedBy.Email}}
         </div>
-        <div title="Updated By">
-            Updated
-            <img src="/media/calendar-day.svg" class="box-img">
-            {{.project.UpdatedAt.Format "2006-01-02 15:04"}}
-            <img src="/media/person-fill-down.svg" class="box-img">
-            {{.project.UpdatedBy.Email}}
-        </div>
-        {{if gt .project.DeletedbyID 1}}
-        <div title="Deleted By">
-            Deleted
-            <img src="/media/calendar-day.svg" class="box-img">
-            {{.project.DeletedAt.Format "2006-01-02 15:04"}}
-            <img src="/media/person-fill-slash.svg" class="box-img">
-            {{.project.DeletedBy.Email}}
-        </div>
-        {{end}}
     </div>
+    <div class="flex-container">
+        <div style="margin-right: 5px;">Updated</div>
+        <div>
+            <img src="/media/calendar-day.svg">
+            {{.UpdatedAt.Format "2006-01-02 15:04"}}
+            <img src="/media/person-fill-down.svg">
+            {{.UpdatedBy.Email}}
+        </div>
+    </div>
+    {{if gt .DeletedbyID 1}}
+    <div class="flex-container">
+        <div style="margin-right: 5px;">Deleted</div>
+        <div>
+            <img src="/media/calendar-day.svg">
+            {{.DeletedAt.Format "2006-01-02 15:04"}}
+            <img src="/media/person-fill-slash.svg">
+            {{.DeletedBy.Email}}
+        </div>
+    </div>
+    {{end}}
+    {{end}}
+</div>
+
 </div>
 
 {{else}}

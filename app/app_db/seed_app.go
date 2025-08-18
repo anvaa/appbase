@@ -38,11 +38,11 @@ func seedNotes(db *gorm.DB) {
 	}
 
 	notes := []app_models.Notes{
-		{Content: "Note 1", ProjectID: 1, TypsubID: 7},
-		{Content: "Note 2", ProjectID: 1, TypsubID: 8},
-		{Content: "Note 3", ProjectID: 1, TypsubID: 9},
-		{Content: "Note 4", ProjectID: 2, TypsubID: 7},
-		{Content: "Note 5", ProjectID: 2, TypsubID: 8},
+		{Content: "Note 1 Note 1 Note 1 Note 1 Note 1 Note 1 Note 1 Note 1 Note 1 Note 1 ", ProjectID: 1, TypsubID: 7},
+		{Content: "Note 2 Note 2 Note 2 Note 2 Note 2 Note 2 Note 2 Note 2 Note 2 Note 2 ", ProjectID: 1, TypsubID: 8},
+		{Content: "Note 3 Note 3 Note 3 Note 3 Note 3 Note 3 Note 3 Note 3 Note 3 Note 3 ", ProjectID: 1, TypsubID: 9},
+		{Content: "Note 4 Note 4 Note 4 Note 4 Note 4 Note 4 Note 4 Note 4 Note 4 Note 4 ", ProjectID: 2, TypsubID: 7},
+		{Content: "Note 5 Note 5 Note 5 Note 5 Note 5 Note 5 Note 5 Note 5 Note 5 Note 5 ", ProjectID: 2, TypsubID: 8},
 	}
 
 	for i := range notes {

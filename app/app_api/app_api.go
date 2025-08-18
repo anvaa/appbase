@@ -59,7 +59,18 @@ func App_Api(r *gin.Engine) *gin.Engine {
 		projGrp.DELETE("/:id", app_ctrl.Proj_Delete) // delete project function
 	
 	}
-	
+
+	noteGrp := r.Group("/note")
+	{
+		noteGrp.Use(middleware.IsAuth)
+
+		noteGrp.GET("/:id", app_ctrl.Note_View) // view note page
+		noteGrp.GET("/edit/:id", app_ctrl.Note_Edit)	 // edit note page
+
+		noteGrp.POST("/addupd", app_ctrl.Note_AddUpd) // add or update note function
+		noteGrp.DELETE("/:id", app_ctrl.Note_Delete) // delete note function
+
+	}
 
 	return r
 

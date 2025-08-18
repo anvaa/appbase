@@ -79,6 +79,17 @@ async function fetchPage(url) {
 
 async function treeData(url) {
     // Get html go template and open it in div id '_viewTreeData'
+    // alert("Loading tree data: " + url);
+    // split url on / and get the first word
+    const urlParts = url.split('/');
+    const jsfile = urlParts[1];
+
+    
+        const script = document.createElement('script');
+        script.src = '/js/' + jsfile + '.js';
+        document.head.appendChild(script);
+    
+
     try {
         const response = await fetch(url);
         if (!response.ok) {

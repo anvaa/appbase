@@ -1,0 +1,78 @@
+
+{{ $typ := .typ }}
+
+{{ if .note }}
+
+<div class="div-header-bold" style="border: 0px;">Edit Note</div>
+<div class="box">
+    <div style="width: 400px;">
+        Type
+        <select id="_type">
+            {{ range $typ }}
+                <option value="{{ .ID }}" {{ if eq .ID $.note.TypsubID }}selected{{ end }}>{{ .Name }}</option>
+            {{ end }}
+        </select>
+    </div>
+
+    <div>
+        <textarea id="_content" style="width: 100%; height: 200px;" required>{{ .note.Content }}</textarea>
+    </div>
+
+    <div class="flex-container" style="justify-content: space-between; margin-top: 8px;">
+        <div>
+            <button class="box-btn" onclick="noteAddUpd('{{ .note.UUID }}')">
+                <img src="/media/floppy.svg" class="box-img">
+                Save
+            </button>
+        </div>
+        <div>
+            <button class="box-btn-del" onclick="noteDel('{{ .note.UUID }}')">
+                <img src="/media/trash.svg" class="box-img">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
+
+    <div class="box-info">
+        {{with .note}}
+        <div class="flex-container">
+            <div style="margin-right: 5px;">Created</div>
+            <div>
+                <img src="/media/calendar-day.svg">
+                {{.CreatedAt.Format "2006-01-02 15:04"}}
+                <img src="/media/person-fill-add.svg">
+                {{.CreatedBy.Email}}
+            </div>
+        </div>
+        <div class="flex-container">
+            <div style="margin-right: 5px;">Updated</div>
+            <div>
+                <img src="/media/calendar-day.svg">
+                {{.UpdatedAt.Format "2006-01-02 15:04"}}
+                <img src="/media/person-fill-down.svg">
+                {{.UpdatedBy.Email}}
+            </div>
+        </div>
+        {{if gt .DeletedbyID 1}}
+        <div class="flex-container">
+            <div style="margin-right: 5px;">Deleted</div>
+            <div>
+                <img src="/media/calendar-day.svg">
+                {{.DeletedAt.Format "2006-01-02 15:04"}}
+                <img src="/media/person-fill-slash.svg">
+                {{.DeletedBy.Email}}
+            </div>
+        </div>
+        {{end}}
+        {{end}}
+    </div>
+    
+
+</div>
+
+{{else}}
+<div class="div-error">
+    <span class="error">Project not found.</span>
+</div>
+{{ end }}

@@ -1,0 +1,75 @@
+
+<input type="hidden" id="_projid" value="{{ .projid }}">
+<input type="hidden" id="_content" value="">
+
+{{ $typ := .typ }}
+
+<div class="box">
+    <div class="flex-container">
+        <select id="_type" style="flex-grow: 1; margin-right: 5px;">
+            {{ range $typ }}
+                <option value="{{ .ID }}" {{ if eq .ID $.note.TypsubID }}selected{{ end }}>{{ .Name }}</option>
+            {{ end }}
+        </select>
+        <button class="menubutton-add" onclick="noteAddUpd('0')">
+            <img src="/media/plus-circle.svg">
+            Add Note
+        </button>
+    </div>
+</div>
+
+{{ if .notes }}
+<div class="flex-container">
+    <div style="margin: 5px; margin-bottom: auto;">
+        {{ range .notes }}
+        <div class="note-view">
+            <div class="flex-container" style="justify-content: space-between; align-items: center;">
+                <div class="div-header-bold" style="border: 0px; margin-top: 3px">{{.Typsub.Name}}</div>
+                <button class="edit-btn" title="Edit Note" onclick="treeData('/note/edit/{{ .UUID }}')">
+                    <img src="/media/arrow-right-circle.svg">
+                </button>
+            </div>
+            <div class="note-view-content">
+                {{.Content}}
+            </div>
+
+            <div class="box-info">
+                <div class="flex-container">
+                    <div style="margin-right: 5px;">Created</div>
+                    <div>
+                        <img src="/media/calendar-day.svg">
+                        {{.CreatedAt.Format "2006-01-02 15:04"}}
+                        <img src="/media/person-fill-add.svg">
+                        {{.CreatedBy.Email}}
+                    </div>
+                </div>
+                <div class="flex-container">
+                    <div style="margin-right: 5px;">Updated</div>
+                    <div>
+                        <img src="/media/calendar-day.svg">
+                        {{.UpdatedAt.Format "2006-01-02 15:04"}}
+                        <img src="/media/person-fill-down.svg">
+                        {{.UpdatedBy.Email}}
+                    </div>
+                </div>
+                {{if gt .DeletedbyID 1}}
+                <div class="flex-container">
+                    <div style="margin-right: 5px;">Deleted</div>
+                    <div>
+                        <img src="/media/calendar-day.svg">
+                        {{.DeletedAt.Format "2006-01-02 15:04"}}
+                        <img src="/media/person-fill-slash.svg">
+                        {{.DeletedBy.Email}}
+                    </div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+        {{ end }}
+    </div>
+</div>
+{{ else }}
+<div class="div-error">
+    <span class="error">No notes found.</span>
+</div>
+{{ end }}
