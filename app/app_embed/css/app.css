@@ -37,6 +37,7 @@ html, body {
 body {
     padding: 5px;
     font-family: Arial, Helvetica, monospace, sans-serif;
+    scroll-behavior: auto;
 }
 
 input[type="text"],
@@ -196,15 +197,12 @@ td {
 .edit-btn {
     width: 30px;
     height: 30px;
-
     margin-left: 10px;
-    margin-top: 0px;
-    padding: 0px;
-    
+    margin-top: 0;
+    padding: 0;
     border-radius: 5px;
     border: 2px solid transparent;
     background: transparent;
-
     cursor: pointer;
 }
 .edit-btn:hover {
@@ -212,16 +210,17 @@ td {
 }
 
 .viewTreeData {
-    border-left: 2px solid var(--color-border);
-    background: transparent;
-    margin-left: 5px;
+    /* background-color: var(--color-box-background); */
+    border-left: 4px solid var(--color-border);
+    margin: 5px;
     padding-left: 10px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
 }
 
 .box-info {
-    
     padding: 2px;
-    border: 0px solid var(--color-border);
+    border: 0 solid var(--color-border);
     border-radius: 5px;
     font-family: monospace;
     font-size: small;
@@ -241,8 +240,6 @@ td {
 
 .note-view {
     width: 400px;
-
-    
     margin-top: 8px;
     padding: 2px;
     border: 1px solid var(--color-border);

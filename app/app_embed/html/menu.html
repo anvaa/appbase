@@ -3,8 +3,8 @@
 {{ $user := .apibase.User }}
 
 <div class="menu-flex-container">
-    <div class="menubox-logo" onclick="AppInfo()">
-        <img src="/media/brilliance.svg" class="menu-logo" alt="Info">
+    <div onclick="AppInfo()">
+        <img src="/media/logo.png" class="menu-logo">
     </div>
 
     <button class="menubutton" onclick="Start()" title="ctrl + 1">
@@ -34,7 +34,7 @@
     {{ end }}
 
     <button class="menubutton" onclick="MyAccount()">
-        <span style="padding: 3px;">{{ $user.Email }}</span>
+        <div style="padding: 3px;">{{ $user.Email }}</div>
     </button>
 
     <button class="menubutton" onclick="Logout()" title="ctrl + q">

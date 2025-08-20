@@ -4,9 +4,9 @@
 
 {{ $typ := .typ }}
 
-<div class="box">
+<div class="box" style="width: auto;">
     <div class="flex-container">
-        <select id="_type" style="flex-grow: 1; margin-right: 5px;">
+        <select id="_type" style="margin-right: 5px;">
             {{ range $typ }}
                 <option value="{{ .ID }}" {{ if eq .ID $.note.TypsubID }}selected{{ end }}>{{ .Name }}</option>
             {{ end }}
@@ -23,8 +23,8 @@
     <div style="margin: 5px; margin-bottom: auto;">
         {{ range .notes }}
         <div class="note-view">
-            <div class="flex-container" style="justify-content: space-between; align-items: center;">
-                <div class="div-header-bold" style="border: 0px; margin-top: 3px">{{.Typsub.Name}}</div>
+            <div class="flex-container" style="justify-content: space-between; align-items: center;background-color: lightgrey;">
+                <div class="div-header" style="border: 0px; margin-top: 3px">{{.Typsub.Name}}</div>
                 <button class="edit-btn" title="Edit Note" onclick="treeData('/note/edit/{{ .UUID }}')">
                     <img src="/media/arrow-right-circle.svg">
                 </button>

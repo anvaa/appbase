@@ -59,7 +59,6 @@ async function noteDel(_uuid) {
         const result = await response.json();
         if (result.message === 'success') {
             // Redirect to the projects list or show a success message
-            window.location.reload();
             treeData(result.redirect);
         } else {
             ShowMsg('error', result.message);

@@ -2,49 +2,52 @@
 
 {{ if .project }}
 <div class="flex-container">
-<div style="margin: 5px; margin-bottom: auto;">
-{{ with .project }}
-<input type="hidden" id="_projid" value="{{ .ID }}">
-<div class="box">
-    <div class="flex-container" > 
-        <div class="div-header-bold" style="border: 0px; margin-top: 3px">{{.Name}}</div>
-        <button class="edit-btn" title="Edit Project" onclick="treeData('/proj/edit/{{ .UUID }}')">
-            <img src="/media/arrow-right-circle.svg">
-        </button>
+    <div style="margin: 5px; margin-bottom: auto;">
+        {{ with .project }}
+            <input type="hidden" id="_projid" value="{{ .ID }}">
+            <div class="box">
+                <div class="flex-container">
+                    <div style="border: 0; margin: 5px; max-width: 150px;white-space: normal;">{{ .Name }}</div>
+                    <button class="edit-btn" title="Edit Project" onclick="treeData('/proj/edit/{{ .UUID }}')">
+                        <img src="/media/arrow-right-circle.svg" alt="Edit">
+                    </button>
+                </div>
+            </div>
+            <div class="flex-container" style="align-items: center; justify-content: space-between;">
+                <div>
+                    <img src="/media/type.svg" alt="Type">{{ .Typsub.Name }}
+                </div>
+                <div>
+                    <img src="/media/status.svg" alt="Status">{{ .Stasub.Name }}
+                </div>
+            </div>
+        {{ end }}
+
+        <!-- Tree View start -->
+        <div id="treeView" class="tree_view">
+            <ul>
+                {{ $notes := .project.Notes }}
+                <li>
+                    <span onclick="treeData('/note/{{ .project.ID }}')" title="Notes">
+                        <img src="/media/pencil-square.svg" alt="Notes">
+                        Notes ({{ len $notes }})
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <!-- Tree View end -->
     </div>
+    <div id="_viewTreeData" class="viewTreeData"></div>
 </div>
-<div class="flex-container" style="align-items: center; justify-content: space-between;">
-    <div><img src="/media/type.svg">{{.Typsub.Name}}</div>
-    <div><img src="/media/status.svg">{{.Stasub.Name}}</div>
-</div>
-{{ end }}
-<!-- Tree View start -->
-<div id="treeView" class="treeview">
-    <ul style="list-style-type: none; padding-left: 0;">
-        {{ $notes := .project.Notes }}
-        <li>    
-            <span onclick="treeData('/note/{{.project.ID}}')" style="cursor: pointer;" title="Notes">
-                <img src="/media/pencil-square.svg">
-                Notes ({{len $notes}})
-            </span>
-        </li>
-    </ul>
-</div>
+
 <script>
 function toggleTreeView(uuid) {
-    var el = document.getElementById('tree-' + uuid);
-    if (!el) el = document.getElementById('tree-sub-' + uuid);
+    var el = document.getElementById('tree-' + uuid) || document.getElementById('tree-sub-' + uuid);
     if (el) {
         el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
     }
 }
 </script>
-<!-- Tree View end -->
-</div>
-<div id="_viewTreeData" class="viewTreeData" style="margin: 5px; margin-bottom: auto;">
-    
-</div>
-</div>
 {{ else }}
 <div class="div-error">
     <span class="error">Ingen prosjekter funnet.</span>

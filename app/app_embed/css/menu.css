@@ -82,9 +82,12 @@ span {
 
 /* Logo specific */
 .menu-logo {
-    width: 30px;
-    height: 30px;
-    margin-top: 1px;
+    width: 33px;
+    height: 33px;
+    margin-top: 0px;
+    padding: 0px;
+
+    border: 0px solid var(--color-border);
 }
 
 /* Footer */
