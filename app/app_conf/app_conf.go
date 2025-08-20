@@ -40,6 +40,7 @@ func WriteDefaultConfig(appRoot string) {
 	appConf.SetDefault("print_txt", 1)
 	appConf.SetDefault("session_expire", time.Hour*24*1) // 1 day
 	appConf.SetDefault("start_url", "/app/start") // Default start page
+	appConf.SetDefault("note_sort_type", 1)
 
 	err := appConf.WriteConfigAs(fileName)
 	if err != nil {

@@ -26,7 +26,8 @@ type Project struct {
 
 type Notes struct {
 	BaseModel
-	Content   string `gorm:"size:255" json:"content"`
+	Header    string `gorm:"size:50, default:'Topic'" json:"header"`
+	Content   string `gorm:"type:text" json:"content"`
 	ProjectID int    `gorm:"default:0" json:"project_id"`
 
 	TypsubID int    `gorm:"default:0" json:"typsub_id"`

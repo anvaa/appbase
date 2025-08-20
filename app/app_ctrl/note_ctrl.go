@@ -1,10 +1,12 @@
 package app_ctrl
 
 import (
+	"app/app_conf"
 	"app/app_db"
 	"app/app_models"
 	"fmt"
 	"strings"
+	"strconv"
 
 	"net/http"
 
@@ -14,6 +16,8 @@ import (
 // Note_View displays a specific note
 func Note_View(c *gin.Context) {
 	// Implementation here
+
+	_sort := app_conf.GetInt("note_sort_type")
 
 	notes, err := app_db.GetAllNotes(c.Param("id"))
 	if err != nil {
@@ -29,6 +33,7 @@ func Note_View(c *gin.Context) {
 
 		"projid": c.Param("id"),
 		"typ":    app_db.Typ_GetAllTypsub(3),
+		"sort":   _sort,
 		"notes":  notes,
 	})
 }
@@ -60,16 +65,18 @@ func Note_AddUpd(c *gin.Context) {
 		UUID    int    `json:"uuid"`
 		Type    int    `json:"type"`
 		Content string `json:"content"`
+		Header  string `json:"header"`
 	}
 
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("Note_AddUpd body:", body)
+	
 	_notes := app_models.Notes{
 		TypsubID: body.Type,
 		Content:  strings.TrimSpace(body.Content),
+		Header:   strings.TrimSpace(body.Header),
 	}
 
 	url := fmt.Sprintf("/note/%d", body.Projid)
@@ -134,4 +141,20 @@ func Note_Delete(c *gin.Context) {
 		"redirect": url,
 	})
 
+}
+
+func Note_SaveSort(c *gin.Context) {
+
+	val := c.Param("id")
+
+	// set val to int
+	_val, err := strconv.Atoi(val)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid sort value"})
+		return
+	}
+
+	app_conf.SetVal("note_sort_type", _val)
+
+	c.JSON(http.StatusOK, gin.H{"message": "success"})
 }

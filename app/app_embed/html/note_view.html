@@ -3,14 +3,21 @@
 <input type="hidden" id="_content" value="">
 
 {{ $typ := .typ }}
+{{ $sort := .sort }}
 
 <div class="box" style="width: auto;">
-    <div class="flex-container">
-        <select id="_type" style="margin-right: 5px;">
-            {{ range $typ }}
-                <option value="{{ .ID }}" {{ if eq .ID $.note.TypsubID }}selected{{ end }}>{{ .Name }}</option>
-            {{ end }}
-        </select>
+    <div class="flex-container" style="justify-content: space-between; align-items: center;">
+        <div>
+            sort
+            <select id="_type" style="margin-right: 5px;" onchange="NoteSort(this.value)">
+                {{ range $typ }}
+                    <option value="{{ .ID }}"
+                        {{ if eq .ID $sort }}selected{{ end }}>{{ .Name }}
+                    </option>
+                {{ end }}
+            </select>
+        </div>
+        
         <button class="menubutton-add" onclick="noteAddUpd('0')">
             <img src="/media/plus-circle.svg">
             Add Note
@@ -22,17 +29,17 @@
 <div class="flex-container">
     <div style="margin: 5px; margin-bottom: auto;">
         {{ range .notes }}
+        
         <div class="note-view">
-            <div class="flex-container" style="justify-content: space-between; align-items: center;background-color: lightgrey;">
-                <div class="div-header" style="border: 0px; margin-top: 3px">{{.Typsub.Name}}</div>
-                <button class="edit-btn" title="Edit Note" onclick="treeData('/note/edit/{{ .UUID }}')">
+            <div class="flex-container" style="background-color: lightgrey;">
+                <div class="note-type">{{.Typsub.Name}}</div>
+                <div class="note-header">{{.Header}}</div>
+                <button class="note-edit-btn" title="Edit Note" onclick="treeData('/note/edit/{{ .UUID }}')">
                     <img src="/media/arrow-right-circle.svg">
                 </button>
             </div>
-            <div class="note-view-content">
-                {{.Content}}
-            </div>
-
+            
+            <div class="note-content">{{.Content}}</div>
             <div class="box-info">
                 <div class="flex-container">
                     <div style="margin-right: 5px;">Created</div>

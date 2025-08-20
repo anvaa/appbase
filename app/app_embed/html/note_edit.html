@@ -6,14 +6,16 @@
 <div class="div-header-bold" style="border: 0px;">Edit Note</div>
 <div class="box">
     <div style="width: 400px;">
-        Type
+        Topic
         <select id="_type">
             {{ range $typ }}
                 <option value="{{ .ID }}" {{ if eq .ID $.note.TypsubID }}selected{{ end }}>{{ .Name }}</option>
             {{ end }}
         </select>
+        <input type="text" id="_header" value="{{ .note.Header }}" required 
+            maxlength="50"
+            style="margin-top: 4px; margin-bottom: 8px;width: 100%;">
     </div>
-
     <div>
         <textarea id="_content" style="width: 100%; height: 200px;" required>{{ .note.Content }}</textarea>
     </div>

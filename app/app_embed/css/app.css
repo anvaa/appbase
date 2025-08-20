@@ -7,6 +7,7 @@
     --color-th: #a0a0a0cf;
     --color-meta: #3e3d3d;
     --color-text-background: whitesmoke;
+
     --color-box-border: #a0a0a0;
     --color-box-background: rgba(200, 200, 200, 0.86);
     --color-box-text: #282828;
@@ -19,6 +20,8 @@
     --color-box-btn-del-hover: #ff0000;
     --color-box-btn-del-text: #c8c8c8;
     --color-box-btn-del-text-hover: #ff0a0a;
+
+    --color-note-type: #5d5d5c;
 }
 
 html, body {
@@ -210,7 +213,6 @@ td {
 }
 
 .viewTreeData {
-    /* background-color: var(--color-box-background); */
     border-left: 4px solid var(--color-border);
     margin: 5px;
     padding-left: 10px;
@@ -247,9 +249,59 @@ td {
     background: var(--color-background);
 }
 
-.note-view-content {
+.note-type,
+.note-header {
+    font-weight: bold;
+    border: 0;
+    margin-top: 3px;
+    
+}
+
+.note-type {
+    margin: 5px;
+    width: fit-content;
+
+    padding: 2px;
+
+    border: 2px solid var(--color-note-type);
+    border-radius: 5px;
+
+    color: var(--color-note-type);
+
+    font-family: monospace;
+    font-size: large;
+}
+
+.note-header {
+    width: 100%;
+
+    padding: 2px;
+    margin-top: 7px;
+
+    border: 2px solid transparent;
+    border-radius: 5px;
+
+    font-size: large;
+}
+
+.note-content {
     padding: 2px;
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
     background: var(--color-text-background);
+}
+
+.note-edit-btn {
+    width: 33px;
+    height: 33px;
+    /* margin-left: 10px; */
+    margin-top: 5px;
+    padding: 2px;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background: transparent;
+    cursor: pointer;
+}
+.note-edit-btn:hover {
+    border-color: var(--color-border);
 }

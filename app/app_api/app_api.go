@@ -70,6 +70,8 @@ func App_Api(r *gin.Engine) *gin.Engine {
 		noteGrp.POST("/addupd", app_ctrl.Note_AddUpd) // add or update note function
 		noteGrp.DELETE("/:id", app_ctrl.Note_Delete) // delete note function
 
+		noteGrp.POST("/sort/:id", app_ctrl.Note_SaveSort) // save note sort order
+
 	}
 
 	return r
