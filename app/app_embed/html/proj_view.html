@@ -4,7 +4,7 @@
 <div class="flex-container">
     <div style="margin: 5px; margin-bottom: auto;">
         {{ with .project }}
-            <input type="hidden" id="_projid" value="{{ .ID }}">
+            <input type="hidden" id="_projid{{.UUID}}" value="{{.ID}}">
             <div class="box">
                 <div class="flex-container">
                     <div style="border: 0; margin: 5px; max-width: 150px;white-space: normal;">{{ .Name }}</div>

@@ -1,75 +1,62 @@
-
 <input type="hidden" id="_projid" value="{{ .projid }}">
 <input type="hidden" id="_content" value="">
+<input type="hidden" id="_header" value="">
+<input type="hidden" id="_type" value="0">
 
-{{ $typ := .typ }}
-{{ $sort := .sort }}
-
-<div class="box" style="width: auto;">
-    <div class="flex-container" style="justify-content: space-between; align-items: center;">
-        <div>
-            sort
-            <select id="_type" style="margin-right: 5px;" onchange="NoteSort(this.value)">
-                {{ range $typ }}
-                    <option value="{{ .ID }}"
-                        {{ if eq .ID $sort }}selected{{ end }}>{{ .Name }}
-                    </option>
-                {{ end }}
-            </select>
-        </div>
-        
-        <button class="menubutton-add" onclick="noteAddUpd('0')">
-            <img src="/media/plus-circle.svg">
-            Add Note
-        </button>
-    </div>
-</div>
+<button class="menubutton-add" onclick="noteAddUpd('0')">
+    <img src="/media/plus-circle.svg" alt="Add">
+    Add Note
+</button>
 
 {{ if .notes }}
 <div class="flex-container">
-    <div style="margin: 5px; margin-bottom: auto;">
+    <div style="margin-bottom: auto;">
         {{ range .notes }}
-        
         <div class="note-view">
-            <div class="flex-container" style="background-color: lightgrey;">
-                <div class="note-type">{{.Typsub.Name}}</div>
-                <div class="note-header">{{.Header}}</div>
+            <div class="flex-container note-header-bar">
+                <div>
+                    <div class="note-type">{{ .Typsub.Name }}</div>
+                </div>
+                <div class="note-header">{{ .Header }}</div>
                 <button class="note-edit-btn" title="Edit Note" onclick="treeData('/note/edit/{{ .UUID }}')">
-                    <img src="/media/arrow-right-circle.svg">
+                    <img src="/media/arrow-right-circle.svg" alt="Edit">
                 </button>
             </div>
-            
-            <div class="note-content">{{.Content}}</div>
-            <div class="box-info">
+
+            <div id="_content-{{ .UUID }}" class="note-content">
+                {{ .Content | html }}
+            </div>
+
+            <div class="box-meta">
                 <div class="flex-container">
-                    <div style="margin-right: 5px;">Created</div>
-                    <div>
-                        <img src="/media/calendar-day.svg">
-                        {{.CreatedAt.Format "2006-01-02 15:04"}}
-                        <img src="/media/person-fill-add.svg">
-                        {{.CreatedBy.Email}}
-                    </div>
+                    <span class="meta-label">Created</span>
+                    <span>
+                        <img src="/media/calendar-day.svg" alt="Created">
+                        {{ .CreatedAt.Format "2006-01-02 15:04" }}
+                        <img src="/media/person-fill-add.svg" alt="By">
+                        {{ .CreatedBy.Email }}
+                    </span>
                 </div>
                 <div class="flex-container">
-                    <div style="margin-right: 5px;">Updated</div>
-                    <div>
-                        <img src="/media/calendar-day.svg">
-                        {{.UpdatedAt.Format "2006-01-02 15:04"}}
-                        <img src="/media/person-fill-down.svg">
-                        {{.UpdatedBy.Email}}
-                    </div>
+                    <span class="meta-label">Updated</span>
+                    <span>
+                        <img src="/media/calendar-day.svg" alt="Updated">
+                        {{ .UpdatedAt.Format "2006-01-02 15:04" }}
+                        <img src="/media/person-fill-down.svg" alt="By">
+                        {{ .UpdatedBy.Email }}
+                    </span>
                 </div>
-                {{if gt .DeletedbyID 1}}
+                {{ if gt .DeletedbyID 1 }}
                 <div class="flex-container">
-                    <div style="margin-right: 5px;">Deleted</div>
-                    <div>
-                        <img src="/media/calendar-day.svg">
-                        {{.DeletedAt.Format "2006-01-02 15:04"}}
-                        <img src="/media/person-fill-slash.svg">
-                        {{.DeletedBy.Email}}
-                    </div>
+                    <span class="meta-label">Deleted</span>
+                    <span>
+                        <img src="/media/calendar-day.svg" alt="Deleted">
+                        {{ .DeletedAt.Format "2006-01-02 15:04" }}
+                        <img src="/media/person-fill-slash.svg" alt="By">
+                        {{ .DeletedBy.Email }}
+                    </span>
                 </div>
-                {{end}}
+                {{ end }}
             </div>
         </div>
         {{ end }}
@@ -80,3 +67,4 @@
     <span class="error">No notes found.</span>
 </div>
 {{ end }}
+

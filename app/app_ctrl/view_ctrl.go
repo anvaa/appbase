@@ -11,9 +11,9 @@ import (
 )
 
 var (
-	appname = app_conf.AppName
-	appinfo = app_conf.AppInfo()
-	CurUserID int
+	appname     = app_conf.AppName
+	appinfo     = app_conf.AppInfo()
+	CurUserID   int
 	CurUserUUID int
 )
 
@@ -50,6 +50,7 @@ func Start(c *gin.Context) {
 		"title": appname,
 		"js":    "proj.js",
 
+		"typ":      app_db.Typ_GetAllTypsub(1),
 		"projects": projects,
 	})
 }

@@ -17,8 +17,6 @@ import (
 func Note_View(c *gin.Context) {
 	// Implementation here
 
-	_sort := app_conf.GetInt("note_sort_type")
-
 	notes, err := app_db.GetAllNotes(c.Param("id"))
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
@@ -27,13 +25,16 @@ func Note_View(c *gin.Context) {
 		return
 	}
 
+	// range thru notes and replace newlines with <br>
+	// for i := range notes {
+	// 	notes[i].Content = strings.ReplaceAll(notes[i].Content, "\n", "<br>")
+	// }
+
 	// Render the note view template
 	c.HTML(http.StatusOK, "note_view.html", gin.H{
 		"js": "note.js",
 
 		"projid": c.Param("id"),
-		"typ":    app_db.Typ_GetAllTypsub(3),
-		"sort":   _sort,
 		"notes":  notes,
 	})
 }
@@ -72,7 +73,16 @@ func Note_AddUpd(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
+
+	if body.Projid == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Project ID is required"})
+		return
+	}
+
+	if body.Type == 0 {
+		body.Type = app_conf.GetInt("typdef3")
+	}
+	fmt.Println("Note:", body)
 	_notes := app_models.Notes{
 		TypsubID: body.Type,
 		Content:  strings.TrimSpace(body.Content),

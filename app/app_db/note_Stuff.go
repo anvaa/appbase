@@ -6,7 +6,7 @@ import (
 
 )
 
-func GetAllNotes(projid string, sort int) ([]app_models.Notes, error) {
+func GetAllNotes(projid string) ([]app_models.Notes, error) {
 	var notes []app_models.Notes
 	err := AppDB.
 		Preload("CreatedBy").

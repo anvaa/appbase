@@ -1,4 +1,10 @@
 
+function noteContent(content, uuid) {
+    // Implement your content display logic here
+    const newText = content.replace(/\n/g, '<br>');
+    document.getElementById('_content-' + uuid).innerHTML = newText;
+};
+
 async function noteAddUpd(_uuid) {
     
     const _type = document.getElementById('_type').value;
@@ -6,9 +12,12 @@ async function noteAddUpd(_uuid) {
     const _header = document.getElementById('_header').value;
     const _projid = document.getElementById('_projid').value;
 
-    if (!_content.trim() || !_header.trim() && _uuid > 0) {
-        ShowMsg('error', 'Note is empty');
-        return;
+
+    if (_uuid > 0) {
+        if (!_content.trim() || !_header.trim()) {
+            ShowMsg('error', 'Note is empty');
+            return;
+        }
     }
 
     try {
