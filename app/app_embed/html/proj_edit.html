@@ -3,6 +3,9 @@
 {{ $sta := .sta }}
 
 {{ if .project }}
+
+<input type="hidden" id="_projid" value="{{ .project.ID }}">
+
 <div class="div-header-bold" style="border: 0px;">Edit Project</div>
 <div class="box">
     <div>

@@ -36,9 +36,28 @@ func Proj_Edit(c *gin.Context) {
 	project, err := app_db.GetProjectByUUID(c.Param("id"))
 	
 	if err != nil {
+
 		c.HTML(404, "error.html", gin.H{
 			"title": "Project Not Found",
 			"error": "The project you are trying to edit does not exist.",
+		})
+		return
+	}
+
+	sta, err := app_db.Sta_GetAllStasub("Project")
+	if err != nil {
+		c.HTML(500, "error.html", gin.H{
+			"title": "Internal Server Error",
+			"error": fmt.Sprintf("Failed to retrieve status: %v", err),
+		})
+		return
+	}
+
+	typ, err := app_db.Typ_GetAllTypsub("Project")
+	if err != nil {
+		c.HTML(500, "error.html", gin.H{
+			"title": "Internal Server Error",
+			"error": fmt.Sprintf("Failed to retrieve types: %v", err),
 		})
 		return
 	}
@@ -48,8 +67,8 @@ func Proj_Edit(c *gin.Context) {
 		"js":      "proj.js",
 
 		"project": project,
-		"sta":     app_db.Sta_GetAllStasub(1),
-		"typ":     app_db.Typ_GetAllTypsub(1),
+		"sta":     sta,
+		"typ":     typ,
 	})
 }
 

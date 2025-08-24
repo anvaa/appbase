@@ -4,6 +4,7 @@ import (
 	"app/app_models"
 	"fmt"
 	"os"
+
 	"gorm.io/gorm"
 )
 
@@ -95,18 +96,17 @@ func seedStatus(db *gorm.DB) {
 		{Title: "Project", Stasub: []app_models.Stasub{
 			{Name: "New", Type: "[D]"},
 			{Name: "Active", Type: ""},
-			{Name: "Completed", Type: ""},
-			{Name: "Cancelled", Type: ""},
+			{Name: "Paused", Type: ""},
 			{Name: "Archived", Type: ""},
 		}},
-		{Title: "ASEPCV", Stasub: []app_models.Stasub{ // Address, SIMCard, Email, Phone, Computer, Vehicle
+		{Title: "All", Stasub: []app_models.Stasub{ // Address, SIMCard, Email, Phone, Computer, Vehicle
 			{Name: "New", Type: "[D]"},
 			{Name: "Active", Type: ""},
 			{Name: "Inactive", Type: ""},
 			{Name: "Archived", Type: ""},
 			{Name: "Deleted", Type: ""},
 		}},
-		{Title: "Status 3", Stasub: []app_models.Stasub{
+		{Title: "Status 4", Stasub: []app_models.Stasub{
 			{Name: "New", Type: "[D]"},
 			{Name: "Active", Type: ""},
 			{Name: "Inactive", Type: ""},
@@ -131,17 +131,24 @@ func seedTypes(db *gorm.DB) {
 	}
 
 	types := []app_models.Type{
-		{Name: "Project", Typsub: []app_models.Typsub{
+		{Title: "Project", Typsub: []app_models.Typsub{
 			{Name: "Cover", Type: ""},
-			{Name: "Comunication", Type: ""},
+			{Name: "DLB", Type: ""},
 			{Name: "Other", Type: "[D]"},
 		}},
-		{Name: "AEP", Typsub: []app_models.Typsub{ // Address, Email, Phone
+		{Title: "Person", Typsub: []app_models.Typsub{
+			{Name: "New", Type: "[D]"},
+			{Name: "Agent", Type: ""},
+			{Name: "Contact", Type: ""},
+			{Name: "Cover", Type: ""},
+			{Name: "Other", Type: ""},
+		}},
+		{Title: "AEP", Typsub: []app_models.Typsub{ // Address, Email, Phone
 			{Name: "Private", Type: ""},
 			{Name: "work", Type: ""},
 			{Name: "Other", Type: "[D]"},
 		}},
-		{Name: "Notes", Typsub: []app_models.Typsub{
+		{Title: "Note", Typsub: []app_models.Typsub{
 			{Name: "Contact", Type: ""},
 			{Name: "Security", Type: ""},
 			{Name: "Other", Type: "[D]"},

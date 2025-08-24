@@ -50,12 +50,20 @@ func Note_Edit(c *gin.Context) {
 		return
 	}
 
+	typ, err := app_db.Typ_GetAllTypsub("note")
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
 	// Render the note edit template
 	c.HTML(http.StatusOK, "note_edit.html", gin.H{
 		"js": "note.js",
 
 		"note": note,
-		"typ":  app_db.Typ_GetAllTypsub(3),
+		"typ":  typ,
 	})
 }
 

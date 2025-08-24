@@ -1,50 +1,52 @@
 {{ template "menu.html" . }}
 
-{{ $typ := .typ }}
+{{ $sta := .sta }}
 {{ if .projects }}
     {{ $projects := .projects }}
     <div>
-        {{ range $typ }}
-            {{ $typid := .ID }}
+        {{ range $sta }}
+        {{ $staid := .ID }}
             <div class="proj-list-header">{{ .Name }}</div>
-            <div class="flex-container">
-                {{ if eq .ID 1 }}
-                    {{ range $projects }}
-                        {{ if eq .Typsub.ID $typid }}
-                            <div class="container" style="margin: 5px;">
-                                <div class="box-proj" onclick="fetchPage('/proj/{{.UUID}}')">
-                                    <div class="div-header-bold">{{ .Name }}</div>
-                                    <div class="flex-container" style="align-items: center; justify-content: space-between;">
-                                        <div>
-                                            <img src="/media/type.svg" alt="Type">{{ .Typsub.Name }}
-                                        </div>
-                                        <div>
-                                            <img src="/media/status.svg" alt="Status">{{ .Stasub.Name }}
-                                        </div>
-                                    </div>
+            <div class="flex-container" style="width: 100%; flex-wrap: wrap;">
+            {{ range $projects }}
+                {{ if eq .Stasub.ID $staid }}
+                    <div class="container">
+                        <div class="box-proj" onclick="fetchPage('/proj/{{.UUID}}')">
+                            <div class="div-header-bold" style="text-align: center;">{{ .Name }}</div>
+                            <div class="flex-container" style="align-items: center; justify-content: space-between;">
+                                <div>
+                                    <img src="/media/type.svg" alt="Type">{{ .Typsub.Name }}
                                 </div>
-                                <div class="box-meta" style="margin-top: -8px;">
-                                    <div class="container">
-                                        <img src="/media/person-fill-down.svg">
-                                        {{ .UpdatedBy.Email }}
-                                    </div>
-                                    <div class="container">
-                                        <img src="/media/calendar-day.svg">
-                                        {{ .UpdatedAt.Format "2006-01-02 15:04" }}
-                                    </div>
-                                    {{ if gt .DeletedbyID 1 }}
-                                        <div class="container">
-                                            <img src="/media/delete.svg">
-                                            {{ .DeletedAt.Format "2006-01-02 15:04" }}
-                                        </div>
-                                    {{ end }}
+                                <div>
+                                    <img src="/media/status.svg" alt="Status">{{ .Stasub.Name }}
                                 </div>
                             </div>
-                        {{ end }}
-                    {{ end }}
+                        </div>
+                        <div class="box-meta" style="margin-top: -8px;">
+                            <div class="container">
+                                <img src="/media/person-fill-down.svg">
+                                {{ .UpdatedBy.Email }}
+                            </div>
+                            <div class="container">
+                                <img src="/media/calendar-day.svg">
+                                {{ .UpdatedAt.Format "2006-01-02 15:04" }}
+                            </div>
+                            {{ if gt .DeletedbyID 1 }}
+                                <div class="container">
+                                    <img src="/media/delete.svg">
+                                    {{ .DeletedAt.Format "2006-01-02 15:04" }}
+                                </div>
+                            {{ end }}
+                        </div>
+                    </div>
                 {{ end }}
+            {{ end }}
             </div>
         {{ end }}
+    </div>
+{{ else }}
+    <div class="div-error">
+        <span class="error">No projects found.</span>
     </div>
 {{ end }}
 

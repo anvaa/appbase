@@ -52,7 +52,7 @@ type Stasub struct {
 }
 type Type struct {
 	BaseModel
-	Name   string   `gorm:"size:50" json:"name"`
+	Title   string   `gorm:"size:50" json:"title"`
 	Typsub []Typsub `gorm:"foreignKey:TypeID" json:"typsub"`
 }
 

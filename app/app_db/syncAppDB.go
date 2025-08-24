@@ -20,6 +20,7 @@ func SyncAppDB(db *gorm.DB) {
 
 		// App models
 		&app_models.Project{},
+		&app_models.Person{},
 		&app_models.Notes{},
 	)
 
@@ -32,6 +33,7 @@ func SyncAppDB(db *gorm.DB) {
 
 	// App models
 	seedProject(db)
+	seedPerson(db)
 	seedNotes(db)
 }
 

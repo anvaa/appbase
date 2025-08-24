@@ -6,6 +6,7 @@ import (
 	"srv/middleware"
 
 	"net/http"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -42,7 +43,16 @@ func MainMenu(c *gin.Context) {
 
 func Start(c *gin.Context) {
 	middleware.ValidateCSRFToken(c)
+
 	projects := app_db.GetAllProjects()
+	sta, err := app_db.Sta_GetAllStasub("Project")
+	if err != nil {
+		c.HTML(500, "error.html", gin.H{
+			"title": "Internal Server Error",
+			"error": fmt.Sprintf("Failed to retrieve status: %v", err),
+		})
+		return
+	}
 
 	c.HTML(http.StatusOK, "start.html", gin.H{
 		"apibase": setApiBase(c),
@@ -50,7 +60,7 @@ func Start(c *gin.Context) {
 		"title": appname,
 		"js":    "proj.js",
 
-		"typ":      app_db.Typ_GetAllTypsub(1),
+		"sta":      sta,
 		"projects": projects,
 	})
 }
