@@ -5,8 +5,8 @@ import (
 	"app/app_db"
 	"app/app_models"
 	"fmt"
-	"strings"
 	"strconv"
+	"strings"
 
 	"net/http"
 
@@ -14,10 +14,10 @@ import (
 )
 
 // Note_View displays a specific note
-func Note_View(c *gin.Context) {
+func Note_ViewProj(c *gin.Context) {
 	// Implementation here
 
-	notes, err := app_db.GetAllNotes(c.Param("id"))
+	notes, err := app_db.GetAllNotes(c.Param("id"), "")
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"error": err.Error(),
@@ -35,6 +35,33 @@ func Note_View(c *gin.Context) {
 		"js": "note.js",
 
 		"projid": c.Param("id"),
+		"persid": "0",
+		"notes":  notes,
+	})
+}
+
+func Note_ViewPers(c *gin.Context) {
+	// Implementation here
+
+	notes, err := app_db.GetAllNotes("", c.Param("id"))
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	// range thru notes and replace newlines with <br>
+	// for i := range notes {
+	// 	notes[i].Content = strings.ReplaceAll(notes[i].Content, "\n", "<br>")
+	// }
+
+	// Render the note view template
+	c.HTML(http.StatusOK, "note_view.html", gin.H{
+		"js": "note.js",
+
+		"projid": "0",
+		"persid": c.Param("id"),
 		"notes":  notes,
 	})
 }
@@ -50,7 +77,7 @@ func Note_Edit(c *gin.Context) {
 		return
 	}
 
-	typ, err := app_db.Typ_GetAllTypsub("note")
+	typ, err := app_db.Typ_GetAllTypsub("Note")
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"error": err.Error(),
@@ -70,9 +97,10 @@ func Note_Edit(c *gin.Context) {
 // Note_AddUpd adds or updates a note
 func Note_AddUpd(c *gin.Context) {
 	var body struct {
-		Projid  int    `json:"projid"`
-		UUID    int    `json:"uuid"`
-		Type    int    `json:"type"`
+		Projid  uint   `json:"projid"`
+		Persid  uint   `json:"persid"`
+		UUID    uint   `json:"uuid"`
+		Type    uint   `json:"type"`
 		Content string `json:"content"`
 		Header  string `json:"header"`
 	}
@@ -88,9 +116,9 @@ func Note_AddUpd(c *gin.Context) {
 	}
 
 	if body.Type == 0 {
-		body.Type = app_conf.GetInt("typdef3")
+		body.Type = app_conf.GetUInt("typdef3")
 	}
-	fmt.Println("Note:", body)
+	
 	_notes := app_models.Notes{
 		TypsubID: body.Type,
 		Content:  strings.TrimSpace(body.Content),
@@ -102,19 +130,26 @@ func Note_AddUpd(c *gin.Context) {
 	// Implementation here
 	if body.UUID > 0 {
 		// Update existing note
-		_notes.UpdatedbyID = CurUserID // Set the updater as well
+		_notes.UpdatedByID = CurUserID // Set the updater as well
 		if err := app_db.AppDB.Model(&app_models.Notes{}).Where("uuid = ?", body.UUID).Updates(&_notes).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 	} else {
 		// Create new note
-		_notes.CreatedbyID = CurUserID
-		_notes.UpdatedbyID = CurUserID // Set the updater as well
-		_notes.DeletedbyID = 1
+		_notes.CreatedByID = CurUserID
+		_notes.UpdatedByID = CurUserID // Set the updater as well
+		//_notes.DeletedByID = 1
 
-		_notes.ProjectID = body.Projid
+		if body.Projid > 0 {
+			_notes.ProjectID = body.Projid
+		}
 
+		if body.Persid > 0 {
+			_notes.PersonID = body.Persid
+		}
+
+		fmt.Printf("Note Projid: %d, Persid: %d, createdby: %d\n", _notes.ProjectID, _notes.PersonID, _notes.CreatedByID)
 		if err := app_db.AppDB.Model(&app_models.Notes{}).Create(&_notes).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -146,7 +181,7 @@ func Note_Delete(c *gin.Context) {
 	}
 
 	projid := note.ProjectID
-	note.DeletedbyID = CurUserID // Set the deleter as the current user
+	note.DeletedByID = CurUserID // Set the deleter as the current user
 
 	if err := app_db.AppDB.Delete(&note).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

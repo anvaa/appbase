@@ -5,7 +5,7 @@ import (
 	
 )
 
-func Sta_GetStaIDByTitle(title string) (int, error) {
+func Sta_GetStaIDByTitle(title string) (uint, error) {
 	var sta app_models.Status
 	if err := AppDB.Where("title = ?", title).First(&sta).Error; err != nil {
 		return 0, err

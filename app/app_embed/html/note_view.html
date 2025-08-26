@@ -1,4 +1,5 @@
 <input type="hidden" id="_projid" value="{{ .projid }}">
+<input type="hidden" id="_persid" value="{{ .persid }}">
 <input type="hidden" id="_content" value="">
 <input type="hidden" id="_header" value="">
 <input type="hidden" id="_type" value="0">
@@ -7,7 +8,7 @@
     <img src="/media/plus-circle.svg">
     New Note
 </button>
-
+{{ .projid }} {{ .persid }}
 {{ if .notes }}
 <div class="flex-container">
     <div style="margin-bottom: auto;">
@@ -46,7 +47,7 @@
                         {{ .UpdatedBy.Email }}
                     </span>
                 </div>
-                {{ if gt .DeletedbyID 1 }}
+                {{ if gt .DeletedByID 1 }}
                 <div class="flex-container">
                     <span class="meta-label">Deleted</span>
                     <span>

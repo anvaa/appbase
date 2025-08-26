@@ -11,8 +11,8 @@ import (
 
 var (
 	userKey = app_conf.UserKey
-	UserUUID int
-	UserID int
+	UserUUID uint
+	UserID uint
 )
 
 func IsAuth(c *gin.Context) {

@@ -19,6 +19,12 @@ func seedUsers(db *gorm.DB) {
 	}
 
 	users := []app_models.Users{
+		{Email: "dummy@dum.my",
+			Password: "$2a$10$gafMnfiqCrocD54Pk8IqB.RwW4LikoTwzhyHV73fyP,.07KmzGTlW", // Password: appadmin
+			IsAuth:   false,
+			Note:     "Dummy user 1 for foreign key",
+			Role:     "dummy"},
+		
 		{Email: "admin@app.loc",
 			Password: "$2a$10$gafMnfiqCrocF54Pk8IqB.RwW3LikotwzhyHV40fyP..07KmyGTlW", // Password: appadmin
 			IsAuth:   true,
@@ -42,7 +48,7 @@ func seedUsers(db *gorm.DB) {
 		db.Create(&users[i])
 	}
 
-	if len(users) != 3 {
+	if len(users) != 4 {
 		fmt.Println("Error seeding users")
 		os.Exit(1)
 	}
@@ -143,7 +149,7 @@ func seedTypes(db *gorm.DB) {
 			{Name: "Cover", Type: ""},
 			{Name: "Other", Type: ""},
 		}},
-		{Title: "AEP", Typsub: []app_models.Typsub{ // Address, Email, Phone
+		{Title: "All", Typsub: []app_models.Typsub{ // Address, Email, Phone
 			{Name: "Private", Type: ""},
 			{Name: "work", Type: ""},
 			{Name: "Other", Type: "[D]"},

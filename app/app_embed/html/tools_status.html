@@ -23,7 +23,7 @@
                     <select Name="_status{{$S_ID}}" size="6" class="tools-select" >
                         {{ range .Stasub }}
                         <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
-                            onclick="subSel('{{.UUID}}','{{$S_ID}}','status')">{{.Name}} {{.Type}}</option>
+                            onclick="subSel('{{.UUID}}','{{$S_ID}}','status')">{{.Name}} {{.Type}} {{.ID}}</option>
                         {{ end }}
                     </select> 
                 </div>

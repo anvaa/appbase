@@ -21,7 +21,14 @@
                                     <img src="/media/status.svg" alt="Status">{{ .Stasub.Name }}
                                 </div>
                             </div>
+                            <div class="flex-container" style="align-items: center; justify-content: space-between; border-top: 1px solid black; padding: 8px 0;">
+                                <div><img src="/media/pencil-square.svg" alt="Notes"> {{ len .Notes }}</div>
+                                <div><img src="/media/person.svg" alt="Persons"> {{ len .Persons }}</div>
+                                <div><img src="/media/envelope.svg" alt="Emails"> {{ len .Emails }}</div>
+
                         </div>
+                        </div>
+                        
                         <div class="box-meta" style="margin-top: -8px;">
                             <div class="container">
                                 <img src="/media/person-fill-down.svg">
@@ -31,7 +38,7 @@
                                 <img src="/media/calendar-day.svg">
                                 {{ .UpdatedAt.Format "2006-01-02 15:04" }}
                             </div>
-                            {{ if gt .DeletedbyID 1 }}
+                            {{ if gt .DeletedByID 1 }}
                                 <div class="container">
                                     <img src="/media/delete.svg">
                                     {{ .DeletedAt.Format "2006-01-02 15:04" }}

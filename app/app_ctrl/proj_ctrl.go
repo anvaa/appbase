@@ -13,6 +13,7 @@ import (
 )
 
 func Proj_View(c *gin.Context) {
+	
 	project, err := app_db.GetProjectByUUID(c.Param("id"))
 	if err != nil {
 		c.HTML(404, "error.html", gin.H{
@@ -82,7 +83,7 @@ func Proj_Delete(c *gin.Context) {
 		return
 	}
 
-	project.DeletedbyID = CurUserID // Set the deleter as the current user
+	project.DeletedByID = CurUserID // Set the deleter as the current user
 
 	if err := app_db.AppDB.Delete(&project).Error; err != nil {
 		c.HTML(500, "error.html", gin.H{
@@ -100,11 +101,11 @@ func Proj_Delete(c *gin.Context) {
 
 func Proj_AddUpd(c *gin.Context) {
 	var body struct {
-		UUID  int    `json:"uuid"`
+		UUID  uint    `json:"uuid"`
 		Name  string `json:"name"`
-		Staid int    `json:"staid"`
-		Typid int    `json:"typid"`
-		UID   int    `json:"uid"` // Current user ID
+		Staid uint    `json:"staid"`
+		Typid uint    `json:"typid"`
+		UID   uint    `json:"uid"` // Current user ID
 	}
 
 	if err := c.BindJSON(&body); err != nil {
@@ -126,8 +127,8 @@ func Proj_AddUpd(c *gin.Context) {
 
 	// set default status and type if not provided
 	if body.Staid == 0 || body.Typid == 0 {
-		body.Staid = app_conf.GetInt("stadef1")
-		body.Typid = app_conf.GetInt("typdef1")
+		body.Staid = app_conf.GetUInt("stadef1")
+		body.Typid = app_conf.GetUInt("typdef1")
 	}
 
 	// Prepare project data
@@ -135,7 +136,7 @@ func Proj_AddUpd(c *gin.Context) {
 		Name:     strings.TrimSpace(body.Name),
 		StasubID: body.Staid,
 		TypsubID: body.Typid,
-		UpdatedbyID: CurUserID,
+		UpdatedByID: CurUserID,
 	}
 
 	if body.UUID > 0 {
@@ -149,10 +150,10 @@ func Proj_AddUpd(c *gin.Context) {
 		}
 	} else {
 		// Add new project
-		_proj.CreatedbyID = CurUserID
-		_proj.UpdatedbyID = CurUserID // Set the updater as well
-		_proj.DeletedbyID = 1 // set default to admin
-		fmt.Println(_proj.Name, _proj.StasubID, _proj.TypsubID, _proj.CreatedbyID, _proj.UpdatedbyID)
+		_proj.CreatedByID = CurUserID
+		_proj.UpdatedByID = CurUserID // Set the updater as well
+		_proj.DeletedByID = 1 // set default to admin
+		fmt.Println(_proj.Name, _proj.StasubID, _proj.TypsubID, _proj.CreatedByID, _proj.UpdatedByID)
 		
 		if err := app_db.AppDB.Create(&_proj).Error; err != nil {
 			c.HTML(500, "error.html", gin.H{

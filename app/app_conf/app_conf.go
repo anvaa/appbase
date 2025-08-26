@@ -63,6 +63,10 @@ func GetInt(key string) int {
 	return appConf.GetInt(key)
 }
 
+func GetUInt(key string) uint {
+	return appConf.GetUint(key)
+}
+
 func GetInt64(key string) int64 {
 	return appConf.GetInt64(key)
 }

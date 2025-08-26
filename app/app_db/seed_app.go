@@ -2,7 +2,7 @@ package app_db
 
 import (
 	"app/app_models"
-	
+
 	"fmt"
 	"time"
 
@@ -19,8 +19,9 @@ func seedProject(db *gorm.DB) {
 	}
 
 	projects := []app_models.Project{
-		{Name: "Project Alpha", StasubID: 1, TypsubID: 1, CreatedbyID: 1, UpdatedbyID: 1, DeletedbyID: 1},
-		{Name: "Project Beta", StasubID: 2, TypsubID: 2, CreatedbyID: 1, UpdatedbyID: 1, DeletedbyID: 1},
+		{Name: "Dummy Project", StasubID: 1, TypsubID: 1},
+		{Name: "Project Alpha", StasubID: 1, TypsubID: 1},
+		{Name: "Project Beta", StasubID: 2, TypsubID: 2},
 	}
 
 	for i := range projects {
@@ -40,8 +41,9 @@ func seedPerson(db *gorm.DB) {
 	}
 
 	persons := []app_models.Person{
-		{FirstName: "John", LastName: "Doe", DOB: time.Now(), Gender: "Male", Nationality: "American", ProjectID: 1, StasubID: 1, TypsubID: 1, CreatedbyID: 1, UpdatedbyID: 1, DeletedbyID: 1},
-		{FirstName: "Jane", LastName: "Smith", DOB: time.Now(), Gender: "Female", Nationality: "British", ProjectID: 1, StasubID: 2, TypsubID: 2, CreatedbyID: 1, UpdatedbyID: 1, DeletedbyID: 1},
+		{FirstName: "Joe", LastName: "Doe", DOB: time.Now(), Gender: "Male", Nationality: "Norwegian", ProjectID: 1, StasubID: 1, TypsubID: 1},
+		{FirstName: "John", LastName: "Doe", DOB: time.Now(), Gender: "Male", Nationality: "ACanadian", ProjectID: 2, StasubID: 1, TypsubID: 1},
+		{FirstName: "Jane", LastName: "Smith", DOB: time.Now(), Gender: "Female", Nationality: "British", ProjectID: 3, StasubID: 2, TypsubID: 2},
 	}
 
 	for i := range persons {
@@ -61,16 +63,49 @@ func seedNotes(db *gorm.DB) {
 	}
 
 	notes := []app_models.Notes{
-		{Header: "Note Header 1", Content: "Note 1 Note 1 Note 1 Note 1 Note 1 Note 1 Note 1 Note 1 Note 1 Note 1 ", ProjectID: 1, PersonID: 1, TypsubID: 7},
-		{Header: "Note Header 2 Note Header 2", Content: "Note 2 Note 2 Note 2 Note 2 Note 2 Note 2 Note 2 Note 2 Note 2 Note 2 ", ProjectID: 1, PersonID: 1, TypsubID: 8},
-		{Header: "Note Header 3 Note 3", Content: "Note 3 Note 3 Note 3 Note 3 Note 3 Note 3 Note 3 Note 3 Note 3 Note 3 ", ProjectID: 1, PersonID: 1, TypsubID: 9},
-		{Header: "Note Header 4", Content: "Note 4 Note 4 Note 4 Note 4 Note 4 Note 4 Note 4 Note 4 Note 4 Note 4 ", ProjectID: 2, PersonID: 1, TypsubID: 7},
-		{Header: "Note Header 5 Note Header 5", Content: "Note 5 Note 5 Note 5 Note 5 Note 5 Note 5 Note 5 Note 5 Note 5 Note 5 ", ProjectID: 2, PersonID: 1, TypsubID: 8},
+		{Header: "Dummy Note", Content: "Initial note for Dummy Project and Person",
+			ProjectID: 1, PersonID: 1, TypsubID: 1},
+		{Header: "Initial Note Alfa", Content: "Initial note for Project Alpha",
+			ProjectID: 2, PersonID: 1, TypsubID: 7},
+		{Header: "Second Note Alfa", Content: "Second note for Project Alpha",
+			ProjectID: 2, PersonID: 2, TypsubID: 7},
+		{Header: "Initial Note Beta", Content: "Initial note for Project Beta",
+			ProjectID: 3, PersonID: 3, TypsubID: 7},
 	}
 
-	for i := range notes {
-		db.Create(&notes[i])
+	if err := db.Create(&notes).Error; err != nil {
+		fmt.Printf("Failed to seed notes: %v\n", err)
+		return
 	}
 
 	fmt.Println("Notes Seeded:")
+}
+
+func seedEmail(db *gorm.DB) {
+	// Check if the number of emails is > 0
+	var count int64
+	db.Model(&app_models.Emails{}).Count(&count)
+	if count > 0 {
+		fmt.Println("Emails already seeded")
+		return
+	}
+
+	emails := []app_models.Emails{
+		{Email: "dummy@du.mmy", Password: "password123", Nationality: "Norwegian",
+			PersonID: 1, ProjectID: 1, TypsubID: 11, StasubID: 5},
+		{Email: "john.doe@example.com", Password: "password123", Nationality: "Canadian",
+			PersonID: 2, ProjectID: 2, TypsubID: 11, StasubID: 5},
+		{Email: "jane.smith@example.com", Password: "password123", Nationality: "British",
+			PersonID: 3, ProjectID: 3, TypsubID: 11, StasubID: 5},
+		{Email: "jenny.hansen@example.com", Password: "password123", Nationality: "British",
+			PersonID: 1, ProjectID: 2, TypsubID: 11, StasubID: 5},
+		{Email: "peter@example.com", Password: "password123", Nationality: "British",
+			PersonID: 3, ProjectID: 3, TypsubID: 11, StasubID: 5},
+	}
+
+	for i := range emails {
+		db.Create(&emails[i])
+	}
+
+	fmt.Println("Emails Seeded:")
 }

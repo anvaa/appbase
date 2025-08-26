@@ -5,7 +5,7 @@
     <div style="margin: 5px; margin-bottom: auto;">
         {{ with .project }}
             <input type="hidden" id="_projid{{.UUID}}" value="{{.ID}}">
-            <div class="box-proj" style="cursor: default;">
+            <div class="box" style="cursor: default;">
                 <div class="flex-container">
                     <div style="margin: 5px;">{{ .Name }}</div>
                     <button class="edit-btn" title="Edit Project" onclick="treeData('/proj/edit/{{ .UUID }}')">
@@ -25,15 +25,62 @@
 
         <!-- Tree View start -->
         <div id="treeView" class="tree_view">
-            <ul>
-                {{ $notes := .project.Notes }}
-                <li>
-                    <span onclick="treeData('/note/{{ .project.ID }}')" title="Notes">
-                        <img src="/media/pencil-square.svg" alt="Notes">
-                        Notes ({{ len $notes }})
-                    </span>
-                </li>
-            </ul>
+            
+            <span onclick="treeData('/note/proj/{{ .project.ID }}')" title="Notes">
+                <img src="/media/pencil-square.svg">
+                Notes ({{ len .project.Notes }})
+            </span>
+
+            <span onclick="treeData('/email/proj/{{ .project.ID }}')" title="Emails">
+                <img src="/media/envelope.svg">
+                Emails ({{ len .project.Emails }})
+            </span>
+
+
+
+            
+
+            {{ with .project.Persons }}
+                <ul>
+                    <li>
+                        <span title="Persons" onclick="toggleTreeView('pers{{$.project.UUID}}')">
+                            <img src="/media/person.svg" alt="Persons">
+                            Persons ({{ len . }})
+                        </span>
+                        <ul id="tree-pers{{$.project.UUID}}" style="display: none;">
+                            {{ range . }}
+                            {{ $pers := . }}
+                            <li>
+                                <span title="Person {{ .UUID }}" onclick="toggleTreeView('sub-pers{{$pers.UUID}}')">
+                                    <img src="/media/person-fill.svg" alt="Person">
+                                    {{ $pers.FirstName }}{{ with $pers.Typsub }} ({{ .Name }}){{ end }}
+                                </span>
+                                <ul id="tree-persitems{{$pers.UUID}}" style="display: block; margin-left: 10px;">
+                                    {{ with .Notes }}
+                                    <li>
+                                        <span title="Notes" onclick="treeData('/note/pers/{{ $pers.ID }}')">
+                                            <img src="/media/pencil-square.svg" alt="Note">
+                                            Notes ({{ len . }})
+                                        </span>
+                                        
+                                    </li>
+                                    {{ end }}
+                                    {{ with .Emails }}
+                                    <li>
+                                        <span title="Emails">
+                                            <img src="/media/envelope.svg" alt="Emails">
+                                            Emails ({{ len . }})
+                                        </span>
+                                    </li>
+                                    {{ end }}
+
+                                </ul>
+                            </li>
+                            {{ end }}
+                        </ul>
+                    </li>
+                </ul>
+            {{ end }}
         </div>
         <!-- Tree View end -->
     </div>
@@ -50,6 +97,6 @@ function toggleTreeView(uuid) {
 </script>
 {{ else }}
 <div class="div-error">
-    <span class="error">Ingen prosjekter funnet.</span>
+    <span class="error">No projects found.</span>
 </div>
 {{ end }}

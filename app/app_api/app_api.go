@@ -64,7 +64,8 @@ func App_Api(r *gin.Engine) *gin.Engine {
 	{
 		noteGrp.Use(middleware.IsAuth)
 
-		noteGrp.GET("/:id", app_ctrl.Note_View) // view note page
+		noteGrp.GET("proj/:id", app_ctrl.Note_ViewProj) // view note page
+		noteGrp.GET("pers/:id", app_ctrl.Note_ViewPers) // view note page
 		noteGrp.GET("/edit/:id", app_ctrl.Note_Edit)	 // edit note page
 
 		noteGrp.POST("/addupd", app_ctrl.Note_AddUpd) // add or update note function

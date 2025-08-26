@@ -10,8 +10,8 @@ import (
 
 type BaseModel struct {
 	gorm.Model
-	ID   int `gorm:"primaryKey,autoIncrement" json:"id"`
-	UUID int `gorm:"unique,default:0" json:"uuid"` // Unique identifier for the record
+	ID   uint `gorm:"primaryKey,autoIncrement" json:"id"`
+	UUID uint `gorm:"unique,default:0" json:"uuid"` // Unique identifier for the record
 
 	CreatedAt time.Time      `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
@@ -20,7 +20,7 @@ type BaseModel struct {
 
 // BeforeCreate sets a UUID before creating a record.
 func (b *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
-	b.UUID = int(uuid.New().ID())
+	b.UUID = uint(uuid.New().ID())
 	return
 }
 
@@ -48,7 +48,7 @@ type Stasub struct {
 	BaseModel
 	Name     string `gorm:"size:50" json:"name"`
 	Type     string `gorm:"size:5" json:"type"`
-	StatusID int    `json:"status_id"`
+	StatusID uint    `json:"status_id"`
 }
 type Type struct {
 	BaseModel
@@ -60,7 +60,7 @@ type Typsub struct {
 	BaseModel
 	Name   string `gorm:"size:50" json:"name"`
 	Type   string `gorm:"size:5" json:"type"`
-	TypeID int    `json:"type_id"`
+	TypeID uint    `json:"type_id"`
 }
 
 type Menu struct {
@@ -74,5 +74,5 @@ type Menusub struct {
 	BaseModel
 	Name   string `gorm:"size:50" json:"name"`
 	Type   string `gorm:"size:5" json:"type"`
-	MenuID int    `json:"menu_id"`
+	MenuID uint    `json:"menu_id"`
 }

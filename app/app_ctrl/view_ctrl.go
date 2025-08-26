@@ -14,8 +14,8 @@ import (
 var (
 	appname     = app_conf.AppName
 	appinfo     = app_conf.AppInfo()
-	CurUserID   int
-	CurUserUUID int
+	CurUserID   uint
+	CurUserUUID uint
 )
 
 type api_base struct {

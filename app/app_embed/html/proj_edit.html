@@ -65,17 +65,17 @@
             {{.UpdatedBy.Email}}
         </div>
     </div>
-    {{if gt .DeletedbyID 1}}
-    <div class="flex-container">
-        <div style="margin-right: 5px;">Deleted</div>
-        <div>
-            <img src="/media/calendar-day.svg">
-            {{.DeletedAt.Format "2006-01-02 15:04"}}
-            <img src="/media/person-fill-slash.svg">
-            {{.DeletedBy.Email}}
+        {{ if gt .DeletedByID 1 }}
+        <div class="flex-container">
+            <div style="margin-right: 5px;">Deleted</div>
+            <div>
+                <img src="/media/calendar-day.svg">
+                {{.DeletedAt.Format "2006-01-02 15:04"}}
+                <img src="/media/person-fill-slash.svg">
+                {{.DeletedBy.Email}}
+            </div>
         </div>
-    </div>
-    {{end}}
+        {{end}}
     {{end}}
 </div>
 

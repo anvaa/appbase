@@ -11,7 +11,7 @@ async function noteAddUpd(_uuid) {
     const _content = document.getElementById('_content').value;
     const _header = document.getElementById('_header').value;
     const _projid = document.getElementById('_projid').value;
-
+    const _persid = document.getElementById('_persid').value;
 
     if (_uuid > 0) {
         if (!_content.trim() || !_header.trim()) {
@@ -27,6 +27,7 @@ async function noteAddUpd(_uuid) {
             body: JSON.stringify({
                 uuid: parseInt(_uuid, 10),
                 projid: parseInt(_projid, 10),
+                persid: parseInt(_persid, 10),
                 type: parseInt(_type, 10),
                 content: _content.trim(),
                 header: _header.trim()

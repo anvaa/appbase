@@ -46,7 +46,7 @@ func User_GetByEmail(email string) (app_models.Users, error) {
 	return userbyemail, nil
 }
 
-func User_SetLastLogin(uuid int) error {
+func User_SetLastLogin(uuid uint) error {
 	// Update the last login time of the user
 	err := AppDB.Model(&app_models.Users{}).Where("uuid = ?", uuid).Update("last_login", time.Now())
 	if err.Error != nil {

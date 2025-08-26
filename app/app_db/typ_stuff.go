@@ -5,7 +5,7 @@ import (
 	
 )
 
-func Typ_GetAllTypIDByTitle(title string) (int, error) {
+func Typ_GetAllTypIDByTitle(title string) (uint, error) {
 	var typ app_models.Type
 	if err := AppDB.Where("title = ?", title).First(&typ).Error; err != nil {
 		return 0, err

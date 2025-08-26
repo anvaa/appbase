@@ -54,8 +54,8 @@ func Typ_Delete(c *gin.Context) {
 
 func Typ_AddUpd(c *gin.Context) {
 	var body struct {
-		Typ_id   int    `json:"mnu_id"`
-		Sub_uuid int    `json:"sub_uuid"`
+		Typ_id   uint    `json:"mnu_id"`
+		Sub_uuid uint    `json:"sub_uuid"`
 		Val      string `json:"val"`
 	}
 
