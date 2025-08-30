@@ -2,6 +2,8 @@ package user
 
 import (
 	"app/app_conf"
+	"app/app_models"
+	"user/user_conf"
 	"user/user_ctrl"
 	"user/user_db"
 
@@ -10,6 +12,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
+var appinfo = app_conf.AppInfo()
+
+func appbase(c *gin.Context) app_models.Appbase {
+	return app_models.Appbase{
+		Title:   app_conf.AppName,
+		User:    c.Keys[user_conf.UserKey],
+		Appinfo: appinfo,
+	}
+}
 
 func Root(c *gin.Context) {
 	c.Redirect(http.StatusMovedPermanently, "/login")
@@ -70,9 +82,9 @@ func View_NewUsers(c *gin.Context) {
 	new_users, _ := user_db.Users_GetNew()
 
 	c.HTML(http.StatusOK, "users_new.html", gin.H{
-		"title":    "New users",
-		"user":     c.Keys["user"],
-		"js":       "users.js",
+		"appbase":   appbase(c),
+		"title":     "New users",
+		"js":        "users.js",
 		"new_users": new_users,
 	})
 }
@@ -84,9 +96,8 @@ func View_ManageUsers(c *gin.Context) {
 	del_users, _ := user_db.Users_GetDeleted()
 
 	c.HTML(http.StatusOK, "users.html", gin.H{
-		"title": "Manage Users",
-		"user":  c.Keys["user"],
-		"js":    "users.js",
+		"appbase": appbase(c),
+		"js":      "users.js",
 
 		"auth_users":   auth_users,
 		"unauth_users": unauth_users,
@@ -104,10 +115,10 @@ func View_EditUser(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "user_edit.html", gin.H{
-		"title": "Edit User",
-		"js":    "users.js",
-		"css":   "tools.css",
-		"user":  c.Keys["user"],
+		"appbase": appbase(c),
+		"title":   "Edit User",
+		"js":      "users.js",
+		"css":     "tools.css",
 
 		"edituid": edit_user,
 	})
@@ -116,9 +127,9 @@ func View_EditUser(c *gin.Context) {
 func View_MyAccount(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "myaccount.html", gin.H{
+		"appbase": appbase(c),
 		"title":   "My Account",
 		"css":     "",
 		"js":      "myaccount.js",
-		"user":    c.Keys["user"],
 	})
 }

@@ -17,26 +17,6 @@ var (
 	ErrUserNotFound = errors.New("user: something went wrong")
 )
 
-
-// SetPassword hashes the password and sets it
-func SetPassword(userid uint,password string) error {
-	var usr app_models.Users
-	// if user exists
-	app_db.AppDB.First(&usr, "id = ?", userid)
-	if usr.ID == 0 {
-		return ErrUserNotFound
-	}
-
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return err
-	}
-
-	// update
-	usr.Password = string(hash)
-	return app_db.AppDB.Save(&usr).Error
-}
-
 // CheckPassword compares a plaintext password with the hashed password
 func CheckPassword(userid uint,password string) bool {
 	var usr app_models.Users
