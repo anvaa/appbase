@@ -13,8 +13,6 @@ var DataDir string
 var StaticDir string
 var AssetsDir string
 var ReportsDir string
-var QRImgDir string
-var BarImgDir string
 
 var fileName string = "srv.yaml"
 var fileType string = "yaml"
@@ -83,8 +81,7 @@ func SetPaths() {
 	AssetsDir = "assets"
 	StaticDir = "static"
 	ReportsDir = AssetsDir + "/reports"
-	QRImgDir = AssetsDir + "/qr_img"
-	BarImgDir = AssetsDir + "/bar_img"
+	
 }
 
 func TLSKeySize() int {
