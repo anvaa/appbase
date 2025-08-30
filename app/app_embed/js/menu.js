@@ -11,7 +11,7 @@ document.addEventListener("keydown", function (event) {
 });
 
 function Start() {
-    window.location.href = "/app/start";
+    window.location.href = "/app";
 }
 
 function Tools() {

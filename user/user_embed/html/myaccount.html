@@ -1,7 +1,9 @@
 {{ template "menu.html" . }}
 
+{{ $user := .appbase.User }}
+
 <div class="flex-container">
-    <input type="hidden" id="_email" value="{{ .User.Email }}" />
+    <input type="hidden" id="_email" value="{{ $user.Email }}" />
 
     <div class="tools-box">
             <table>
@@ -22,7 +24,7 @@
                     <td style="text-align: center;">
                         <input type="button" value="Save Password" 
                         class="menubutton" style="width: 155px;margin-top:5px;" 
-                        onclick="NewPsw('{{ .User.UUID}}')" />
+                        onclick="NewPsw('{{ $user.UUID}}')" />
                     </td>
                 </tr>
             </table>

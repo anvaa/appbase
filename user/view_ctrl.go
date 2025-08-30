@@ -2,10 +2,10 @@ package user
 
 import (
 	"app/app_conf"
+	"app/app_db"
 	"app/app_models"
 	"user/user_conf"
 	"user/user_ctrl"
-	"user/user_db"
 
 	"fmt"
 	"net/http"
@@ -79,7 +79,7 @@ func View_Login(c *gin.Context) {
 }
 
 func View_NewUsers(c *gin.Context) {
-	new_users, _ := user_db.Users_GetNew()
+	new_users, _ := app_db.Users_GetNew()
 
 	c.HTML(http.StatusOK, "users_new.html", gin.H{
 		"appbase":   appbase(c),
@@ -91,9 +91,9 @@ func View_NewUsers(c *gin.Context) {
 
 func View_ManageUsers(c *gin.Context) {
 
-	auth_users, _ := user_db.Users_GetAuth()
-	unauth_users, _ := user_db.Users_GetUnAuth()
-	del_users, _ := user_db.Users_GetDeleted()
+	auth_users, _ := app_db.Users_GetAuth()
+	unauth_users, _ := app_db.Users_GetUnAuth()
+	del_users, _ := app_db.Users_GetDeleted()
 
 	c.HTML(http.StatusOK, "users.html", gin.H{
 		"appbase": appbase(c),
@@ -108,7 +108,7 @@ func View_ManageUsers(c *gin.Context) {
 func View_EditUser(c *gin.Context) {
 	edit_id := c.Param("uid")
 
-	edit_user, err := user_db.User_GetById(edit_id)
+	edit_user, err := app_db.User_GetById(edit_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get user"})
 		return

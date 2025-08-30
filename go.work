@@ -23,6 +23,5 @@ use (
 	./user/user_ctrl
 	./user/user_conf
 	./user/user_sec
-	./user/user_db
 
 )

@@ -6,16 +6,18 @@ import (
 	"github.com/spf13/viper"
 )
 
-var srvConf = *viper.New()
+var (
+	srvConf = *viper.New()
 
-var AppDir string
-var DataDir string
-var StaticDir string
-var AssetsDir string
-var ReportsDir string
+	fileName string = "srv.yaml"
+	fileType string = "yaml"
 
-var fileName string = "srv.yaml"
-var fileType string = "yaml"
+	AppDir   string
+	DataDir  string
+	StaticDir string
+	AssetsDir string
+	ReportsDir string
+)
 
 func init() {
 	srvConf.SetConfigName(fileName)
@@ -81,7 +83,6 @@ func SetPaths() {
 	AssetsDir = "assets"
 	StaticDir = "static"
 	ReportsDir = AssetsDir + "/reports"
-	
 }
 
 func TLSKeySize() int {

@@ -52,6 +52,7 @@ func CheckFolder() error {
 		filefunc.CreateFolder(assets_dir)
 		filefunc.CreateFolder(srv_conf.DataDir)
 		filefunc.CreateFolder(srv_conf.ReportsDir)
+		
 		log.Println("Created assed dir:", assets_dir)
 	}
 

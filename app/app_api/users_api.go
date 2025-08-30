@@ -38,7 +38,7 @@ func user_Api(r *gin.Engine) *gin.Engine {
 		userRoutes.POST("/delete", user_ctrl.User_DeleteUser)
 		userRoutes.POST("/auth", user_ctrl.User_UpdateAuth)
 		userRoutes.POST("/role", user_ctrl.User_UpdateRole)
-		userRoutes.POST("/org", user_ctrl.User_UpdOrg)
+		userRoutes.POST("/org", user_ctrl.User_UpdateOrg)
 	}
 
 	viewRoutes := r.Group("/v")

@@ -38,7 +38,7 @@ func App_Api(r *gin.Engine) *gin.Engine {
 	{
 		appGrp.Use(middleware.IsAuth)
 
-		appGrp.GET("/start", app_ctrl.Start)
+		appGrp.GET("/", app_ctrl.Start)
 		
 	}
 

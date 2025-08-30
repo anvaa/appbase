@@ -87,27 +87,32 @@ func hashPassword(password string) (string, error) {
 }
 
 func seedMenus(db *gorm.DB) {
-
-	// Check if the database is empty
 	var count int64
 	db.Model(&app_models.Menu{}).Count(&count)
 	if count > 0 {
-		fmt.Println("MnuDB already seeded")
+		fmt.Println("Menus already seeded")
 		return
 	}
 
-	// Seed the database with initial data
-	menus := []app_models.Menu{
-		{Title: "Title0", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title1", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title2", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title3", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title4", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title5", Type: "sub", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title6", Type: "mnu", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title7", Type: "mnu", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title8", Type: "mnu", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
-		{Title: "Title9", Type: "mnu", Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}}},
+	menuDefs := []struct {
+		Title string
+		Type  string
+	}{
+		{"Title1", "sub"},
+		{"Title2", "sub"},
+		{"Title3", "sub"},
+		{"Title4", "sub"},
+		{"Title5", "sub"},
+		{"Title6", "mnu"},
+	}
+
+	menus := make([]app_models.Menu, len(menuDefs))
+	for i, def := range menuDefs {
+		menus[i] = app_models.Menu{
+			Title:   def.Title,
+			Type:    def.Type,
+			Menusub: []app_models.Menusub{{Name: "def", Type: "[D]"}},
+		}
 	}
 
 	for i := range menus {
@@ -115,11 +120,9 @@ func seedMenus(db *gorm.DB) {
 	}
 
 	fmt.Println("Menus and Menusub Seeded")
-
 }
 
 func seedStatus(db *gorm.DB) {
-	// Check if number of status are > 0
 	var count int64
 	db.Model(&app_models.Status{}).Count(&count)
 	if count > 0 {
@@ -127,31 +130,36 @@ func seedStatus(db *gorm.DB) {
 		return
 	}
 
-	status := []app_models.Status{
-		{Title: "Status0", Stasub: []app_models.Stasub{
-			{Name: "Ny", Type: "[D]"},
-			{Name: "Notat0", Type: ""},
+	statuses := []struct {
+		Title  string
+		Stasub []app_models.Stasub
+	}{
+		{"Status 1", []app_models.Stasub{
+			{Name: "New", Type: "[D]"},
+			{Name: "Other 11", Type: ""},
 		}},
-		{Title: "Status1", Stasub: []app_models.Stasub{
-			{Name: "Ny", Type: "[D]"},
-			{Name: "Notat1", Type: ""},
+		{"Status 2", []app_models.Stasub{
+			{Name: "New", Type: "[D]"},
+			{Name: "Other 22", Type: ""},
 		}},
-		{Title: "Status2", Stasub: []app_models.Stasub{
-			{Name: "Ny", Type: "[D]"},
-			{Name: "Notat2", Type: ""},
+		{"Status 3", []app_models.Stasub{
+			{Name: "New", Type: "[D]"},
+			{Name: "Other 33", Type: ""},
 		}},
 	}
 
-	for i := range status {
-		db.Create(&status[i])
+	for _, s := range statuses {
+		status := app_models.Status{
+			Title:  s.Title,
+			Stasub: s.Stasub,
+		}
+		db.Create(&status)
 	}
 
 	fmt.Println("Statuses Seeded")
-
 }
 
 func seedTypes(db *gorm.DB) {
-	// Check if number of types are > 0
 	var count int64
 	db.Model(&app_models.Type{}).Count(&count)
 	if count > 0 {
@@ -159,18 +167,30 @@ func seedTypes(db *gorm.DB) {
 		return
 	}
 
-	types := []app_models.Type{
-		{Name: "Type 1", Typsub: []app_models.Typsub{
-			{Name: "type11"},
-			{Name: "type12"}}},
-		{Name: "Type 2", Typsub: []app_models.Typsub{
-			{Name: "type21"},
-			{Name: "type22"}}},
+	typeDefs := []struct {
+		Title  string
+		Typsub []app_models.Typsub
+	}{
+		{"Type 1", []app_models.Typsub{
+			{Name: "type11", Type: "[D]"},
+			{Name: "type12", Type: ""},
+		}},
+		{"Type 2", []app_models.Typsub{
+			{Name: "type21", Type: "[D]"},
+			{Name: "type22", Type: ""},
+		}},
+		{"Type 3", []app_models.Typsub{
+			{Name: "type31", Type: "[D]"},
+			{Name: "type32", Type: ""},
+		}},
 	}
 
-	for i := range types {
-		db.Create(&types[i])
+	for _, def := range typeDefs {
+		t := app_models.Type{
+			Title:  def.Title,
+			Typsub: def.Typsub,
+		}
+		db.Create(&t)
 	}
 	fmt.Println("Types Seeded")
-
 }

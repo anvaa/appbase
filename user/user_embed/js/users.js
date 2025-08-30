@@ -121,7 +121,7 @@ async function Orgname(_uuid) {
         uuid: _uuid,
         orgname: _orgname,
     };
-
+    // alert(JSON.stringify(userData));
     try {
         const response = await fetch("/user/org", {
             method: "POST",
@@ -154,7 +154,7 @@ async function setAuth(_uuid, _auth) {
     }
 
     var data = {
-        uuid: parseInt(_uuid),
+        uuid: _uuid,
         auth: _auth,
     };
     // alert(JSON.stringify(data));
