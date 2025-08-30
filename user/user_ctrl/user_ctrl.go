@@ -15,6 +15,8 @@ import (
 	"sync"
 	"time"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,6 +40,13 @@ func canAttemptLogin(ip string) bool {
 }
 
 func SignUp(c *gin.Context) {
+
+	ip := c.ClientIP()
+	if !canAttemptLogin(ip) {
+		c.JSON(http.StatusTooManyRequests, gin.H{"message": "Please wait before trying again."})
+		return
+	}
+
 	var body struct {
 		Email     string `json:"email"`
 		Password  string `json:"password"`
@@ -89,11 +98,16 @@ func SignUp(c *gin.Context) {
 		Role:   role,
 		IsAuth: isauth,
 		Note:   "Nil",
+		Orgname: orgname,
 	}
-	if err := user_db.SetPassword(user.ID, password); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "InternalServerError"})
+
+	hash, err := hashPassword(password)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "server error"})
 		return
 	}
+	user.Password = hash
+
 	if err := user_db.CreateNewUser(&user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
@@ -114,6 +128,7 @@ func Login(c *gin.Context) {
 	       c.JSON(http.StatusTooManyRequests, gin.H{"message": "Please wait before trying again."})
 	       return
        }
+
 	var body struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
@@ -274,10 +289,17 @@ func User_SetNewPassword(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "User not found"})
 		return
 	}
-	if err := user_db.SetPassword(user.ID, body.Psw1); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to hash password"})
+
+	// generate new hash from password
+	hash, err := hashPassword(body.Psw1)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to hash password"})
 		return
 	}
+
+	// update user
+	user.Password = string(hash)
+
 	// Increment TokenVersion to invalidate all existing JWTs
 	user.TokenVersion++
 	err = app_db.AppDB.Model(&user).Updates(map[string]interface{}{"password": user.Password, "token_version": user.TokenVersion}).Error
@@ -305,4 +327,9 @@ func User_UpdOrg(c *gin.Context) {
 	User_UpdOrg(c)
 
 	c.JSON(http.StatusOK, gin.H{"message": "success"})
+}
+
+func hashPassword(password string) (string, error) {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(hash), err
 }
