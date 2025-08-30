@@ -1,36 +1,26 @@
 package app_conf
 
 import (
-	"fmt"
 	"time"
+	"fmt"
+
+	"app/app_models"
 )
 
 var StartTime int64
 
-var (
-	Company string = "Raadig AS"
-	AppName string = "Alias"
-	AppNameLong string = "- Your second life -"
-	Version string = time.Now().Format("060102")
-)
+var Company string = "Raadig AS"
+var AppName string = "Recensio"
+var AppNameLong string = "Recensio - Ditt andre liv"
+var Version string = time.Now().Format("060102")
 
-
-
-type appInfo struct {
-	Company     string
-	AppName     string
-	AppNameLong string
-	Version     string
-	DBName      string
-}
-
-func AppInfo() appInfo {
-	return appInfo{Company, 
-			AppName, 
-			AppNameLong, 
-			Version, 
-			GetDBName(),
-		}
+func AppInfo() app_models.Appinfo {
+	return app_models.Appinfo{
+		Company:     Company,
+		AppName:     AppName,
+		AppNameLong: AppNameLong,
+		Version:     Version,
+	}
 }
 
 func RunTime() string {

@@ -1,62 +1,19 @@
 {{ template "menu.html" . }}
 
-{{ $sta := .sta }}
-{{ if .projects }}
-    {{ $projects := .projects }}
-    <div>
-        {{ range $sta }}
-        {{ $staid := .ID }}
-            <div class="proj-list-header">{{ .Name }}</div>
-            <div class="flex-container" style="width: 100%; flex-wrap: wrap;">
-            {{ range $projects }}
-                {{ if eq .Stasub.ID $staid }}
-                    <div class="container">
-                        <div class="box-proj" onclick="fetchPage('/proj/{{.UUID}}')">
-                            <div class="div-header-bold" style="text-align: center;">{{ .Name }}</div>
-                            <div class="flex-container" style="align-items: center; justify-content: space-between;">
-                                <div>
-                                    <img src="/media/type.svg" alt="Type">{{ .Typsub.Name }}
-                                </div>
-                                <div>
-                                    <img src="/media/status.svg" alt="Status">{{ .Stasub.Name }}
-                                </div>
-                            </div>
-                            <div class="flex-container" style="align-items: center; justify-content: space-between; border-top: 1px solid black; padding: 8px 0;">
-                                <div><img src="/media/pencil-square.svg" alt="Notes"> {{ len .Notes }}</div>
-                                <div><img src="/media/person.svg" alt="Persons"> {{ len .Persons }}</div>
-                                <div><img src="/media/envelope.svg" alt="Emails"> {{ len .Emails }}</div>
-
-                        </div>
-                        </div>
-                        
-                        <div class="box-meta" style="margin-top: -8px;">
-                            <div class="container">
-                                <img src="/media/person-fill-down.svg">
-                                {{ .UpdatedBy.Email }}
-                            </div>
-                            <div class="container">
-                                <img src="/media/calendar-day.svg">
-                                {{ .UpdatedAt.Format "2006-01-02 15:04" }}
-                            </div>
-                            {{ if gt .DeletedByID 1 }}
-                                <div class="container">
-                                    <img src="/media/delete.svg">
-                                    {{ .DeletedAt.Format "2006-01-02 15:04" }}
-                                </div>
-                            {{ end }}
-                        </div>
-                    </div>
-                {{ end }}
-            {{ end }}
-            </div>
-        {{ end }}
-    </div>
-{{ else }}
-    <div class="div-error">
-        <span class="error">No projects found.</span>
-    </div>
+<div class="div-header-bold">Start Page</div>
+<div id="_msg"></div>
+<h5>Titles & Menu test</h5>
+<b>{{.menu0.Title}}</b>
+{{ range .menu0.Menusub }}
+<div>{{.Name}}</div>
 {{ end }}
 
-<script>
-    hideAddProject(false);
-</script>
+<br>
+<h5>JS Test</h5>
+<div class="flex-container" style="width: 100px;; margin-top: 3px;">
+    <input type="text" id="_text" placeholder="Write something" />
+    <input type="button" value="Show text" class="menubutton" onclick="ShowText()" />
+</div>
+<div id="_show"></div>
+
+{{ template "footer.html" . }}

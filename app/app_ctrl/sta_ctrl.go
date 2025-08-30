@@ -35,8 +35,8 @@ func sortStatuses(menu []app_models.Status) []app_models.Status {
 
 func Sta_AddUpd(c *gin.Context) {
 	var body struct {
-		Mnu_id   uint    `json:"mnu_id"`
-		Sub_uuid uint    `json:"sub_uuid"`
+		Mnu_id   int    `json:"mnu_id"`
+		Sub_uuid int    `json:"sub_uuid"`
 		Val      string `json:"val"`
 	}
 

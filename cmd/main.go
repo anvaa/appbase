@@ -1,15 +1,15 @@
 package main
 
 import (
-	"srv/global"
-	"srv/server"
-	"srv/srv_conf"
-	"srv/srv_sec"
-	"srv_int"
-	users "usr"
+	"server"
+	"server/global"
+	"server/srv_conf"
+	"server/srv_sec"
+
+	"user"
 
 	"app"
-	"app/app_conf"
+	"app/app_conf"	
 	"app/app_db"
 
 	"os/signal"
@@ -23,7 +23,7 @@ import (
 
 var (
 	app_dir string = getWD()
-	Hostip []string
+	Hostip  []string
 
 	CloseChan = make(chan os.Signal, 1)
 )
@@ -33,13 +33,13 @@ func init() {
 	setupCloseHandler()
 
 	// Check/make srv.yaml
-	err := srv_int.ServerInit(app_dir)
+	err := server.ServerInit(app_dir)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Check/make userdb, usr.yaml & user http.FileSystem
-	err = users.UserInit(app_dir)
+	err = user.UserInit(app_dir)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -70,7 +70,7 @@ func getWD() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	return wd
 }
 

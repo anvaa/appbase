@@ -1,6 +1,7 @@
 {{ template "header.html" . }}
 
-{{ $user := .apibase.User }}
+{{ $user := .appbase.User }}
+
 
 <div class="menu-flex-container">
     <div onclick="AppInfo()">
@@ -10,11 +11,6 @@
     <button class="menubutton" onclick="Start()" title="ctrl + 1">
         <img src="/media/diagram-3.svg" class="btn-img" alt="">
         Projects
-    </button>
-
-    <button id="_add_project" class="menubutton-add" onclick="projAddUpd('0')">
-        <img src="/media/plus-circle.svg" class="btn-img">
-        New Project
     </button>
 
     <div style="flex-grow: 1;"></div>
@@ -45,7 +41,3 @@
 
 <div id="_msg"></div>
 <input type="hidden" id="_page" value="" />
-
-<script>
-    hideAddProject(true);
-</script>

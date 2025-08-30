@@ -3,8 +3,8 @@ package app_embed
 import (
 	"embed"
 
-	"srv/filefunc"
-	"srv/srv_conf"
+	"server/filefunc"
+	"server/srv_conf"
 )
 
 //go:embed assets/*

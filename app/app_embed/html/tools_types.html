@@ -5,7 +5,7 @@
         <div class="flex-container">
         {{ range .typ }}
         <div class="tools-box">
-            <div class="div-header">{{.Title}} ({{ len .Typsub }})</div>
+            <div class="div-header">{{.Name}} ({{ len .Typsub }})</div>
             {{$T_ID := printf "typ%d" .ID}}
             <div>
                 <div>
@@ -23,7 +23,7 @@
                     <select Name="_type{{$T_ID}}" size="4" class="tools-select" >
                         {{ range .Typsub }}
                         <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
-                            onclick="subSel('{{.UUID}}','{{$T_ID}}','type')">{{.Name}} {{.Type}} {{.ID}}</option>
+                            onclick="subSel('{{.UUID}}','{{$T_ID}}','type')">{{.Name}}</option>
                         {{ end }}
                     </select> 
                 </div>

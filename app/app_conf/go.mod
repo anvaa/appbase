@@ -1,11 +1,8 @@
 module app/app_conf
 
-go 1.24.0
+go 1.24.2
 
-require (
-	github.com/google/uuid v1.6.0
-	github.com/spf13/viper v1.20.1
-)
+require github.com/spf13/viper v1.20.1
 
 require (
 	github.com/fsnotify/fsnotify v1.9.0 // indirect

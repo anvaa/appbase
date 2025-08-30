@@ -8,8 +8,8 @@ import (
 	"app/app_db"
 	"app/app_embed"
 
-	"srv/filefunc"
-	"srv/srv_conf"
+	"server/filefunc"
+	"server/srv_conf"
 )
 
 func AppInit(app_folder string) error {
@@ -40,7 +40,6 @@ func AppInit(app_folder string) error {
 
 	// get default values fro DB
 	setStatusNewId()
-	setTypesNewId()
 
 	return nil
 }
@@ -61,14 +60,4 @@ func setStatusNewId() {
 		app_conf.SetVal(_txt, newid)
 	}
 
-}
-
-func setTypesNewId() {
-	// Get the next type ID
-	typ_def := app_db.Typ_GetTypSubIDByType("[D]")
-	for _, v := range typ_def {
-		newid := v.ID
-		_txt := fmt.Sprintf("typdef%d", v.TypeID)
-		app_conf.SetVal(_txt, newid)
-	}
 }

@@ -26,9 +26,9 @@
 
 /* Menu image */
 .btn-img {
-    width: 16px;
-    height: 16px;
-    margin-left: 2px;
+    width: 15px;
+    height: 15px;
+    margin-left: 3px;
     background: transparent;
 }
 
@@ -42,7 +42,6 @@ span {
 
 /* Button and logo styles */
 .menubutton,
-.menubutton-add,
 .submenubutton,
 .menu-logo {
     border: 1px solid var(--color-border);
@@ -65,12 +64,6 @@ span {
     border-color: var(--color-span);
 }
 
-.menubutton-add:hover {
-    background: rgb(1, 180, 1);
-}
-
-
-
 .submenubutton {
     padding: 2px;
     background: var(--color-subbutton-bg);
@@ -82,12 +75,9 @@ span {
 
 /* Logo specific */
 .menu-logo {
-    width: 33px;
-    height: 33px;
-    margin-top: 0px;
-    padding: 0px;
-
-    border: 0px solid var(--color-border);
+    width: 30px;
+    height: 30px;
+    margin-top: 1px;
 }
 
 /* Footer */

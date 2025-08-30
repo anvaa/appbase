@@ -2,12 +2,9 @@ package app_conf
 
 import (
 	"app/app_models"
-	"fmt"
 	"log"
-	"strings"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/spf13/viper"
 )
 
@@ -15,12 +12,6 @@ var (
 	appConf         = *viper.New()
 	fileName string = "app.yaml"
 	fileType string = "yaml"
-
-	CookieName          = strings.ReplaceAll(AppName, " ", "") + "_Auth"
-	CookieExpire int    = 24 * 60 * 60 // 24 hours 
-	UserKey      string = GetUserKey()
-
-	DBName string
 )
 
 func init() {
@@ -32,15 +23,7 @@ func init() {
 func WriteDefaultConfig(appRoot string) {
 	// SetDefault sets the default value for the key.
 	appConf.SetDefault("app_db", "data/app.db")
-	appConf.SetDefault("app_dir", appRoot)
-	appConf.SetDefault("print_height", 24)
-	appConf.SetDefault("print_width", 160)
-	appConf.SetDefault("print_margin", 3)
-	appConf.SetDefault("print_font_size", 16)
-	appConf.SetDefault("print_txt", 1)
-	appConf.SetDefault("session_expire", time.Hour*24*1) // 1 day
 	appConf.SetDefault("start_url", "/app/start") // Default start page
-	appConf.SetDefault("note_sort_type", 1)
 
 	err := appConf.WriteConfigAs(fileName)
 	if err != nil {
@@ -61,10 +44,6 @@ func GetString(key string) string {
 
 func GetInt(key string) int {
 	return appConf.GetInt(key)
-}
-
-func GetUInt(key string) uint {
-	return appConf.GetUint(key)
 }
 
 func GetInt64(key string) int64 {
@@ -95,6 +74,17 @@ func StatusDefault() int {
 	return GetInt("status_default")
 }
 
+func GetSubDefaults() []int {
+	var defs []int
+	defs = append(defs, GetInt("sub0_default"))
+	defs = append(defs, GetInt("sub1_default"))
+	defs = append(defs, GetInt("sub2_default"))
+	defs = append(defs, GetInt("sub3_default"))
+	defs = append(defs, GetInt("sub4_default"))
+	defs = append(defs, GetInt("sub5_default"))
+	return defs
+}
+
 func AppConf() app_models.AppConf {
 	// Get the app config
 	conf := app_models.AppConf{
@@ -103,18 +93,3 @@ func AppConf() app_models.AppConf {
 	return conf
 }
 
-func SessionExpire() time.Duration {
-	// Get the session expire time from the config
-	return GetDuration("session_expire")
-}
-
-func GetDBName() string {
-	// Get app_dir and app_db from the 
-	dbname := fmt.Sprintf("%s/%s", GetString("start_url"), GetString("app_db"))
-	return dbname
-}
-
-func GetUserKey() string {
-	// Generate a unique user key if not set
-	return fmt.Sprintf("%d", uuid.New().ID())
-}

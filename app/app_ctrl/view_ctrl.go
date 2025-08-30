@@ -3,103 +3,60 @@ package app_ctrl
 import (
 	"app/app_conf"
 	"app/app_db"
-	"srv/middleware"
+	"app/app_models"
+	"user/user_conf"
 
 	"net/http"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
 
-var (
-	appname     = app_conf.AppName
-	appinfo     = app_conf.AppInfo()
-	CurUserID   uint
-	CurUserUUID uint
-)
+var appinfo = app_conf.AppInfo()
 
-type api_base struct {
-	User    any
-	Appinfo any
-}
-
-func setApiBase(c *gin.Context) any {
-	CurUserUUID = middleware.UserUUID
-	CurUserID = middleware.UserID
-	apibase := api_base{
-		User:    c.Keys[app_conf.UserKey],
+func appbase(c *gin.Context) app_models.Appbase {
+	return app_models.Appbase{
+		Title:   app_conf.AppName,
+		User:    c.Keys[user_conf.UserKey],
 		Appinfo: appinfo,
 	}
-	return apibase
-}
-
-func MainMenu(c *gin.Context) {
-	middleware.ValidateCSRFToken(c)
-	c.HTML(http.StatusOK, "menu.html", gin.H{
-		"apibase": setApiBase(c),
-		"title":   app_conf.AppName,
-	})
 }
 
 func Start(c *gin.Context) {
-	middleware.ValidateCSRFToken(c)
-
-	projects := app_db.GetAllProjects()
-	sta, err := app_db.Sta_GetAllStasub("Project")
-	if err != nil {
-		c.HTML(500, "error.html", gin.H{
-			"title": "Internal Server Error",
-			"error": fmt.Sprintf("Failed to retrieve status: %v", err),
-		})
-		return
-	}
-
+	menu := app_db.Get_MenuTitles()
 	c.HTML(http.StatusOK, "start.html", gin.H{
-		"apibase": setApiBase(c),
-
-		"title": appname,
-		"js":    "proj.js",
-
-		"sta":      sta,
-		"projects": projects,
+		"appbase": appbase(c),
+		"title":   app_conf.AppName,
+		"js":      "start.js",
+		"menu0":   menu[0],
 	})
 }
 
 func ToolsTitles(c *gin.Context) {
-	middleware.ValidateCSRFToken(c)
 	menu := app_db.Get_MenuTitles()
-
 	c.HTML(http.StatusOK, "tools_titles.html", gin.H{
-		"apibase": setApiBase(c),
+		"appbase": appbase(c),
 		"title":   app_conf.AppName + " - Titles",
 		"js":      "tools.js",
-
-		"menu": menu,
+		"menu":    menu,
 	})
 }
 
 func ToolsStatus(c *gin.Context) {
-	middleware.ValidateCSRFToken(c)
 	sta := Sta_GetStatuses()
-
 	c.HTML(http.StatusOK, "tools_status.html", gin.H{
-		"apibase": setApiBase(c),
+		"appbase": appbase(c),
 		"title":   app_conf.AppName + " - Statuses",
 		"js":      "tools.js",
-
-		"sta": sta,
+		"sta":     sta,
 	})
 }
 
 func ToolsTypes(c *gin.Context) {
-	middleware.ValidateCSRFToken(c)
 	typ := Typ_GetTypes()
-
 	c.HTML(http.StatusOK, "tools_types.html", gin.H{
-		"apibase": setApiBase(c),
+		"appbase": appbase(c),
 		"title":   app_conf.AppName + " - Types",
 		"js":      "tools.js",
-
-		"typ": typ,
+		"typ":     typ,
 	})
 }

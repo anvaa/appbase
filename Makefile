@@ -1,3 +1,4 @@
+# Makefile for building the Go application
 
 # GOOS=darwin GOARCH=amd64
 
@@ -26,3 +27,10 @@ clean:
 		rm bin/$(buildname)_$(os).$(arch); \
 	fi
 	
+## Run 'go mod tidy' in all folders with a go.mod file
+tidy:
+	@find . -name 'go.mod' -execdir go mod tidy \;
+
+## Run 'go get -u' in all folders with a go.mod file
+update:
+	@find . -name 'go.mod' -execdir go get -u \;

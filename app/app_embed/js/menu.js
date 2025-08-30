@@ -10,21 +10,6 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-// hide div with id '_add_project'
-function hideAddProject(hide = true) {
-    const addProjectButton = document.getElementById("_add_project");
-
-    if (hide) {
-        addProjectButton.style.display = "none";
-    } else {
-        addProjectButton.style.display = "block";
-    }
-
-
-}
-
-
-
 function Start() {
     window.location.href = "/app/start";
 }
@@ -63,50 +48,31 @@ function toolsTypes() {
 }
 
 
-async function fetchPage(url) {
-    // Get url
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        window.location.href = url;
-    } catch (error) {
-        console.error("Error fetching page:", error);
-        ShowMsg("error", "Failed to load page");
-    }
+function fetchPage(url,js) {
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(html => {
+            // Replace the content of the main element with the fetched HTML
+            const content = document.getElementById("content");
+            // emty whole window before loading new content
+            document.body.innerHTML = ""; 
+
+            document.getElementById("content").innerHTML = html;
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+            ShowMsg("Error loading page: " + error.message, "error");
+        });
 }
 
-async function treeData(url) {
-    // Get html go template and open it in div id '_viewTreeData'
-    // alert("Loading tree data: " + url);
-    // split url on / and get the first word
-    const urlParts = url.split('/');
-    const jsfile = urlParts[1];
 
-    
-        const script = document.createElement('script');
-        script.src = '/js/' + jsfile + '.js';
-        document.head.appendChild(script);
-    
 
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const html = await response.text();
-        const viewData = document.getElementById("_viewTreeData");
-        if (viewData) {
-            viewData.innerHTML = html;
-        }
-    } catch (error) {
-        console.error("Error fetching tree data:", error);
-        ShowMsg("error", "Failed to load tree data");
-    }
-}
-
-function ShowMsg(type, val) {
+function ShowMsg(val, type) {
     const msgEl = document.getElementById("_msg");
     if (!msgEl) return;
 
@@ -149,6 +115,6 @@ function ShowMsg(type, val) {
             msgEl.style.opacity = "1"; // reset opacity for next message
             document.body.style.pointerEvents = "auto"; // unlock page for input
         }, 500);
-    }, 5000);
+    }, 3000);
 
 }
