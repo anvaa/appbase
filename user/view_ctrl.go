@@ -17,7 +17,7 @@ var appinfo = app_conf.AppInfo()
 
 func appbase(c *gin.Context) app_models.Appbase {
 	return app_models.Appbase{
-		Title:   app_conf.AppName,
+		Title:   app_conf.AppInfo().AppName,
 		User:    c.Keys[user_conf.UserKey],
 		Appinfo: appinfo,
 	}
@@ -61,7 +61,9 @@ func View_Signup(c *gin.Context) {
 		"title": "Signup",
 		"css":   "index.css",
 		"js":    "index.js",
-		"count": count,
+
+		"count":      count,
+		"logo_small": app_conf.LogoSmall(),
 	})
 }
 
@@ -75,6 +77,9 @@ func View_Login(c *gin.Context) {
 		"title": "Login",
 		"css":   "index.css",
 		"js":    "index.js",
+
+		"logo_small": app_conf.LogoSmall(),
+		"logo_large": app_conf.LogoLarge(),
 	})
 }
 

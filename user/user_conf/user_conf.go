@@ -17,7 +17,7 @@ var (
 	fileName = "usr.yaml"
 	fileType = "yaml"
 
-	CookieName          = strings.Replace(app_conf.AppName, " ", "", -1) + "_Auth"
+	CookieName          = strings.Replace(app_conf.AppInfo().AppName, " ", "", -1) + "_Auth"
 	CookieExpire int    = 24 * 60 * 60 // 24 hours
 	UserKey      string = global.UuidToString(uuid.New().ID())
 )

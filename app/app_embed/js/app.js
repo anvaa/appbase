@@ -40,21 +40,22 @@ function ShowText() {
 }
 
 function ShowMsg(type = "info", msg) {
-    if (type == "error") {
-        msg = "<span style='color: red;font-weight: bold'>" + msg + "</span>";
-    } else if (type == "success") {
-        msg = "<span style='color: green;'>" + msg + "</span>";
-    } else {
-        msg = "<span style='color: blue;'>" + msg + "</span>";
-    }
-    document.getElementById("_msg").style.fontFamily = "monospace";
-    document.getElementById("_msg").style.fontSize = "18px";
-    document.getElementById("_msg").innerHTML = msg;
+    const msgColors = {
+        error: "red;font-weight: bold",
+        success: "green",
+        info: "blue"
+    };
+    const colorStyle = msgColors[type] || msgColors.info;
+    const formattedMsg = `<span style='color: ${colorStyle}'>${msg}</span>`;
 
-    setTimeout(function () {
-        document.getElementById("_msg").innerHTML = "";
-    }, 5000);
-    
+    const msgElem = document.getElementById("_msg");
+    msgElem.style.fontFamily = "monospace";
+    msgElem.style.fontSize = "18px";
+    msgElem.innerHTML = formattedMsg;
+
+    setTimeout(() => {
+        msgElem.innerHTML = "";
+    }, 4000);
 }
 
 function badword(txt) {

@@ -1,120 +1,129 @@
-
-document.addEventListener("keydown", function (event) {  
-    
-    if (event.ctrlKey && event.key === "1") {
-        Start();
-    }
-
-    if (event.ctrlKey && event.key === "q") {
-        Logout();
+document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey) {
+        switch (event.key) {
+            case "1":
+                Start();
+                break;
+            case "q":
+                Logout();
+                break;
+        }
     }
 });
 
+function navigateTo(url) {
+    window.location.href = url;
+}
+
 function Start() {
-    window.location.href = "/app";
+    navigateTo("/app");
 }
 
 function Tools() {
-    window.location.href = "/tools/titles";
+    navigateTo("/tools/titles");
 }
 
 function Users() {
-    window.location.href = "/v/users";
+    navigateTo("/v/users");
 }
 
 function MyAccount() {
-    window.location.href = "/v/myaccount";
+    navigateTo("/v/myaccount");
 }
 
 function AppInfo() {
-    window.location.href = "/info";
+    navigateTo("/info");
 }
 
 function Logout() {
-    window.location.href = "/logout";
+    navigateTo("/logout");
 }
 
 // Tools menus
 function toolsTitles() {
-    window.location.href = "/tools/titles";
+    navigateTo("/tools/titles");
 }
 
 function toolsStatus() {
-    window.location.href = "/tools/status";
+    navigateTo("/tools/status");
 }
 
 function toolsTypes() {
-    window.location.href = "/tools/types";
+    navigateTo("/tools/types");
 }
 
+async function fetchPage(url) {
+    try {
+        // Dynamically load related JS file based on URL
+        const urlParts = url.split('/');
+        const jsfile = urlParts[1];
+        if (jsfile) {
+            const script = document.createElement('script');
+            script.src = `/js/${jsfile}.js`;
+            script.async = true;
+            document.head.appendChild(script);
+        }
 
-function fetchPage(url,js) {
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(html => {
-            // Replace the content of the main element with the fetched HTML
-            const content = document.getElementById("content");
-            // emty whole window before loading new content
-            document.body.innerHTML = ""; 
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const html = await response.text();
 
-            document.getElementById("content").innerHTML = html;
-        })
-        .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
-            ShowMsg("Error loading page: " + error.message, "error");
-        });
+        // Replace body content with new page
+        document.body.innerHTML = "";
+
+        const content = document.createElement("div");
+        content.id = "content";
+        content.innerHTML = html;
+        document.body.appendChild(content);
+
+        // Call global js() if defined
+        if (typeof window.js === "function") {
+            window.js();
+        }
+    } catch (error) {
+        console.error('Error loading page:', error);
+        ShowMsg("Error loading page: " + error.message, "error");
+    }
 }
-
-
 
 function ShowMsg(val, type) {
     const msgEl = document.getElementById("_msg");
     if (!msgEl) return;
 
-    // loxck page for input
     document.body.style.pointerEvents = "none";
 
     msgEl.innerHTML = val;
-    msgEl.style.margin = "2px";
-    msgEl.style.fontSize = "large";
-    msgEl.style.fontWeight = "bold";
-    msgEl.style.fontFamily = "monospace";
-    msgEl.style.width = "fit-content";
-    msgEl.style.padding = "2px";
-    msgEl.style.borderRadius = "5px";
-
-    let borderColor;
-    switch (type) {
-        case "error":
-            borderColor = "red";
-            break;
-        case "success":
-            borderColor = "green";
-            break;
-        case "info":
-            borderColor = "blue";
-            break;
-        default:
-            borderColor = "black";
-    }
-    msgEl.style.border = `3px solid ${borderColor}`;
-    msgEl.style.color = `${borderColor}`;
+    Object.assign(msgEl.style, {
+        margin: "2px",
+        fontSize: "large",
+        fontWeight: "bold",
+        fontFamily: "monospace",
+        width: "fit-content",
+        padding: "2px",
+        borderRadius: "5px",
+        border: `3px solid ${getBorderColor(type)}`,
+        color: getBorderColor(type),
+        display: "block",
+        opacity: "1",
+        transition: ""
+    });
 
     setTimeout(() => {
-        // fade out the message
         msgEl.style.transition = "opacity 0.5s";
         msgEl.style.opacity = "0";
-        // after the fade out, hide the message
         setTimeout(() => {
             msgEl.style.display = "none";
-            msgEl.style.opacity = "1"; // reset opacity for next message
-            document.body.style.pointerEvents = "auto"; // unlock page for input
+            msgEl.style.opacity = "1";
+            document.body.style.pointerEvents = "auto";
         }, 500);
     }, 3000);
+}
 
+function getBorderColor(type) {
+    switch (type) {
+        case "error": return "red";
+        case "success": return "green";
+        case "info": return "blue";
+        default: return "black";
+    }
 }

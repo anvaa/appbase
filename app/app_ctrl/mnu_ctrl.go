@@ -1,7 +1,7 @@
 package app_ctrl
 
 import (
-	"fmt"
+	
 	"net/http"
 	"strings"
 
@@ -22,7 +22,7 @@ func Mnu_UpdTitels(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("Mnu_UpdTitels:", body)
+	// fmt.Println("Mnu_UpdTitels:", body)
 	if body.Mnu_id != 500 || body.Sub_uuid == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid menu ID or submenu UUID"})
 		return

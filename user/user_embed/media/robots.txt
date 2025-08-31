@@ -1,3 +1,2 @@
-# Allow/Disallow web crawlers
-User-agent: Disallow
-Disallow: all
+User-agent: *
+Disallow: /

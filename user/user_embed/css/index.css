@@ -1,9 +1,25 @@
+
+:root {
+    --color-primary: #4B4B3B;
+    --color-secondary: #A89F91;
+    --color-background: #ECE7DF;
+    --color-text: #2D2D2D;
+    --color-border: #7C6F57;
+    --color-th: #B8B2A1;
+    --color-accent: #8C7B6B;
+    --color-danger: #B85C38;
+    --color-btn: #A89F91;
+    --color-btn-hover: #CFC6B2;
+}
+
 body {
     margin: 5px;
     padding: 10px;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: rgb(240,240,240);
+    background-color: var(--color-background);
+    color: var(--color-text);
 }
+
 
 input[type=text], input[type=password], input[type=email], input[type=number] {
     width: 200px;
@@ -11,34 +27,35 @@ input[type=text], input[type=password], input[type=email], input[type=number] {
     margin: 8px 0;
     box-sizing: border-box;
     font-size: medium;
+    border-radius: 5px;
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    color: var(--color-text);
 }
+
 
 .loginbtn, .subbutton {
     margin-top: auto;
     margin-bottom: 2px;
-    
     width: 100%;
-    height: 25px;
-    
+    height: 30px;
     border-radius: 5px;
-    
-    border: 1px solid rgb(80, 80, 80);
-    background: rgb(160, 160, 160);
-    color: rgb(40, 40, 40);
-
-    cursor: pointer;
-}
-.loginbtn {
+    border: 1px solid var(--color-border);
+    background: var(--color-btn);
+    color: var(--color-primary);
     font-size: medium;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
 }
 .loginbtn:hover, .subbutton:hover {
-    border: 1px solid rgb(40, 40, 40);
-    background: rgb(220, 220, 220);
+    border: 1px solid var(--color-primary);
+    background: var(--color-btn-hover);
+    color: var(--color-text);
 }
-
-.subbutton, .subbutton {
+.subbutton {
     padding: 3px 5px;
 }
+
 
 .flex-container {
     display: flex;
@@ -47,16 +64,18 @@ input[type=text], input[type=password], input[type=email], input[type=number] {
     height: 100%;
 }
 
+
 .header-text {
     font-weight: bold;
     font-size: larger;
     text-align: center;
-    color: black;
+    color: var(--color-primary);
     padding: 3px;
 }
 
+
 .errmessage {
-    color: red;
+    color: var(--color-danger);
     width: 95%;
     padding: 3px 5px;
     border-radius: 10px;
@@ -67,18 +86,16 @@ input[type=text], input[type=password], input[type=email], input[type=number] {
     font-family: monospace;
 }
 
+
 .configbox {
     padding: 1px;
-    
     border-radius: 5px;
-    border: 2px solid black;
-
-    width: fit-content; 
-    background-color: rgb(200, 200, 200);
-    margin-top: 5px;
-
+    border: 2px solid var(--color-border);
     width: fit-content;
+    background-color: var(--color-th);
+    margin-top: 5px;
 }
+
 
 .menu-logo {
     width: 30px;

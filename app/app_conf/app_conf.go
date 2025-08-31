@@ -25,6 +25,14 @@ func WriteDefaultConfig(appRoot string) {
 	appConf.SetDefault("app_db", "data/app.db")
 	appConf.SetDefault("start_url", "/app") // Default start page
 
+	appConf.SetDefault("company_name", "CompanyName")
+	appConf.SetDefault("app_name", "AppBase")
+	appConf.SetDefault("app_name_long", "AppBase Long Name")
+	appConf.SetDefault("app_version", "")
+	appConf.SetDefault("logo_small", "logo_small.png")
+	appConf.SetDefault("logo_large", "logo_large.png")
+
+
 	err := appConf.WriteConfigAs(fileName)
 	if err != nil {
 		log.Fatal("Error writing", fileName)
@@ -93,3 +101,10 @@ func AppConf() app_models.AppConf {
 	return conf
 }
 
+func LogoSmall() string {
+	return GetString("logo_small")
+}
+
+func LogoLarge() string {
+	return GetString("logo_large")
+}

@@ -1,25 +1,29 @@
 package app_conf
 
 import (
-	"time"
 	"fmt"
+	"time"
 
 	"app/app_models"
 )
 
-var StartTime int64
-
-var Company string = "Raadig AS"
-var AppName string = "Recensio"
-var AppNameLong string = "Recensio - Ditt andre liv"
-var Version string = time.Now().Format("060102")
+var (
+	StartTime int64
+	version   string
+)
 
 func AppInfo() app_models.Appinfo {
+
+	version = GetString("app_version")
+	if version == "" {
+		version = time.Now().Format("060102")
+	}
+
 	return app_models.Appinfo{
-		Company:     Company,
-		AppName:     AppName,
-		AppNameLong: AppNameLong,
-		Version:     Version,
+		Company:     GetString("company_name"),
+		AppName:     GetString("app_name"),
+		AppNameLong: GetString("app_name_long"),
+		Version:     version,
 	}
 }
 
