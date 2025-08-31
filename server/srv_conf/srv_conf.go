@@ -32,7 +32,7 @@ func WriteConfigFile(app_path string) error {
 	srvConf.SetDefault("server_port", 5443)
 	srvConf.SetDefault("gin_mode", "release")
 	srvConf.SetDefault("app_dir", app_path)
-	srvConf.SetDefault("tls_keysize", 2048)
+	srvConf.SetDefault("tls_keysize", 4096)
 
 	err := srvConf.WriteConfigAs(fileName)
 	if err != nil {
@@ -80,7 +80,7 @@ func IsGinModDebug() bool {
 
 func SetPaths() {
 	DataDir = "data"
-	AssetsDir = "assets"
+	AssetsDir = "appfiles"
 	StaticDir = "static"
 	ReportsDir = AssetsDir + "/reports"
 }

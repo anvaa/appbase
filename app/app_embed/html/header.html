@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="robots" content="noindex, nofollow" />
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
     <title>{{ .title }}</title>
     <link rel="apple-touch-icon" href="/media/apple-touch-icon.png">
 
@@ -10,13 +10,12 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/menu.css">
     <link rel="stylesheet" href="/css/app.css">
-    <link rel="stylesheet" href="/css/tools.css">
 
     <!-- Permanent JS -->
-    <script src="/js/menu.js"></script> 
+    <script src="/js/menu.js"></script>
 
     <!-- Dynamic CSS and JS -->
-    {{ if .css }}<link rel="stylesheet" href="/css/{{ .css }}">{{ end }}
-    {{ if .js }}<script src="/js/{{ .js }}"></script>{{ end }}
+    {{ with .css }}<link rel="stylesheet" href="/css/{{ . }}">{{ end }}
+    {{ with .js }}<script src="/js/{{ . }}"></script>{{ end }}
 </head>
 <body>

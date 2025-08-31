@@ -1,19 +1,14 @@
 package global
 
 import (
-	
 	"fmt"
 	"net"
 	"strconv"
 	"strings"
 )
 
+// StringToInt converts a string to int, returns 0 on error or empty string.
 func StringToInt(str string) int {
-
-	if str == "" {
-		return 0
-	}
-
 	i, err := strconv.Atoi(str)
 	if err != nil {
 		return 0
@@ -21,12 +16,8 @@ func StringToInt(str string) int {
 	return i
 }
 
+// StringToInt64 converts a string to int64, returns 0 on error or empty string.
 func StringToInt64(str string) int64 {
-
-	if str == "" {
-		return 0
-	}
-
 	i, err := strconv.ParseInt(str, 10, 64)
 	if err != nil {
 		return 0
@@ -34,7 +25,8 @@ func StringToInt64(str string) int64 {
 	return i
 }
 
-func StringToBits(s string) byte {
+// StringToBits converts a string to uint8, returns 0 on error.
+func StringToBits(s string) uint8 {
 	b, err := strconv.ParseUint(s, 10, 8)
 	if err != nil {
 		return 0
@@ -42,69 +34,61 @@ func StringToBits(s string) byte {
 	return uint8(b)
 }
 
+// IntToString converts an int to string.
 func IntToString(val int) string {
 	return strconv.Itoa(val)
 }
 
+// UuidToString converts a uint32 to string.
 func UuidToString(uuid uint32) string {
-	return fmt.Sprintf("%d", uuid)
+	return strconv.FormatUint(uint64(uuid), 10)
 }
 
+// ActToString returns a human-readable duration string from seconds.
 func ActToString(t int) string {
-
 	if t == 0 {
-		t = 3600 // 1 hours
+		t = 3600 // 1 hour
 	}
-
-	// sec := t % 60
 	min := t / 60
 	hour := min / 60
 	min = min % 60
 	day := hour / 24
 	hour = hour % 24
 
-	var timeString string
 	switch {
+	case day > 0 && hour > 0 && min > 0:
+		return fmt.Sprintf("%d days, %d hours, %d minutes", day, hour, min)
+	case day > 0 && hour > 0:
+		return fmt.Sprintf("%d days, %d hours", day, hour)
 	case day > 0:
-		timeString = fmt.Sprintf("%d days", day)
-		if hour > 0 {
-			timeString = fmt.Sprintf("%d days, %d hours", day, hour)
-		}
-		if min > 0 {
-			timeString = fmt.Sprintf("%d days, %d hours, %d minutes", day, hour, min)
-		}
+		return fmt.Sprintf("%d days", day)
+	case hour > 0 && min > 0:
+		return fmt.Sprintf("%d hours, %d minutes", hour, min)
 	case hour > 0:
-		timeString = fmt.Sprintf("%d hours", hour)
-		if min > 0 {
-			timeString = fmt.Sprintf("%d hours, %d minutes", hour, min)
-		}
-	case min > 0:
-		timeString = fmt.Sprintf("%d minutes", min)
+		return fmt.Sprintf("%d hours", hour)
 	default:
-		timeString = fmt.Sprintf("%d minutes", min)
+		return fmt.Sprintf("%d minutes", min)
 	}
-
-	return timeString
 }
 
+// CalculateAccessTime converts minutes (as string) to seconds (int64).
 func CalculateAccessTime(t string) int64 {
-
 	min := StringToInt(t)
 	if min == 0 {
 		min = 1
 	}
-
 	return int64(min * 60)
 }
 
+// ShortenText truncates a string to nrc characters, appending " .." if truncated.
 func ShortenText(txt string, nrc int) string {
-	if len(txt) > nrc {
-		nrc = nrc - 3
-		txt = txt[:nrc] + " .."
+	if len(txt) > nrc && nrc > 3 {
+		return txt[:nrc-3] + " .."
 	}
 	return txt
 }
 
+// GetIPv4Addresses returns a slice of non-loopback, non-docker IPv4 addresses.
 func GetIPv4Addresses() ([]string, error) {
 	var ips []string
 	interfaces, err := net.Interfaces()
@@ -113,19 +97,13 @@ func GetIPv4Addresses() ([]string, error) {
 	}
 
 	for _, iface := range interfaces {
-		// Check if the interface is up and skip if it's not.
-		if iface.Flags&net.FlagUp == 0 {
-			continue // Interface down
+		if iface.Flags&net.FlagUp == 0 || iface.Flags&net.FlagLoopback != 0 {
+			continue
 		}
-		if iface.Flags&net.FlagLoopback != 0 {
-			continue // Loopback interface
-		}
-
 		addrs, err := iface.Addrs()
 		if err != nil {
 			return nil, err
 		}
-
 		for _, addr := range addrs {
 			var ip net.IP
 			switch v := addr.(type) {
@@ -134,18 +112,14 @@ func GetIPv4Addresses() ([]string, error) {
 			case *net.IPAddr:
 				ip = v.IP
 			}
-
-			// To get the IP address in IPv4 format, check if it is IPv4 first.
-			if ip.To4() != nil {
-				// if ip is docker ip, skip
-				_ip := strings.Split(ip.String(), ".")
-				if _ip[0] == "172" {
+			if ip4 := ip.To4(); ip4 != nil {
+				octets := strings.Split(ip4.String(), ".")
+				if len(octets) > 0 && octets[0] == "172" { // Skip Docker IPs
 					continue
 				}
-				ips = append(ips, ip.String())
+				ips = append(ips, ip4.String())
 			}
 		}
 	}
-
 	return ips, nil
 }

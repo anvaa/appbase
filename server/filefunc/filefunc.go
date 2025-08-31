@@ -2,7 +2,6 @@ package filefunc
 
 import (
 	"embed"
-	"fmt"
 	"io/fs"
 	"log"
 	"os"
@@ -12,72 +11,48 @@ import (
 )
 
 func IsExists(path string) bool {
-	// if folder/file exists
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return false
-	}
-	return true
+	_, err := os.Stat(path)
+	return err == nil
 }
 
-// Create folder
+// CreateFolder creates a directory and all necessary parents.
 func CreateFolder(path string) error {
-	// create folder
-	err := os.MkdirAll(path, os.ModePerm)
-	if err != nil {
-		return err
-	}
-	// log.Println("Created folder:", path)
-	return nil
+	return os.MkdirAll(path, os.ModePerm)
 }
 
-// Create file
+// CreateFile creates or overwrites a file at the given path.
 func CreateFile(path string) (*os.File, error) {
-	// create or overwrite file
-	file, err := os.Create(path)
-	if err != nil {
-		return nil, err
-	}
-	// log.Println("Created file:", path)
-	return file, nil
+	return os.Create(path)
 }
 
-// Delete file
-func DeleteFile(filepath string) error {
-
-	_, err := os.Stat(filepath)
-	os.IsExist(err)
-	if err != nil {
+// DeleteFile removes the specified file.
+func DeleteFile(path string) error {
+	if err := os.Remove(path); err != nil {
 		return err
 	}
-	os.Remove(filepath)
-	log.Println("Deleted file:", filepath)
+	log.Println("Deleted file:", path)
 	return nil
 }
 
-// Delete folder with content
+// DeleteFolder_FR force removes a directory and all its contents.
 func DeleteFolder_FR(path string) error {
-	// force delete folder and all sub folders with content
-	err := os.RemoveAll(path)
-	if err != nil {
+	if err := os.RemoveAll(path); err != nil {
 		return err
 	}
 	log.Println("Deleted folder and content:", path)
 	return nil
 }
 
+// ReadFile reads the contents of a file.
 func ReadFile(path string) ([]byte, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
+	return os.ReadFile(path)
 }
 
-// GetFileList returns a list of files in a directory
+// GetFileList returns a list of files in a directory (recursively).
 func GetFileList(dir string) []string {
 	var files []string
 	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
+		if err == nil && !info.IsDir() {
 			files = append(files, path)
 		}
 		return nil
@@ -85,96 +60,50 @@ func GetFileList(dir string) []string {
 	return files
 }
 
-// GetFileListByExt returns a list of files in a directory with a specific extension
-func GetFileListByExt(dir string, ext string) []string {
+// GetFileListByExt returns a list of files in a directory with a specific extension (recursively).
+func GetFileListByExt(dir, ext string) []string {
 	var files []string
 	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() && strings.HasSuffix(path, ext) {
+		if err == nil && !info.IsDir() && strings.HasSuffix(path, ext) {
 			files = append(files, path)
 		}
 		return nil
 	})
 	return files
-}
-
-func intToString(i int) string {
-	// convert int to string
-	s := fmt.Sprintf("%d", i)
-	// remove trailing zeros
-	s = strings.TrimRight(s, "0")
-	// remove trailing dot
-	s = strings.TrimRight(s, ".")
-	return s
-}
-
-func floatToString(f float64) string {
-	// convert float to string
-	s := fmt.Sprintf("%f", f)
-	// remove trailing zeros
-	s = strings.TrimRight(s, "0")
-	// remove trailing dot
-	s = strings.TrimRight(s, ".")
-	return s
-}
-
-func remCharForCSV(str string) string {
-	// remove char from string
-	remc := ","
-	// replace with space
-	str = strings.ReplaceAll(str, remc, " ")
-	// remove double quotes
-	str = strings.ReplaceAll(str, "\"", "")
-
-	// remove new line
-	str = strings.ReplaceAll(str, "\n", " ")
-	str = strings.ReplaceAll(str, "\r", " ")
-	// remove tab
-	str = strings.ReplaceAll(str, "\t", " ")
-	// remove multiple spaces
-	str = strings.ReplaceAll(str, "  ", " ")
-
-	return str
 }
 
 func WriteWebFSToDisk(folder string, wfs embed.FS) error {
 
 	log.Println("Writing embed.FS to disk:", folder)
-	// loop thru static and write folders and files to static on disk
 	err := fs.WalkDir(wfs, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
+		targetPath := filepath.Join(folder, path)
+
 		if d.IsDir() {
-			// create folder
-			folder := folder + "/" + path
-			if !IsExists(folder) {
-				CreateFolder(folder)
-			}
-		} else {
-			// create file
-			folder := folder + "/" + path
-			if !IsExists(folder) {
-				file, err := CreateFile(folder)
-				if err != nil {
+			if !IsExists(targetPath) {
+				if err := CreateFolder(targetPath); err != nil {
 					return err
 				}
+			}
+		} else {
+			if !IsExists(targetPath) {
 				data, err := wfs.ReadFile(path)
 				if err != nil {
 					return err
 				}
-				file.Write(data)
-				file.Close()
+				if err := os.WriteFile(targetPath, data, 0644); err != nil {
+					return err
+				}
 			}
 		}
-
 		return nil
-	},
-	)
+	})
 	if err != nil {
 		return err
 	}
-
 	return nil
 
 }

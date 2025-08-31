@@ -1,13 +1,19 @@
+
 :root {
-    --color-primary: #282828;
-    --color-secondary: #d3d3d3;
-    --color-background: #f0f0f0;
-    --color-text: #000;
-    --color-border: #282828;
-    --color-th: #a0a0a0;
+    --color-primary: #4B4B3B; /* deep earth brown */
+    --color-secondary: #A89F91; /* muted earth tan */
+    --color-background: #ECE7DF; /* light earth/grey */
+    --color-text: #2D2D2D; /* dark grey */
+    --color-border: #7C6F57; /* earth border */
+    --color-th: #B8B2A1; /* table header earth */
+    --color-accent: #8C7B6B; /* accent earth */
+    --color-danger: #B85C38; /* earth red for delete */
+    --color-btn: #A89F91;
+    --color-btn-hover: #CFC6B2;
 }
 
 /* General styles */
+
 html, body {
     margin: 0;
     padding: 0;
@@ -26,6 +32,7 @@ body {
     font-family: Arial, Helvetica, sans-serif, monospace;
 }
 
+
 input[type="text"],
 input[type="date"],
 input[type="number"],
@@ -33,22 +40,26 @@ input[type="search"] {
     border-radius: 5px;
     background: var(--color-background);
     color: var(--color-text);
+    border: 1px solid var(--color-border);
     text-align: left;
     font-size: large;
 }
 
+
 a {
-    color: var(--color-secondary);
+    color: var(--color-primary);
     text-decoration: none;
 }
+
 
 select {
     margin: 0;
     padding: 2px;
-    border: 1px solid var(--color-text);
+    border: 1px solid var(--color-border);
     background: var(--color-background);
     width: 140px;
 }
+
 
 .th-lst,
 .td-lst {
@@ -67,6 +78,7 @@ select {
     vertical-align: middle;
 }
 
+
 .flex-container {
     display: flex;
     flex-direction: row;
@@ -74,6 +86,7 @@ select {
     background: transparent;
     border: none;
 }
+
 
 .div-header,
 .div-header-bold {
@@ -84,4 +97,72 @@ select {
 
 .div-header-bold {
     font-weight: bold;
+}
+
+/* --- Tools styles merged and refactored for earth/grey tones --- */
+.tools-box {
+    padding: 1px;
+    margin-right: 3px;
+    border-radius: 5px;
+    border: 2px solid var(--color-border);
+    width: fit-content;
+    background-color: var(--color-th);
+    margin-top: 5px;
+}
+
+.tools-txt {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    background: var(--color-background);
+    color: var(--color-text);
+    width: 155px;
+}
+
+.tools-btn {
+    margin-top: 0px;
+    margin-bottom: 2px;
+    width: 100%;
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid var(--color-border);
+    background: var(--color-btn);
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.tools-btn:hover {
+    border: 1px solid var(--color-primary);
+    background: var(--color-btn-hover);
+    color: var(--color-text);
+}
+
+.tools-btn-del {
+    margin-top: auto;
+    margin-bottom: 0px;
+    width: 100%;
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid var(--color-danger);
+    background: var(--color-danger);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.tools-btn-del:hover {
+    background: #fff;
+    color: var(--color-danger);
+}
+
+.tools-select {
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--color-text);
+    size: 6;
 }

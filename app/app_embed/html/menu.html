@@ -2,7 +2,6 @@
 
 {{ $user := .appbase.User }}
 
-
 <div class="menu-flex-container">
     <div onclick="AppInfo()">
         <img src="/media/logo.png" class="menu-logo">
@@ -33,7 +32,7 @@
         <div style="padding: 3px;">{{ $user.Email }}</div>
     </button>
 
-    <button class="menubutton" onclick="Logout()" title="ctrl + q">
+    <button class="menubutton-logout" onclick="Logout()" title="ctrl + q">
         <img src="/media/lock.svg" class="btn-img" alt="">
         Logout
     </button>

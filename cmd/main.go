@@ -79,7 +79,7 @@ func printsrvinfo(proto, adr string) {
 	Hostip, _ = global.GetIPv4Addresses()
 
 	for _, ip := range Hostip {
-		log.Printf("Webserver %s://%s%s", proto, ip, adr)
+		log.Printf("Webserver %s://%s%s (TLS %d)", proto, ip, adr, srv_conf.TLSKeySize())
 	}
 }
 
