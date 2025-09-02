@@ -43,9 +43,11 @@ func seedAuthLevels(db *gorm.DB) {
 	}
 
 	authLevels := []app_models.AuthLevel{
-		{Name: "admin", Level: 10},
-		{Name: "super", Level: 5},
-		{Name: "user", Level: 1},
+		{Name: "admin", Level: 40},
+		{Name: "super", Level: 30},
+		{Name: "manager", Level: 20},
+		{Name: "user", Level: 10},
+		{Name: "guest", Level: 1},
 	}
 
 	for _, a := range authLevels {
@@ -75,7 +77,9 @@ func seedUsers(db *gorm.DB) {
 	}{
 		{"admin@app.loc", "appadmin", true, 1, "Default Admin User", "app"},
 		{"super@app.loc", "superuser", false, 2, "Default Superuser", "app"},
-		{"user@app.loc", "password", false, 3, "Default User", "app"},
+		{"manager@app.loc", "manager", false, 3, "Default Manager", "app"},
+		{"user@app.loc", "password", false, 4, "Default User", "app"},
+		{"guest@app.loc", "guest", false, 5, "Default Guest", "app"},
 	}
 
 	var users []app_models.Users
@@ -99,7 +103,7 @@ func seedUsers(db *gorm.DB) {
 		db.Create(&users[i])
 	}
 
-	if len(users) != 3 {
+	if len(users) != 5 {
 		fmt.Println("Error seeding users")
 		os.Exit(1)
 	}

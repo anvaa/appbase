@@ -1,12 +1,12 @@
 {{ template "user_menu.html" . }}
 <table>
     <thead>
-        <td class="div-header-bold" colspan="3">Authorized Users ({{ len .auth_users }})</td>
+        <td class="div-header-bold" colspan="3">Authorized ({{ len .auth_users }})</td>
     <tr>
         <th class="th-lst">ID</th>
         <th class="th-lst">User (edit)</th>
         <th class="th-lst">AuthLevel</th>
-        <th class="th-lst"></th>
+        <th class="th-lst">Auth</th>
         <th class="th-lst">Created</th>
         <th  class="th-lst">Updated</th>
     </tr>
@@ -21,9 +21,9 @@
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
                     <input type="button" class="menubutton" style="width: 100%;" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
                 </td>
-                <td class="td-lst">{{ .AuthLevel.Name }}</td>
+                <td class="td-lst">{{ .AuthLevel.Name }} ({{ .AuthLevel.Level }})</td>
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
-                    {{ if gt .AuthLevelID 4 }}
+                    {{ if ne .AuthLevelID 1 }}
                         <input type="hidden" id="_auth{{ .UUID }}" value="{{ .IsAuth }}" /> 
                         {{ if .IsAuth }}
                             <input type="button" class="menubutton" style="width: 100%;" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
@@ -46,12 +46,12 @@
 <br>
 <table>
     <thead>
-        <td class="div-header-bold" colspan="3">Unauthorized Users ({{ len .unauth_users }})</td>
+        <td class="div-header-bold" colspan="3">Unauthorized ({{ len .unauth_users }})</td>
     <tr>
         <th class="th-lst">ID</th>
         <th class="th-lst">User (edit)</th>
         <th class="th-lst">AuthLevel</th>
-        <th class="th-lst"></th>
+        <th class="th-lst">Auth</th>
         <th class="th-lst">Created</th>
         <th class="th-lst">Updated</th>
         
@@ -67,14 +67,16 @@
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
                     <input type="button" class="menubutton" style="width: 100%;" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
                 </td>
-                <td class="td-lst">{{ .AuthLevel.Name }}</td>
+                <td class="td-lst">{{ .AuthLevel.Name }} ({{ .AuthLevel.Level }})</td>
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
-                        {{ if .IsAuth }}
+                {{ if ne .AuthLevelID 1 }}
+                    <input type="hidden" id="_auth{{ .UUID }}" value="{{ .IsAuth }}" /> 
+                    {{ if .IsAuth }}
                         <input type="button" class="menubutton" style="width: 100%;" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
-                        {{ else }}
+                    {{ else }}
                         <input type="button" class="menubutton" style="width: 100%;" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
-                        {{ end }}
-                    
+                    {{ end }}
+                {{ end }}
                 </td>
                 <td class="td-lst">
                     {{ .CreatedAt.Format "2006-01-02 15:04" }}
@@ -90,7 +92,7 @@
 <br>
 <table>
     <thead>
-        <td class="div-header-bold" colspan="3">Deleted Users ({{ len .del_users }})</td>
+        <td class="div-header-bold" colspan="3">Deleted ({{ len .del_users }})</td>
     <tr>
         <th class="th-lst">ID</th>
         <th class="th-lst">User</th>
@@ -111,7 +113,7 @@
                 <td class="td-lst">
                     {{ .Email }}
                 </td>
-                <td class="td-lst">{{ .AuthLevel.Name }}</td>
+                <td class="td-lst">{{ .AuthLevel.Name }} ({{ .AuthLevel.Level }})</td>
                 <td class="td-lst">
                     {{ .CreatedAt.Format "2006-01-02 15:04" }}
                 </td>

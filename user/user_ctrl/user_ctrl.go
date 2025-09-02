@@ -4,6 +4,7 @@ import (
 	"app/app_conf"
 	"app/app_db"
 	"app/app_models"
+	
 	"server/middleware"
 	"user/user_conf"
 	"user/user_sec"
@@ -231,15 +232,10 @@ func User_UpdateAuth(c *gin.Context) {
 		body.Auth = true
 	}
 
-	user, err := app_db.User_GetByUUID(body.Uuid)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get user"})
-		return
-	}
-
-	user.IsAuth = body.Auth
-
-	if err := app_db.AppDB.Save(&user).Error; err != nil {
+	// update user
+	if err := app_db.AppDB.Model(&app_models.Users{}).
+		Where("uuid = ?", body.Uuid).
+		Update("is_auth", body.Auth).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update user"})
 		return
 	}
@@ -249,8 +245,8 @@ func User_UpdateAuth(c *gin.Context) {
 
 func User_UpdAuthLevel(c *gin.Context) {
 	var body struct {
-		Uuid      uint `json:"uuid"`
-		AuthLevel int  `json:"authlevel"`
+		Uuid    string `json:"uuid"`
+		AuthLev int    `json:"authlevel"`
 	}
 
 	if err := c.BindJSON(&body); err != nil {
@@ -258,15 +254,9 @@ func User_UpdAuthLevel(c *gin.Context) {
 		return
 	}
 
-	user, err := app_db.User_GetByUUID(body.Uuid)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get user"})
-		return
-	}
-
-	user.AuthLevelID = body.AuthLevel
-
-	if err := app_db.AppDB.Save(&user).Error; err != nil {
+	if err := app_db.AppDB.Model(&app_models.Users{}).
+		Where("uuid = ?", body.Uuid).
+		Update("auth_level_id", body.AuthLev).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update user"})
 		return
 	}

@@ -91,10 +91,10 @@ async function AuthLevel(_uuid) {
     var _authlevel = document.getElementById("_authlevel").value;
 
     var userData = {
-        uuid: parseInt(_uuid),
+        uuid: _uuid,
         authlevel: parseInt(_authlevel),
     };
-
+    // alert(JSON.stringify(userData));
     try {
         const response = await fetch("/user/authlevel", {
             method: "POST",
@@ -108,8 +108,15 @@ async function AuthLevel(_uuid) {
         } 
 
         window.location.reload();
-        } catch (error) {
+    } catch (error) {
         ShowMsg("Change role failed: " + error.message);
+    }
+}
+
+function authSelect(_authlevel) {
+    var currentAuthLevel = parseInt(document.getElementById("_authlevel").value, 10);
+    if (_authlevel >= currentAuthLevel) {
+        alert("You cannot assign an AuthLevel equal to or higher than your own.");
     }
 }
 

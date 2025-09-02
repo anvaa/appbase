@@ -153,8 +153,8 @@ select {
     transition: background 0.2s, color 0.2s;
 }
 .tools-btn-del:hover {
-    background: #fff;
-    color: var(--color-danger);
+    background: red;
+    /* color: var(--color-text); */
 }
 
 .tools-select {

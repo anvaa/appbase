@@ -8,7 +8,7 @@
     </div>
 
     <button class="menubutton" onclick="fetchPage('/app')" title="ctrl + 1">
-        <img src="/media/diagram-3.svg" class="btn-img" alt="">
+        <img src="/media/house.svg" class="btn-img" alt="">
         Start
     </button>
 
@@ -21,15 +21,16 @@
     </button>
     {{ end }}
 
-    {{ if eq $user.AuthLevelID 1 }}
+    {{ if or (eq $user.AuthLevelID 1) (eq $user.AuthLevelID 2) }}
     <button class="menubutton" onclick="Users()">
-        <img src="/media/person-gear.svg" class="btn-img" alt="">
+        <img src="/media/person.svg" class="btn-img" alt="">
         Users
     </button>
     {{ end }}
 
     <button class="menubutton" onclick="MyAccount()">
-        <div style="padding: 3px;">{{ $user.Email }}</div>
+        <img src="/media/key.svg" class="btn-img" alt="">
+        {{ $user.Email }}
     </button>
 
     <button class="menubutton-logout" onclick="Logout()" title="ctrl + q">

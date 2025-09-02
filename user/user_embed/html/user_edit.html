@@ -7,7 +7,7 @@
 <div class="flex-container" style="flex-direction: row; justify-content: space-between; align-items: center;">
     
     <div class="div-header-bold">
-        Edit {{ $edituser.Role }} {{ $edituser.Email }}
+        Edit {{ $edituser.Email }} ({{ $edituser.AuthLevel.Name }} {{ $edituser.AuthLevel.Level }})
     </div>
     <div style="margin-top: 5px;">
         {{ if ne $edituser.UUID $curuser.UUID }}
@@ -52,7 +52,7 @@
     </div>
 
     <!-- Organization Name Box -->
-    <div class="tools-box">
+    <div class="tools-box" style="margin-left: 10px;">
         <div>
             <label for="_orgname">Organization</label>
             <input type="text" id="_orgname" value="{{ $edituser.Orgname }}" required />
@@ -67,12 +67,16 @@
 
     <!-- Role Box (only if editing another user) -->
     {{ if ne $edituser.UUID $curuser.UUID }}
-        <div class="tools-box">
+        <div class="tools-box" style="margin-left: 10px;">
             <div>
                 <label for="_authlevel">Auth Level</label>
-                <select id="_authlevel">
+                <select id="_authlevel" onchange="authSelect('{{$curuser.AuthLevelID}}')">
                     {{ range $auth_levels }}
-                    <option value="{{ .ID }}" {{ if eq $edituser.AuthLevelID .ID }}selected{{ end }}>{{ .Name }}</option>
+                        {{ if eq .ID $edituser.AuthLevelID }}
+                            <option value="{{ .ID }}" selected>{{ .Name }} {{ .Level }}</option>
+                        {{ else }}
+                            <option value="{{ .ID }}">{{ .Name }} {{ .Level }}</option>
+                        {{ end }}
                     {{ end }}
                 </select>
             </div>

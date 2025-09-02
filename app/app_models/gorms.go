@@ -38,7 +38,7 @@ type Users struct {
 	Note         string    `gorm:"size:255" json:"note"`
 	TokenVersion int       `gorm:"default:1" json:"token_version"`
 
-	AuthLevelID int       `gorm:"default:1" json:"auth_level_id"`
+	AuthLevelID int       `gorm:"default:3" json:"auth_level_id"` // user
 	AuthLevel   AuthLevel `gorm:"foreignKey:AuthLevelID" json:"auth_level"`
 }
 
