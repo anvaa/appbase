@@ -1,13 +1,14 @@
 {{ template "header.html" . }}
 
 {{ $user := .appbase.User }}
+{{ $logo_small := index .appbase.Logos 0 }}
 
 <div class="menu-flex-container">
     <div onclick="AppInfo()">
-        <img src="/media/logo.png" class="menu-logo">
+        <img src="/media/{{ $logo_small }}" class="menu-logo">
     </div>
 
-    <button class="menubutton" onclick="fetchPage('/app')" title="ctrl + 1">
+    <button class="mnubtn" onclick="fetchPage('/app')" title="ctrl + 1">
         <img src="/media/house.svg" class="btn-img" alt="">
         Start
     </button>
@@ -15,25 +16,25 @@
     <div style="flex-grow: 1;"></div>
 
     {{ if or (eq $user.AuthLevelID 1) (eq $user.AuthLevelID 2) }}
-    <button class="menubutton" onclick="Tools()">
+    <button class="mnubtn" onclick="Tools()">
         <img src="/media/tools.svg" class="btn-img" alt="">
         Tools
     </button>
     {{ end }}
 
     {{ if or (eq $user.AuthLevelID 1) (eq $user.AuthLevelID 2) }}
-    <button class="menubutton" onclick="Users()">
+    <button class="mnubtn" onclick="Users()">
         <img src="/media/person.svg" class="btn-img" alt="">
         Users
     </button>
     {{ end }}
 
-    <button class="menubutton" onclick="MyAccount()">
+    <button class="mnubtn" onclick="MyAccount()">
         <img src="/media/key.svg" class="btn-img" alt="">
         {{ $user.Email }}
     </button>
 
-    <button class="menubutton-logout" onclick="Logout()" title="ctrl + q">
+    <button class="mnubtn-logout" onclick="Logout()" title="ctrl + q">
         <img src="/media/lock.svg" class="btn-img" alt="">
         Logout
     </button>

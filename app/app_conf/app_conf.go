@@ -108,3 +108,10 @@ func LogoSmall() string {
 func LogoLarge() string {
 	return GetString("logo_large")
 }
+
+func AppLogos() []string {
+	return []string{
+		LogoSmall(),
+		LogoLarge(),
+	}
+}

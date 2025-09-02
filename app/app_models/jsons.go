@@ -12,7 +12,8 @@ type Appinfo struct {
 }
 
 type Appbase struct {
-	Title   string `json:"title"`
-	User    any    `json:"user"`
-	Appinfo any    `json:"appinfo"`
+	Title   string   `json:"title"`
+	Logos   []string `json:"logos"`
+	User    any      `json:"user"`
+	Appinfo any      `json:"appinfo"`
 }

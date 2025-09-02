@@ -50,9 +50,9 @@ span {
 }
 
 /* Button and logo styles */
-.menubutton,
-.submenubutton,
-.menubutton-logout,
+.mnubtn,
+.submnubtn,
+.mnubtn-logout,
 .menu-logo {
     border: 2px solid var(--color-border);
     color: var(--color-span);
@@ -69,20 +69,20 @@ span {
 }
 
 /* Button hover */
-.menubutton:hover {
+.mnubtn:hover {
     background: var(--color-hover);
     border-color: black;
 }
 
-.menubutton-logout:hover {
+.mnubtn-logout:hover {
     background: var(--color-logout-hover);
 }
 
-.submenubutton {
+.submnubtn {
     padding: 2px;
     background: var(--color-subbutton-bg);
 }
-.submenubutton:hover {
+.submnubtn:hover {
     background: var(--color-sub-hover);
     border-color: var(--color-span);
 }

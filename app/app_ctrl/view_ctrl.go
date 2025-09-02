@@ -16,6 +16,7 @@ var appinfo = app_conf.AppInfo()
 func appbase(c *gin.Context) app_models.Appbase {
 	return app_models.Appbase{
 		Title:   app_conf.AppInfo().AppName,
+		Logos:   app_conf.AppLogos(),
 		User:    c.Keys[user_conf.UserKey],
 		Appinfo: appinfo,
 	}

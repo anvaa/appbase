@@ -19,16 +19,16 @@
                     {{ .UUID }}
                 </td>
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
-                    <input type="button" class="menubutton" style="width: 100%;" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
+                    <input type="button" class="mnubtn" style="width: 100%;" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
                 </td>
                 <td class="td-lst">{{ .AuthLevel.Name }} ({{ .AuthLevel.Level }})</td>
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
                     {{ if ne .AuthLevelID 1 }}
                         <input type="hidden" id="_auth{{ .UUID }}" value="{{ .IsAuth }}" /> 
                         {{ if .IsAuth }}
-                            <input type="button" class="menubutton" style="width: 100%;" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                            <input type="button" class="mnubtn" style="width: 100%;" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                         {{ else }}
-                            <input type="button" class="menubutton" style="width: 100%;" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                            <input type="button" class="mnubtn" style="width: 100%;" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                         {{ end }}
                     {{ end }}
                 </td>
@@ -65,16 +65,16 @@
                     {{ .UUID }}
                 </td>
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
-                    <input type="button" class="menubutton" style="width: 100%;" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
+                    <input type="button" class="mnubtn" style="width: 100%;" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
                 </td>
                 <td class="td-lst">{{ .AuthLevel.Name }} ({{ .AuthLevel.Level }})</td>
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
                 {{ if ne .AuthLevelID 1 }}
                     <input type="hidden" id="_auth{{ .UUID }}" value="{{ .IsAuth }}" /> 
                     {{ if .IsAuth }}
-                        <input type="button" class="menubutton" style="width: 100%;" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                        <input type="button" class="mnubtn" style="width: 100%;" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                     {{ else }}
-                        <input type="button" class="menubutton" style="width: 100%;" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                        <input type="button" class="mnubtn" style="width: 100%;" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                     {{ end }}
                 {{ end }}
                 </td>

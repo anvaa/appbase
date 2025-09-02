@@ -21,16 +21,16 @@
                         {{ .UUID }}
                     </td>
                     <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
-                        <input type="button" class="menubutton" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
+                        <input type="button" class="mnubtn" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
                     </td>
                     <td style="text-align: center; padding: 0; border: 0;">
                     
                     {{ if .IsAuth }}
-                        <input type="button" class="menubutton" value="Unauthorize" title="Unauthorize user"
+                        <input type="button" class="mnubtn" value="Unauthorize" title="Unauthorize user"
                             onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                         
                     {{ else }}
-                        <input type="button" class="menubutton" value="Authorize" title="Authorize user"
+                        <input type="button" class="mnubtn" value="Authorize" title="Authorize user"
                             onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
 
                     {{ end }}
