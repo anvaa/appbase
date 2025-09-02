@@ -5,7 +5,7 @@
     <tr>
         <th class="th-lst">ID</th>
         <th class="th-lst">User (edit)</th>
-        <th class="th-lst">Role</th>
+        <th class="th-lst">AuthLevel</th>
         <th class="th-lst"></th>
         <th class="th-lst">Created</th>
         <th  class="th-lst">Updated</th>
@@ -19,16 +19,16 @@
                     {{ .UUID }}
                 </td>
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
-                    <input type="button" class="menubutton" value="{{ .Email }}" onclick="location.href='/v/user/{{.ID}}'" />
+                    <input type="button" class="menubutton" style="width: 100%;" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
                 </td>
-                <td class="td-lst">{{ .Role }}</td>
+                <td class="td-lst">{{ .AuthLevel.Name }}</td>
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
-                    {{ if ne .Role "admin" }}
-                        <input type="hidden" id="_auth{{ .ID }}" value="{{ .IsAuth }}" /> 
+                    {{ if gt .AuthLevelID 4 }}
+                        <input type="hidden" id="_auth{{ .UUID }}" value="{{ .IsAuth }}" /> 
                         {{ if .IsAuth }}
-                            <input type="button" class="menubutton" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                            <input type="button" class="menubutton" style="width: 100%;" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                         {{ else }}
-                            <input type="button" class="menubutton" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                            <input type="button" class="menubutton" style="width: 100%;" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                         {{ end }}
                     {{ end }}
                 </td>
@@ -50,7 +50,7 @@
     <tr>
         <th class="th-lst">ID</th>
         <th class="th-lst">User (edit)</th>
-        <th class="th-lst">Role</th>
+        <th class="th-lst">AuthLevel</th>
         <th class="th-lst"></th>
         <th class="th-lst">Created</th>
         <th class="th-lst">Updated</th>
@@ -65,14 +65,14 @@
                     {{ .UUID }}
                 </td>
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
-                    <input type="button" class="menubutton" value="{{ .Email }}" onclick="location.href='/v/user/{{.ID}}'" />
+                    <input type="button" class="menubutton" style="width: 100%;" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
                 </td>
-                <td class="td-lst">{{ .Role }}</td>
+                <td class="td-lst">{{ .AuthLevel.Name }}</td>
                 <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
                         {{ if .IsAuth }}
-                        <input type="button" class="menubutton" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                        <input type="button" class="menubutton" style="width: 100%;" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                         {{ else }}
-                        <input type="button" class="menubutton" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                        <input type="button" class="menubutton" style="width: 100%;" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                         {{ end }}
                     
                 </td>
@@ -94,7 +94,7 @@
     <tr>
         <th class="th-lst">ID</th>
         <th class="th-lst">User</th>
-        <th class="th-lst">Role</th>
+        <th class="th-lst">AuthLevel</th>
         <th class="th-lst">Created</th>
         <th class="th-lst">Updated</th>
         <th class="th-lst">Deleted</th>
@@ -111,7 +111,7 @@
                 <td class="td-lst">
                     {{ .Email }}
                 </td>
-                <td class="td-lst">{{ .Role }}</td>
+                <td class="td-lst">{{ .AuthLevel.Name }}</td>
                 <td class="td-lst">
                     {{ .CreatedAt.Format "2006-01-02 15:04" }}
                 </td>

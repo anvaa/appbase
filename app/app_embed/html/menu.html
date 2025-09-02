@@ -14,14 +14,14 @@
 
     <div style="flex-grow: 1;"></div>
 
-    {{ if or (eq $user.Role "admin") (eq $user.Role "superuser") }}
+    {{ if or (eq $user.AuthLevelID 1) (eq $user.AuthLevelID 2) }}
     <button class="menubutton" onclick="Tools()">
         <img src="/media/tools.svg" class="btn-img" alt="">
         Tools
     </button>
     {{ end }}
 
-    {{ if eq $user.Role "admin" }}
+    {{ if eq $user.AuthLevelID 1 }}
     <button class="menubutton" onclick="Users()">
         <img src="/media/person-gear.svg" class="btn-img" alt="">
         Users

@@ -86,17 +86,17 @@ function validatePasswords(psw1, psw2) {
     return true;
 }
 
-async function Role(_uuid) {
+async function AuthLevel(_uuid) {
 
-    var _role = document.getElementById("_role").value;
-    
+    var _authlevel = document.getElementById("_authlevel").value;
+
     var userData = {
-        uuid: _uuid,
-        role: _role,
+        uuid: parseInt(_uuid),
+        authlevel: parseInt(_authlevel),
     };
 
     try {
-        const response = await fetch("/user/role", {
+        const response = await fetch("/user/authlevel", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData),

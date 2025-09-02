@@ -32,12 +32,20 @@ type Users struct {
 	BaseModel
 	Email        string    `gorm:"unique, size:255" json:"email"`
 	Password     string    `gorm:"not null, size:255" json:"password"`
-	Role         string    `gorm:"default:user, size:20" json:"role"`
 	Orgname      string    `gorm:"size:255" json:"orgname"`
 	IsAuth       bool      `gorm:"default:false" json:"is_auth"`
 	LastLogin    time.Time `gorm:"autoUpdateTime" json:"last_login"`
 	Note         string    `gorm:"size:255" json:"note"`
 	TokenVersion int       `gorm:"default:1" json:"token_version"`
+
+	AuthLevelID int       `gorm:"default:1" json:"auth_level_id"`
+	AuthLevel   AuthLevel `gorm:"foreignKey:AuthLevelID" json:"auth_level"`
+}
+
+type AuthLevel struct {
+	BaseModel
+	Name  string `gorm:"size:50" json:"name"`
+	Level int    `gorm:"default:3" json:"level"` // 1=user, 5=admin, 10=superuser
 }
 
 type Status struct {

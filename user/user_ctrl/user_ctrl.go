@@ -91,13 +91,13 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	role, isauth := "user", false
+	role, isauth := 1, false
 	user = app_models.Users{
-		Email:   email,
-		Role:    role,
-		IsAuth:  isauth,
-		Note:    "Nil",
-		Orgname: orgname,
+		Email:       email,
+		AuthLevelID: role,
+		IsAuth:      isauth,
+		Note:        "Nil",
+		Orgname:     orgname,
 	}
 
 	hash, err := hashPassword(password)
@@ -247,10 +247,10 @@ func User_UpdateAuth(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "success"})
 }
 
-func User_UpdateRole(c *gin.Context) {
+func User_UpdAuthLevel(c *gin.Context) {
 	var body struct {
-		Uuid string `json:"uuid"`
-		Role string `json:"role"`
+		Uuid      uint `json:"uuid"`
+		AuthLevel int  `json:"authlevel"`
 	}
 
 	if err := c.BindJSON(&body); err != nil {
@@ -264,7 +264,7 @@ func User_UpdateRole(c *gin.Context) {
 		return
 	}
 
-	user.Role = body.Role
+	user.AuthLevelID = body.AuthLevel
 
 	if err := app_db.AppDB.Save(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update user"})

@@ -10,7 +10,7 @@ import (
 func IsAdmin(c *gin.Context) {
 
 	user := c.MustGet(userKey).(app_models.Users)
-	if user.ID == 0 || user.Role != "admin" {
+	if user.ID == 0 || user.AuthLevelID >= 10 {
 		c.HTML(403, "error.html", gin.H{
 			"error": "Forbidden: You do not have permission to access this resource.",
 		})
@@ -24,7 +24,7 @@ func IsAdmin(c *gin.Context) {
 func IsSuper(c *gin.Context) {
 
 	user := c.MustGet(userKey).(app_models.Users)
-	if user.ID == 0 || user.Role != "superuser" {
+	if user.ID == 0 || user.AuthLevelID >= 5 {
 		c.HTML(403, "error.html", gin.H{
 			"error": "Forbidden: You do not have permission to access this resource.",
 		})

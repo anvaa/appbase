@@ -37,7 +37,7 @@ func user_Api(r *gin.Engine) *gin.Engine {
 
 		userRoutes.POST("/delete", user_ctrl.User_DeleteUser)
 		userRoutes.POST("/auth", user_ctrl.User_UpdateAuth)
-		userRoutes.POST("/role", user_ctrl.User_UpdateRole)
+		userRoutes.POST("/authlevel", user_ctrl.User_UpdAuthLevel)
 		userRoutes.POST("/org", user_ctrl.User_UpdateOrg)
 	}
 
@@ -53,7 +53,7 @@ func user_Api(r *gin.Engine) *gin.Engine {
 		// is admin
 		viewRoutes.GET("/newusers", user.View_NewUsers)
 		viewRoutes.GET("/users", user.View_ManageUsers)
-		viewRoutes.GET("/user/:uid", user.View_EditUser)
+		viewRoutes.GET("/user/:uuid", user.View_EditUser)
 
 	}
 

@@ -5,15 +5,16 @@ import (
 
 	"fmt"
 	"os"
+
 	"golang.org/x/crypto/bcrypt"
 
 	"app/app_models"
-	
 )
 
 func SyncAppDB(db *gorm.DB) {
 	db.AutoMigrate(
 		&app_models.Users{},
+		&app_models.AuthLevel{},
 
 		&app_models.Status{},
 		&app_models.Stasub{},
@@ -23,10 +24,35 @@ func SyncAppDB(db *gorm.DB) {
 		&app_models.Typsub{},
 	)
 
-	seedUsers(db)
 	seedMenus(db)
 	seedStatus(db)
 	seedTypes(db)
+
+	seedAuthLevels(db)
+	seedUsers(db)
+
+	fmt.Println("Database Migrated")
+}
+
+func seedAuthLevels(db *gorm.DB) {
+	var count int64
+	db.Model(&app_models.AuthLevel{}).Count(&count)
+	if count > 0 {
+		fmt.Println("AuthLevels already seeded")
+		return
+	}
+
+	authLevels := []app_models.AuthLevel{
+		{Name: "admin", Level: 10},
+		{Name: "super", Level: 5},
+		{Name: "user", Level: 1},
+	}
+
+	for _, a := range authLevels {
+		db.Create(&a)
+	}
+
+	fmt.Println("AuthLevels Seeded")
 }
 
 func seedUsers(db *gorm.DB) {
@@ -40,16 +66,16 @@ func seedUsers(db *gorm.DB) {
 
 	// Plaintext passwords for seeding
 	userSeeds := []struct {
-		Email    string
-		Password string
-		IsAuth   bool
-		Note     string
-		Role     string
-		Orgname  string
+		Email       string
+		Password    string
+		IsAuth      bool
+		AuthLevelID int
+		Note        string
+		Orgname     string
 	}{
-		{"admin@app.loc", "appadmin", true, "Default Admin User", "admin", "app"},
-		{"super@app.loc", "superuser", false, "Default Superuser", "superuser", "app"},
-		{"user@app.loc", "password", false, "Default User", "user", "app"},
+		{"admin@app.loc", "appadmin", true, 1, "Default Admin User", "app"},
+		{"super@app.loc", "superuser", false, 2, "Default Superuser", "app"},
+		{"user@app.loc", "password", false, 3, "Default User", "app"},
 	}
 
 	var users []app_models.Users
@@ -60,12 +86,12 @@ func seedUsers(db *gorm.DB) {
 			os.Exit(1)
 		}
 		users = append(users, app_models.Users{
-			Email:    u.Email,
-			Password: hashed,
-			IsAuth:   u.IsAuth,
-			Note:     u.Note,
-			Role:     u.Role,
-			Orgname:  u.Orgname,
+			Email:       u.Email,
+			Password:    hashed,
+			IsAuth:      u.IsAuth,
+			Note:        u.Note,
+			AuthLevelID: u.AuthLevelID,
+			Orgname:     u.Orgname,
 		})
 	}
 

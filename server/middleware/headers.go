@@ -37,7 +37,7 @@ func generateJWT(user *app_models.Users) (string, error) {
 		"iat":           time.Now().Unix(),
 		"iss":           "appbase",
 		"aud":           "appbase",
-		"role":          user.Role,
+		"role":          user.AuthLevelID,
 		"auth":          user.IsAuth,
 		"token_version": user.TokenVersion,
 	}

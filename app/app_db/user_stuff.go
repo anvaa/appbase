@@ -45,7 +45,7 @@ func User_GetById(id any) (app_models.Users, error) {
 
 func User_GetByUUID(uuid any) (app_models.Users, error) {
 	var userbyuuid app_models.Users
-	err := AppDB.Where("uuid = ?", uuid).First(&userbyuuid)
+	err := AppDB.Preload("AuthLevel").Where("uuid = ?", uuid).First(&userbyuuid)
 	if err.Error != nil {
 		log.Println("Error getting user by UUID:", uuid, ErrUserNotFound)
 		return userbyuuid, ErrUserNotFound
@@ -93,7 +93,7 @@ func CreateNewUser(nu *app_models.Users) error {
 
 	log.Println("Creating new user", nu.Email)
 	res := *AppDB.Where("email", nu.Email).
-		Attrs(app_models.Users{Email: nu.Email, Password: nu.Password, Role: nu.Role, IsAuth: nu.IsAuth}).
+		Attrs(app_models.Users{Email: nu.Email, Password: nu.Password, AuthLevelID: nu.AuthLevelID, IsAuth: nu.IsAuth}).
 		FirstOrCreate(&nu)
 
 	if res.Error != nil {
@@ -140,18 +140,9 @@ func User_GetEmailFromId(id any) (string, error) {
 	return user_email.Email, nil
 }
 
-func User_GetRoleFromId(id any) (string, error) {
-	var role_user app_models.Users
-	err := AppDB.Where("id = ?", id).First(&role_user)
-	if err.Error != nil {
-		return "", err.Error
-	}
-	return role_user.Role, nil
-}
-
 func Users_GetAuth() ([]app_models.Users, error) {
 	var auth_users []app_models.Users
-	err := *AppDB.Where("is_auth = ?", true).Find(&auth_users)
+	err := *AppDB.Preload("AuthLevel").Where("is_auth = ?", true).Find(&auth_users)
 	if err.Error != nil {
 		return auth_users, err.Error
 	}
@@ -160,7 +151,7 @@ func Users_GetAuth() ([]app_models.Users, error) {
 
 func Users_GetUnAuth() ([]app_models.Users, error) {
 	var unauth_users []app_models.Users
-	err := *AppDB.Where("is_auth = ?", false).Find(&unauth_users)
+	err := *AppDB.Preload("AuthLevel").Where("is_auth = ?", false).Find(&unauth_users)
 	if err.Error != nil {
 		return unauth_users, err.Error
 	}
@@ -169,7 +160,7 @@ func Users_GetUnAuth() ([]app_models.Users, error) {
 
 func Users_GetDeleted() ([]app_models.Users, error) {
 	var del_users []app_models.Users
-	err := *AppDB.Unscoped().Where("deleted_at IS NOT NULL").Find(&del_users)
+	err := *AppDB.Unscoped().Preload("AuthLevel").Where("deleted_at IS NOT NULL").Find(&del_users)
 	if err.Error != nil {
 		return del_users, err.Error
 	}
@@ -184,4 +175,13 @@ func Users_GetNew() ([]app_models.Users, error) {
 		return new_users, err.Error
 	}
 	return new_users, nil
+}
+
+func GetAuthLevels() []app_models.AuthLevel {
+	var auth_levels []app_models.AuthLevel
+	err := AppDB.Find(&auth_levels)
+	if err.Error != nil {
+		return nil
+	}
+	return auth_levels
 }

@@ -111,13 +111,15 @@ func View_ManageUsers(c *gin.Context) {
 }
 
 func View_EditUser(c *gin.Context) {
-	edit_id := c.Param("uid")
+	uuid := c.Param("uuid")
 
-	edit_user, err := app_db.User_GetById(edit_id)
+	edit_user, err := app_db.User_GetByUUID(uuid)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get user"})
 		return
 	}
+
+	auth_levels := app_db.GetAuthLevels()
 
 	c.HTML(http.StatusOK, "user_edit.html", gin.H{
 		"appbase": appbase(c),
@@ -126,6 +128,7 @@ func View_EditUser(c *gin.Context) {
 		"css":     "tools.css",
 
 		"edituid": edit_user,
+		"auth_levels": auth_levels,
 	})
 }
 

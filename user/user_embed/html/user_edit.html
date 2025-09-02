@@ -2,6 +2,7 @@
 
 {{ $curuser := .appbase.User }}
 {{ $edituser := .edituid }}
+{{ $auth_levels := .auth_levels }}
 
 <div class="flex-container" style="flex-direction: row; justify-content: space-between; align-items: center;">
     
@@ -53,7 +54,7 @@
     <!-- Organization Name Box -->
     <div class="tools-box">
         <div>
-            <label for="_orgname">Organization Name</label>
+            <label for="_orgname">Organization</label>
             <input type="text" id="_orgname" value="{{ $edituser.Orgname }}" required />
         </div>
         <div style="text-align: center;">
@@ -68,17 +69,17 @@
     {{ if ne $edituser.UUID $curuser.UUID }}
         <div class="tools-box">
             <div>
-                <label for="_role">Role</label>
-                <select id="_role">
-                    <option value="admin" {{ if eq $edituser.Role "admin" }}selected{{ end }}>admin</option>
-                    <option value="superuser" {{ if eq $edituser.Role "superuser" }}selected{{ end }}>superuser</option>
-                    <option value="user" {{ if eq $edituser.Role "user" }}selected{{ end }}>user</option>
+                <label for="_authlevel">Auth Level</label>
+                <select id="_authlevel">
+                    {{ range $auth_levels }}
+                    <option value="{{ .ID }}" {{ if eq $edituser.AuthLevelID .ID }}selected{{ end }}>{{ .Name }}</option>
+                    {{ end }}
                 </select>
             </div>
             <div style="text-align: center;">
-                <input type="button" value="Update Role" class="tools-btn"
+                <input type="button" value="Update AuthLevel" class="tools-btn"
                     style="width: 155px; margin-top: 5px;"
-                    onclick="Role('{{$edituser.UUID}}')" 
+                    onclick="AuthLevel('{{$edituser.UUID}}')" 
                 />
             </div>
         </div>
