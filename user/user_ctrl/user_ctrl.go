@@ -98,7 +98,7 @@ func SignUp(c *gin.Context) {
 		AuthLevelID: role,
 		IsAuth:      isauth,
 		Note:        "Nil",
-		Org:         &[]app_models.Org{{Name: orgname}},
+		Org:         []*app_models.Org{{Name: orgname}},
 	}
 
 	hash, err := hashPassword(password)
@@ -281,7 +281,7 @@ func User_UpdateOrg(c *gin.Context) {
 		return
 	}
 
-	user.Org = &[]app_models.Org{{Name: body.Name}}
+	user.Org = []*app_models.Org{{Name: body.Name}}
 
 	if err := app_db.AppDB.Save(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update user"})

@@ -30,8 +30,9 @@ func SyncAppDB(db *gorm.DB) {
 	seedTypes(db)
 
 	seedAuthLevels(db)
-	seedOrgs(db)
 	seedUsers(db)
+
+	seedOrgs(db)
 
 	fmt.Println("Database Migrated")
 }
@@ -44,12 +45,25 @@ func seedOrgs(db *gorm.DB) {
 		return
 	}
 
+	var users []app_models.Users
+	db.Find(&users)
+
 	orgs := []app_models.Org{
-		{Name: "Org 1", Note: "First Organization"},
-		{Name: "Org 2", Note: "Second Organization"},
-		{Name: "Org 3", Note: "Third Organization"},
-		{Name: "Org 4", Note: "Fourth Organization"},
-		{Name: "Org 5", Note: "Fifth Organization"},
+		{Name: "Org 1", Note: "First Organization", Users: []*app_models.Users{
+			&users[0], &users[1], &users[2], &users[3],
+		}},
+		{Name: "Org 2", Note: "Second Organization", Users: []*app_models.Users{
+			&users[0], &users[1], &users[3],
+		}},
+		{Name: "Org 3", Note: "Third Organization", Users: []*app_models.Users{
+			&users[0], &users[1], &users[3],
+		}},
+		{Name: "Org 4", Note: "Fourth Organization", Users: []*app_models.Users{
+			&users[0], &users[1], &users[4],
+		}},
+		{Name: "Org 5", Note: "Fifth Organization", Users: []*app_models.Users{
+			&users[0], &users[1], &users[4],
+		}},
 	}
 
 	for _, org := range orgs {
@@ -83,7 +97,6 @@ func seedAuthLevels(db *gorm.DB) {
 }
 
 func seedUsers(db *gorm.DB) {
-	// Check if number of users are > 0
 	var count int64
 	db.Model(&app_models.Users{}).Count(&count)
 	if count > 0 {
@@ -91,84 +104,38 @@ func seedUsers(db *gorm.DB) {
 		return
 	}
 
-	// Plaintext passwords for seeding
 	userSeeds := []struct {
-		Email       string
-		Password    string
-		IsAuth      bool
-		AuthLevelID int
-		Note        string
-		Org         *[]app_models.Org
+		Email     string
+		Password  string
+		IsAuth    bool
+		AuthLevel int
+		Note      string
 	}{
-		{
-			Email:       "admin@app.loc",
-			Password:    "appadmin",
-			IsAuth:      true,
-			AuthLevelID: 1,
-			Note:        "Default Admin User",
-			Org:         &[]app_models.Org{{Name: "Org 1"}, {Name: "Org 2"}, {Name: "Org 3"}, {Name: "Org 4"}, {Name: "Org 5"}},
-		},
-		{
-			Email:       "super@app.loc",
-			Password:    "superuser",
-			IsAuth:      false,
-			AuthLevelID: 2,
-			Note:        "Default Superuser",
-			Org:         &[]app_models.Org{{Name: "Org 2"}},
-		},
-		{
-			Email:       "manager@app.loc",
-			Password:    "appmanager",
-			IsAuth:      false,
-			AuthLevelID: 3,
-			Note:        "Default Manager",
-			Org:         &[]app_models.Org{{Name: "Org 3"}},
-		},
-		{
-			Email:       "user@app.loc",
-			Password:    "password",
-			IsAuth:      false,
-			AuthLevelID: 4,
-			Note:        "Default User",
-			Org:         &[]app_models.Org{{Name: "Org 3"}, {Name: "Org 4"}},
-		},
-		{
-			Email:       "guest@app.loc",
-			Password:    "guest",
-			IsAuth:      false,
-			AuthLevelID: 5,
-			Note:        "Default Guest",
-			Org:         &[]app_models.Org{{Name: "Org 1"}},
-		},
+		{"admin@app.loc", "appadmin", true, 1, "Default Admin User"},
+		{"super@app.loc", "superuser", false, 2, "Default Superuser"},
+		{"manager@app.loc", "appmanager", false, 3, "Default Manager"},
+		{"user@app.loc", "password", false, 4, "Default User"},
+		{"guest@app.loc", "guest", false, 5, "Default Guest"},
 	}
 
-	var users []app_models.Users
 	for _, u := range userSeeds {
 		hashed, err := hashPassword(u.Password)
 		if err != nil {
-			fmt.Println("Error hashing password for", u.Email, ":", err)
+			fmt.Printf("Error hashing password for %s: %v\n", u.Email, err)
 			os.Exit(1)
 		}
-		users = append(users, app_models.Users{
+seedOrgs(db)
+		user := app_models.Users{
 			Email:       u.Email,
 			Password:    hashed,
 			IsAuth:      u.IsAuth,
 			Note:        u.Note,
-			AuthLevelID: u.AuthLevelID,
-			Org:         u.Org,
-		})
+			AuthLevelID: u.AuthLevel,
+		}
+		db.Create(&user)
 	}
 
-	for i := range users {
-		db.Create(&users[i])
-	}
-
-	if len(users) != 5 {
-		fmt.Println("Error seeding users")
-		os.Exit(1)
-	}
-
-	fmt.Println("Users Seeded:", users[0].Email, users[1].Email, users[2].Email)
+	fmt.Println("Users Seeded")
 }
 
 func hashPassword(password string) (string, error) {

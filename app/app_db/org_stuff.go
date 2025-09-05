@@ -19,15 +19,13 @@ func Org_GetAll() ([]app_models.Org, error) {
 }
 
 // Org_GetByUUID fetches an org by its UUID and preloads users.
-func Org_GetByUUID(uuid string) (*app_models.Org, error) {
+func Org_GetByID(orgid string) (*app_models.Org, error) {
+	fmt.Println("id", orgid)
 	var org app_models.Org
-	err := AppDB.
-		Preload("Users.AuthLevel").
-		Where("uuid = ?", uuid).
-		First(&org).Error
+	err := AppDB.Preload("Users").First(&org, orgid).Error
 	if err != nil {
-		return nil, err
-	}
+		// handle error
+}
 	return &org, nil
 }
 
@@ -37,8 +35,8 @@ func Org_GetByUser(userID uint) ([]app_models.Org, error) {
 	if err := AppDB.Preload("Org").First(&user, userID).Error; err != nil {
 		return nil, err
 	}
-	orgs := make([]app_models.Org, 0, len(*user.Org))
-	for _, o := range *user.Org {
+	orgs := make([]app_models.Org, 0, len(user.Org))
+	for _, o := range user.Org {
 		var org app_models.Org
 		if err := AppDB.First(&org, o).Error; err == nil {
 			orgs = append(orgs, org)

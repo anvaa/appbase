@@ -28,8 +28,8 @@ func Org_New(c *gin.Context) {
 }
 
 func Org_Edit(c *gin.Context) {
-	orgID := c.Param("uuid")
-	org, err := app_db.Org_GetByUUID(orgID)
+	orgID := c.Param("id")
+	org, err := app_db.Org_GetByID(orgID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return

@@ -15,7 +15,7 @@
 <div class="flex-container" style="flex-wrap: wrap; gap: 10px;">
 {{ range $orgs }}
 	<div class="org-box" >
-		<div class="div-header-bold" style="cursor: pointer;" onclick="location.href='/v/org/{{ .UUID }}'">
+		<div class="div-header-bold" style="cursor: pointer;" onclick="location.href='/v/org/{{ .ID }}'">
 				<img src="/media/building.svg" class="btn-img"> 
 				{{.ID}} {{ .Name }}
         </div>

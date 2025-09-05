@@ -58,7 +58,7 @@ func user_Api(r *gin.Engine) *gin.Engine {
 		viewRoutes.GET("/orgs", user_ctrl.Org_View)
 		viewRoutes.GET("/org/new", user_ctrl.Org_New)
 
-		viewRoutes.GET("/org/:uuid", user_ctrl.Org_Edit)
+		viewRoutes.GET("/org/:id", user_ctrl.Org_Edit)
 		viewRoutes.POST("/org/addupd", user_ctrl.Org_AddUpd)
 		viewRoutes.DELETE("/org/:uuid", user_ctrl.Org_Delete)
 
