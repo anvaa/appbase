@@ -13,6 +13,10 @@ function addUser() {
     window.location.href = "/signup/121209";
 }
 
+function mngOrgs() {
+    window.location.href = "/v/orgs";
+}
+
 function backToApp() {
     window.location.href = "/app";
 }
@@ -22,18 +26,44 @@ async function Logout() {
 }
 
 
-function ShowMsg(val) {
-    document.getElementById("_msg").innerHTML = val;
-    document.getElementById("_msg").style.display = "block";
-    document.getElementById("_msg").style.color = "black";
-    document.getElementById("_msg").style.fontSize = "16px";
-    document.getElementById("_msg").style.width = "fit-content";
+function ShowMsg(type, val) {
+    const msgEl = document.getElementById("_msg");
+    if (!msgEl) return;
 
-    // resetFields();
+    document.body.style.pointerEvents = "none";
 
-    setTimeout(function() {
-        document.getElementById("_msg").style.display = "none";
-        window.location.reload();
+    msgEl.innerHTML = val;
+    Object.assign(msgEl.style, {
+        margin: "2px",
+        fontSize: "large",
+        fontWeight: "bold",
+        fontFamily: "monospace",
+        width: "fit-content",
+        padding: "2px",
+        borderRadius: "5px",
+        border: `3px solid ${getBorderColor(type)}`,
+        color: getBorderColor(type),
+        display: "block",
+        opacity: "1",
+        transition: ""
+    });
+
+    setTimeout(() => {
+        msgEl.style.transition = "opacity 0.5s";
+        msgEl.style.opacity = "0";
+        setTimeout(() => {
+            msgEl.style.display = "none";
+            msgEl.style.opacity = "1";
+            document.body.style.pointerEvents = "auto";
+        }, 500);
     }, 3000);
-    return;
+}
+
+function getBorderColor(type) {
+    switch (type) {
+        case "error": return "red";
+        case "success": return "green";
+        case "info": return "blue";
+        default: return "black";
+    }
 }

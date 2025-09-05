@@ -6,21 +6,21 @@ import (
 
 	"server/middleware"
 	"user/user_ctrl"
-	"user"
+
 )
 
 func user_Api(r *gin.Engine) *gin.Engine {
 
 	// SET default paths
-	r.GET("/", user.Root)
-	r.GET("/info", user.Info)
-	r.GET("/version", user.Version)
+	r.GET("/", user_ctrl.Root)
+	r.GET("/info", user_ctrl.Info)
+	r.GET("/version", user_ctrl.Version)
 
 	// Set up the user routes
-	r.POST("/signup", user.View_Signup)
-	r.GET("/signup/:count", user.View_Signup)
-	r.POST("/login", user.View_Login)
-	r.GET("/login", user.View_Login)
+	r.POST("/signup", user_ctrl.View_Signup)
+	r.GET("/signup/:count", user_ctrl.View_Signup)
+	r.POST("/login", user_ctrl.View_Login)
+	r.GET("/login", user_ctrl.View_Login)
 
 	r.GET("/logout", middleware.Logout)
 
@@ -46,14 +46,21 @@ func user_Api(r *gin.Engine) *gin.Engine {
 		viewRoutes.Use(middleware.IsAuth)
 
 		// is users
-		viewRoutes.GET("/myaccount", user.View_MyAccount)
+		viewRoutes.GET("/myaccount", user_ctrl.View_MyAccount)
 
 		viewRoutes.Use(middleware.IsAdmin)
 
 		// is admin
-		viewRoutes.GET("/newusers", user.View_NewUsers)
-		viewRoutes.GET("/users", user.View_ManageUsers)
-		viewRoutes.GET("/user/:uuid", user.View_EditUser)
+		viewRoutes.GET("/newusers", user_ctrl.View_NewUsers)
+		viewRoutes.GET("/users", user_ctrl.View_ManageUsers)
+		viewRoutes.GET("/user/:uuid", user_ctrl.View_EditUser)
+
+		viewRoutes.GET("/orgs", user_ctrl.Org_View)
+		viewRoutes.GET("/org/new", user_ctrl.Org_New)
+
+		viewRoutes.GET("/org/:uuid", user_ctrl.Org_Edit)
+		viewRoutes.POST("/org/addupd", user_ctrl.Org_AddUpd)
+		viewRoutes.DELETE("/org/:uuid", user_ctrl.Org_Delete)
 
 	}
 

@@ -1,11 +1,11 @@
-package user
+package user_ctrl
 
 import (
 	"app/app_conf"
 	"app/app_db"
 	"app/app_models"
 	"user/user_conf"
-	"user/user_ctrl"
+
 
 	"fmt"
 	"net/http"
@@ -49,7 +49,7 @@ func Info(c *gin.Context) {
 
 func View_Signup(c *gin.Context) {
 	if c.Request.Method == "POST" {
-		user_ctrl.SignUp(c)
+		SignUp(c)
 		return
 	}
 	count := "0"
@@ -69,7 +69,7 @@ func View_Signup(c *gin.Context) {
 
 func View_Login(c *gin.Context) {
 	if c.Request.Method == "POST" {
-		user_ctrl.Login(c)
+		Login(c)
 		return
 	}
 

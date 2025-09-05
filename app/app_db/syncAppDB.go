@@ -15,6 +15,7 @@ func SyncAppDB(db *gorm.DB) {
 	db.AutoMigrate(
 		&app_models.Users{},
 		&app_models.AuthLevel{},
+		&app_models.Org{},
 
 		&app_models.Status{},
 		&app_models.Stasub{},
@@ -29,9 +30,33 @@ func SyncAppDB(db *gorm.DB) {
 	seedTypes(db)
 
 	seedAuthLevels(db)
+	seedOrgs(db)
 	seedUsers(db)
 
 	fmt.Println("Database Migrated")
+}
+
+func seedOrgs(db *gorm.DB) {
+	var count int64
+	db.Model(&app_models.Org{}).Count(&count)
+	if count > 0 {
+		fmt.Println("Orgs already seeded")
+		return
+	}
+
+	orgs := []app_models.Org{
+		{Name: "Org 1", Note: "First Organization"},
+		{Name: "Org 2", Note: "Second Organization"},
+		{Name: "Org 3", Note: "Third Organization"},
+		{Name: "Org 4", Note: "Fourth Organization"},
+		{Name: "Org 5", Note: "Fifth Organization"},
+	}
+
+	for _, org := range orgs {
+		db.Create(&org)
+	}
+
+	fmt.Println("Orgs Seeded")
 }
 
 func seedAuthLevels(db *gorm.DB) {
@@ -73,13 +98,48 @@ func seedUsers(db *gorm.DB) {
 		IsAuth      bool
 		AuthLevelID int
 		Note        string
-		Orgname     string
+		Org         *[]app_models.Org
 	}{
-		{"admin@app.loc", "appadmin", true, 1, "Default Admin User", "app"},
-		{"super@app.loc", "superuser", false, 2, "Default Superuser", "app"},
-		{"manager@app.loc", "manager", false, 3, "Default Manager", "app"},
-		{"user@app.loc", "password", false, 4, "Default User", "app"},
-		{"guest@app.loc", "guest", false, 5, "Default Guest", "app"},
+		{
+			Email:       "admin@app.loc",
+			Password:    "appadmin",
+			IsAuth:      true,
+			AuthLevelID: 1,
+			Note:        "Default Admin User",
+			Org:         &[]app_models.Org{{Name: "Org 1"}, {Name: "Org 2"}, {Name: "Org 3"}, {Name: "Org 4"}, {Name: "Org 5"}},
+		},
+		{
+			Email:       "super@app.loc",
+			Password:    "superuser",
+			IsAuth:      false,
+			AuthLevelID: 2,
+			Note:        "Default Superuser",
+			Org:         &[]app_models.Org{{Name: "Org 2"}},
+		},
+		{
+			Email:       "manager@app.loc",
+			Password:    "appmanager",
+			IsAuth:      false,
+			AuthLevelID: 3,
+			Note:        "Default Manager",
+			Org:         &[]app_models.Org{{Name: "Org 3"}},
+		},
+		{
+			Email:       "user@app.loc",
+			Password:    "password",
+			IsAuth:      false,
+			AuthLevelID: 4,
+			Note:        "Default User",
+			Org:         &[]app_models.Org{{Name: "Org 3"}, {Name: "Org 4"}},
+		},
+		{
+			Email:       "guest@app.loc",
+			Password:    "guest",
+			IsAuth:      false,
+			AuthLevelID: 5,
+			Note:        "Default Guest",
+			Org:         &[]app_models.Org{{Name: "Org 1"}},
+		},
 	}
 
 	var users []app_models.Users
@@ -95,7 +155,7 @@ func seedUsers(db *gorm.DB) {
 			IsAuth:      u.IsAuth,
 			Note:        u.Note,
 			AuthLevelID: u.AuthLevelID,
-			Orgname:     u.Orgname,
+			Org:         u.Org,
 		})
 	}
 

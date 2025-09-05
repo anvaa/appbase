@@ -86,7 +86,7 @@ async function fetchPage(url) {
     }
 }
 
-function ShowMsg(val, type) {
+function ShowMsg(type, val) {
     const msgEl = document.getElementById("_msg");
     if (!msgEl) return;
 

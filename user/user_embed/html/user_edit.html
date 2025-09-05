@@ -51,23 +51,9 @@
         </form>
     </div>
 
-    <!-- Organization Name Box -->
-    <div class="tools-box" style="margin-left: 10px;">
-        <div>
-            <label for="_orgname">Organization</label>
-            <input type="text" id="_orgname" value="{{ $edituser.Orgname }}" required />
-        </div>
-        <div style="text-align: center;">
-            <input type="button" value="Update Org Name" class="tools-btn"
-                style="width: 155px; margin-top: 5px;"
-                onclick="Orgname('{{$edituser.UUID}}')" 
-            />
-        </div>
-    </div>
-
     <!-- Role Box (only if editing another user) -->
     {{ if ne $edituser.UUID $curuser.UUID }}
-        <div class="tools-box" style="margin-left: 10px;">
+        <div class="tools-box">
             <div>
                 <label for="_authlevel">Auth Level</label>
                 <select id="_authlevel" onchange="authSelect('{{$curuser.AuthLevelID}}')">
@@ -88,6 +74,12 @@
             </div>
         </div>
     {{ end }}
+
+    <!-- Organization Name Box -->
+    <div class="tools-box">
+            <div class="div-header-bold">Member of</div>
+            <ul>{{ range $edituser.Orgs }}<li>{{ .Name }}</li>{{ end }}</ul>
+    </div>
 
 </div>
 

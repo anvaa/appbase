@@ -25,7 +25,9 @@
     {{ if or (eq $user.AuthLevelID 1) (eq $user.AuthLevelID 2) }}
     <button class="mnubtn" onclick="Users()">
         <img src="/media/person.svg" class="btn-img" alt="">
-        Users
+        Users /
+        <img src="/media/building.svg" class="btn-img" alt="">
+        Orgs
     </button>
     {{ end }}
 

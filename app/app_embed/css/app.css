@@ -10,6 +10,12 @@
     --color-danger: #B85C38; /* earth red for delete */
     --color-btn: #A89F91;
     --color-btn-hover: #CFC6B2;
+    --color-meta: #6E6E6E; /* grey for meta text */
+    --color-success: #4CAF50; /* green for success messages */
+    --color-warning: #FFC107; /* yellow for warning messages */
+    --color-info: #2196F3; /* blue for informational messages */
+    --color-box-text-background: whitesmoke; /* light grey for box text background */
+    --color-box-meta-background: #F5F5F5; /* white for box meta background */
 }
 
 /* General styles */
@@ -101,8 +107,8 @@ select {
 
 /* --- Tools styles merged and refactored for earth/grey tones --- */
 .tools-box {
-    padding: 1px;
-    margin-right: 3px;
+    padding: 2px;
+    margin-right: 10px;
     border-radius: 5px;
     border: 2px solid var(--color-border);
     width: fit-content;
@@ -165,4 +171,61 @@ select {
     margin-right: auto;
     color: var(--color-text);
     size: 6;
+}
+
+.org-box {
+    padding: 2px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 2px solid var(--color-border);
+    min-width: 100px;
+    max-width: 400px;
+
+    background-color: var(--color-th);
+    margin-top: 5px;
+
+}
+
+.note-content {
+    padding: 2px;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 2px solid var(--color-border);
+    background: var(--color-box-text-background);
+
+    color: var(--color-text);
+    font-size: medium;
+
+}
+
+.trash-btn {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    margin-top: 0;
+    padding-left: 2px;
+    border: 2px solid transparent
+}
+
+.trash-btn:hover {
+    border-color: var(--color-danger);
+}
+
+.box-meta {
+    padding: 2px;
+    border: 0 solid var(--color-border);
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: medium;
+    color: var(--color-meta);
+    background: var(--color-box-meta-background);
+    cursor: auto;
+    width: fit-content;
+}
+
+.box-meta img {
+    width: 12px;
+    height: 12px;
+    margin-right: -2px;
+    margin-top: -2px;
+    padding: 0;
 }

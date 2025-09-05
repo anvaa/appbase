@@ -3,22 +3,26 @@
 <div class="menu-flex-container" style="padding: 2px;">
     <div class="mnubtn" style="display: flex; align-items: center;" onclick="newUsers()">
         <img src="/media/person.svg" class="btn-img">
-        <span>New users</span>
+        <span>New Users</span>
     </div>
     <div class="mnubtn" style="display: flex; align-items: center;" onclick="mngUsers()">
         <img src="/media/person-gear.svg" class="btn-img">
-        <span>Manage users</span>
+        <span>Manage Users</span>
     </div>
     <div class="mnubtn" style="display: flex; align-items: center;" onclick="addUser()">
         <img src="/media/person-add.svg" class="btn-img">
         <span>Add User</span>
+    </div>
+    <div class="mnubtn" style="display: flex; align-items: center;" onclick="mngOrgs()">
+        <img src="/media/building.svg" class="btn-img">
+        <span>Manage Orgs</span>
     </div>
     <div style="flex-grow: 1;"></div>
     <div class="mnubtn" style="display: flex; align-items: center;" onclick="backToApp()">
         <img src="/media/arrow-right-circle.svg" class="btn-img">
         <span>Back to App</span>
     </div>
-    <div style="flex-grow: 1;"></div>
+    
     <div style="width: fit-content; padding: 4px; color: var(--text-color);">
         {{ .user.Email }}
     </div>

@@ -45,7 +45,10 @@ func User_GetById(id any) (app_models.Users, error) {
 
 func User_GetByUUID(uuid any) (app_models.Users, error) {
 	var userbyuuid app_models.Users
-	err := AppDB.Preload("AuthLevel").Where("uuid = ?", uuid).First(&userbyuuid)
+	err := AppDB.
+		Preload("AuthLevel").
+		Preload("Org").
+		Where("uuid = ?", uuid).First(&userbyuuid)
 	if err.Error != nil {
 		log.Println("Error getting user by UUID:", uuid, ErrUserNotFound)
 		return userbyuuid, ErrUserNotFound
@@ -65,7 +68,10 @@ func User_GetEmailById(userid any) (string, error) {
 
 func User_GetByEmail(email string) (app_models.Users, error) {
 	var userbyemail app_models.Users
-	err := AppDB.Where("email = ?", email).First(&userbyemail)
+	err := AppDB.
+		Preload("AuthLevel").
+		Preload("Org").
+		Where("email = ?", email).First(&userbyemail)
 	if err.Error != nil {
 		return userbyemail, ErrUserNotFound
 	}
@@ -142,7 +148,10 @@ func User_GetEmailFromId(id any) (string, error) {
 
 func Users_GetAuth() ([]app_models.Users, error) {
 	var auth_users []app_models.Users
-	err := *AppDB.Preload("AuthLevel").Where("is_auth = ?", true).Find(&auth_users)
+	err := *AppDB.
+		Preload("AuthLevel").
+		Preload("Org").
+		Where("is_auth = ?", true).Find(&auth_users)
 	if err.Error != nil {
 		return auth_users, err.Error
 	}
@@ -151,7 +160,10 @@ func Users_GetAuth() ([]app_models.Users, error) {
 
 func Users_GetUnAuth() ([]app_models.Users, error) {
 	var unauth_users []app_models.Users
-	err := *AppDB.Preload("AuthLevel").Where("is_auth = ?", false).Find(&unauth_users)
+	err := *AppDB.
+		Preload("AuthLevel").
+		Preload("Org").
+		Where("is_auth = ?", false).Find(&unauth_users)
 	if err.Error != nil {
 		return unauth_users, err.Error
 	}
@@ -160,7 +172,10 @@ func Users_GetUnAuth() ([]app_models.Users, error) {
 
 func Users_GetDeleted() ([]app_models.Users, error) {
 	var del_users []app_models.Users
-	err := *AppDB.Unscoped().Preload("AuthLevel").Where("deleted_at IS NOT NULL").Find(&del_users)
+	err := *AppDB.Unscoped().
+		Preload("AuthLevel").
+		Preload("Org").
+		Where("deleted_at IS NOT NULL").Find(&del_users)
 	if err.Error != nil {
 		return del_users, err.Error
 	}

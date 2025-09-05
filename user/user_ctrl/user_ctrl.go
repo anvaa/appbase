@@ -92,13 +92,13 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	role, isauth := 1, false
+	role, isauth := 4, false
 	user = app_models.Users{
 		Email:       email,
 		AuthLevelID: role,
 		IsAuth:      isauth,
 		Note:        "Nil",
-		Orgname:     orgname,
+		Org:         &[]app_models.Org{{Name: orgname}},
 	}
 
 	hash, err := hashPassword(password)
@@ -267,7 +267,7 @@ func User_UpdAuthLevel(c *gin.Context) {
 func User_UpdateOrg(c *gin.Context) {
 	var body struct {
 		Uuid    string `json:"uuid"`
-		Orgname string `json:"orgname"`
+		Name    string `json:"name"`
 	}
 
 	if err := c.BindJSON(&body); err != nil {
@@ -281,7 +281,7 @@ func User_UpdateOrg(c *gin.Context) {
 		return
 	}
 
-	user.Orgname = body.Orgname
+	user.Org = &[]app_models.Org{{Name: body.Name}}
 
 	if err := app_db.AppDB.Save(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update user"})

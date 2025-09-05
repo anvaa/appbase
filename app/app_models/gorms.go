@@ -30,16 +30,28 @@ func (b *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
 
 type Users struct {
 	BaseModel
-	Email        string    `gorm:"unique, size:255" json:"email"`
-	Password     string    `gorm:"not null, size:255" json:"password"`
-	Orgname      string    `gorm:"size:255" json:"orgname"`
+	Email    string `gorm:"unique, size:255" json:"email"`
+	Password string `gorm:"not null, size:255" json:"password"`
+
 	IsAuth       bool      `gorm:"default:false" json:"is_auth"`
 	LastLogin    time.Time `gorm:"autoUpdateTime" json:"last_login"`
-	Note         string    `gorm:"size:255" json:"note"`
+	Note         string    `gorm:"type:text" json:"note"`
 	TokenVersion int       `gorm:"default:1" json:"token_version"`
 
 	AuthLevelID int       `gorm:"default:3" json:"auth_level_id"` // user
 	AuthLevel   AuthLevel `gorm:"foreignKey:AuthLevelID" json:"auth_level"`
+
+	Org *[]Org `gorm:"many2many:user_orgs;" json:"orgs,omitempty"` // many2many relation
+
+	
+}
+
+// Org represents an organization for many2many relation with Users
+type Org struct {
+	BaseModel
+	Name  string   `gorm:"unique, size:255" json:"name"`
+	Note  string   `gorm:"type:text" json:"note"`
+	Users []*Users `gorm:"many2many:user_orgs;" json:"users"`
 }
 
 type AuthLevel struct {
