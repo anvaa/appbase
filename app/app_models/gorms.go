@@ -63,8 +63,10 @@ type Users struct {
 	LastLogin    time.Time  `gorm:"autoUpdateTime" json:"last_login"`
 	Note         string     `gorm:"type:text" json:"note"`
 	TokenVersion int        `gorm:"default:1" json:"token_version"`
-	AuthLevelID  int        `gorm:"default:3" json:"auth_level_id"`
+	
+	AuthLevelID  int        `gorm:"default:5" json:"auth_level_id"`
 	AuthLevel    AuthLevel  `gorm:"foreignKey:AuthLevelID" json:"auth_level"`
+	
 	Org          []*Org     `gorm:"many2many:user_orgs;" json:"orgs,omitempty"`
 }
 

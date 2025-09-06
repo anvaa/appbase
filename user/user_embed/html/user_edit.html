@@ -76,9 +76,16 @@
     {{ end }}
 
     <!-- Organization Name Box -->
-    <div class="tools-box">
+    <div class="tools-box" style="width: fit-content; min-width: 150px;">
             <div class="div-header-bold">Member of</div>
-            <ul>{{ range $edituser.Orgs }}<li>{{ .Name }}</li>{{ end }}</ul>
+            {{ range $edituser.Org }}
+                <div class="org-member-btn" onclick="location.href='/v/org/{{ .UUID }}'">
+                    <div class="flex-container">
+                        <img src="/media/building.svg"> 
+                        <span>{{ .Name }}</span>
+                    </div>
+                </div>
+            {{ end }}
     </div>
 
 </div>

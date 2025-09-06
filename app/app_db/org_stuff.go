@@ -19,10 +19,9 @@ func Org_GetAll() ([]app_models.Org, error) {
 }
 
 // Org_GetByUUID fetches an org by its UUID and preloads users.
-func Org_GetByID(orgid string) (*app_models.Org, error) {
-	fmt.Println("id", orgid)
+func Org_GetByUUID(uuid string) (*app_models.Org, error) {
 	var org app_models.Org
-	err := AppDB.Preload("Users").First(&org, orgid).Error
+	err := AppDB.Preload("Users.AuthLevel").First(&org, "uuid = ?", uuid).Error
 	if err != nil {
 		// handle error
 }
@@ -58,7 +57,7 @@ func Org_Delete(uuid string) error {
 }
 
 // Org_AddUserto adds a user to an org (many2many relationship).
-func Org_AddUserto(orgID, userID uint) error {
+func Org_AddMember(orgID, userID int) error {
 	var org app_models.Org
 	if err := AppDB.First(&org, orgID).Error; err != nil {
 		return err
@@ -70,13 +69,31 @@ func Org_AddUserto(orgID, userID uint) error {
 	return AppDB.Model(&org).Association("Users").Append(&user)
 }
 
+func Org_RemoveMember(orgID, userID int) error {
+	var org app_models.Org
+	if err := AppDB.First(&org, orgID).Error; err != nil {
+		return err
+	}
+	var user app_models.Users
+	if err := AppDB.First(&user, userID).Error; err != nil {
+		return err
+	}
+	return AppDB.Model(&org).Association("Users").Delete(&user)
+}
+
 // Org_AddUpd creates a new org if uuid == "0", otherwise updates the existing org.
 func Org_AddUpd(uuid, name, note string) error {
 	if uuid == "0" {
-		fmt.Println("UUID", uuid, "create new")
+		// append user id 1 admin
+		var users []*app_models.Users
+		if err := AppDB.Find(&users, 1).Error; err != nil {
+			return err
+		}
+
 		org := app_models.Org{
-			Name: name,
-			Note: note,
+			Name:  name,
+			Note:  note,
+			Users: users,
 		}
 		return AppDB.Create(&org).Error
 	}

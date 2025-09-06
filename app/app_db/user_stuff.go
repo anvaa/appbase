@@ -57,15 +57,6 @@ func User_GetByUUID(uuid any) (app_models.Users, error) {
 	return userbyuuid, nil
 }
 
-func User_GetEmailById(userid any) (string, error) {
-	var emailbyid app_models.Users
-	err := AppDB.Select("email").First(&emailbyid, userid)
-	if err.Error != nil {
-		return "", ErrUserNotFound
-	}
-	return emailbyid.Email, nil
-}
-
 func User_GetByEmail(email string) (app_models.Users, error) {
 	var userbyemail app_models.Users
 	err := AppDB.
@@ -114,9 +105,9 @@ func CreateNewUser(nu *app_models.Users) error {
 	return nil
 }
 
-func Users_GetAll() ([]app_models.Users, error) {
-	var all_users []app_models.Users
-	err := *AppDB.Find(&all_users)
+func Users_GetAll() ([]*app_models.Users, error) {
+	var all_users []*app_models.Users
+	err := *AppDB.Preload("AuthLevel").Preload("Org").Find(&all_users)
 	if err.Error != nil {
 		return all_users, ErrUserNotFound
 	}

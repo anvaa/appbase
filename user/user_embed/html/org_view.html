@@ -6,8 +6,8 @@
 <div class="flex-container" style="align-items: center; margin-bottom: 10px;">
 	<div class="div-header-bold">Organizations ({{ len $orgs }})</div>
 	<div style="flex-grow: 1;"></div>
-	<div class="mnubtn" onclick="location.href='/v/org/new'">
-		<img src="/media/building-add.svg" class="btn-img">
+	<div class="mnubtn" style="margin-top: 5px;" onclick="location.href='/v/org/new'">
+		<img src="/media/plus-circle.svg" class="btn-img">
 	    <span>New Organization</span>
 	</div>
 </div>
@@ -15,9 +15,9 @@
 <div class="flex-container" style="flex-wrap: wrap; gap: 10px;">
 {{ range $orgs }}
 	<div class="org-box" >
-		<div class="div-header-bold" style="cursor: pointer;" onclick="location.href='/v/org/{{ .ID }}'">
+		<div class="div-header-bold" style="cursor: pointer;" onclick="location.href='/v/org/{{ .UUID }}'">
 				<img src="/media/building.svg" class="btn-img"> 
-				{{.ID}} {{ .Name }}
+				{{ .Name }}
         </div>
 		<div class="note-content">{{ .Note }}</div>
 		<div class="flex-container box-meta" style="width: 100%; justify-content: space-between;">

@@ -38,3 +38,46 @@ async function deleteOrg(uuid) {
         ShowMsg("error","Error deleting organization");
     }
 }
+
+async function AddMember(orgUUID, userUUID) {
+
+    try {
+        const response = await fetch(`/v/org/members/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ org_id: Number(orgUUID), user_id: Number(userUUID) })
+        });
+
+        if (response.ok) {
+            ShowMsg("info", "Member added successfully");
+            window.location.reload();
+        } else {
+            ShowMsg("error", "Error adding member");
+        }
+    } catch (error) {
+        ShowMsg("error", "Network error adding member");
+    }
+}
+
+async function RemoveMember(orgUUID, userUUID) {
+    try {
+        const response = await fetch(`/v/org/members/rem`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ org_id: Number(orgUUID), user_id: Number(userUUID) })
+        });
+
+        if (response.ok) {
+            ShowMsg("info", "Member removed successfully");
+            window.location.reload();
+        } else {
+            ShowMsg("error", "Error removing member");
+        }
+    } catch (error) {
+        ShowMsg("error", "Network error removing member");
+    }
+}

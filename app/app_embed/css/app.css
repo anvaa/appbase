@@ -174,7 +174,7 @@ select {
 }
 
 .org-box {
-    padding: 2px;
+    padding: 4px;
     margin-right: 10px;
     border-radius: 5px;
     border: 2px solid var(--color-border);
@@ -183,7 +183,19 @@ select {
 
     background-color: var(--color-th);
     margin-top: 5px;
+}
 
+.org-member-btn {
+    margin: 4px;
+    padding: 4px;
+    border: 2px solid var(--color-border);
+    border-radius: 25px;
+
+    cursor: pointer;
+}
+.org-member-btn:hover {
+    background: var(--color-btn-hover);
+    border: 2px solid var(--color-primary);
 }
 
 .note-content {
