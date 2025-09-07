@@ -10,7 +10,8 @@
         Edit {{ $edituser.Email }} ({{ $edituser.AuthLevel.Name }} {{ $edituser.AuthLevel.Level }})
     </div>
     <div style="margin-top: 5px;">
-        {{ if ne $edituser.UUID $curuser.UUID }}
+        <!-- can not delet your-self or admin level users -->
+        {{ if and (ne $edituser.UUID $curuser.UUID) (lt $edituser.AuthLevel.Level 40) }}
         <button value="{{ $edituser.ID }}" 
                 class="tools-btn-del"
                 onclick="Delete('{{$edituser.UUID}}')">
@@ -59,7 +60,7 @@
                 <select id="_authlevel" onchange="authSelect('{{$curuser.AuthLevelID}}')">
                     {{ range $auth_levels }}
                         {{ if eq .ID $edituser.AuthLevelID }}
-                            <option value="{{ .ID }}" selected>{{ .Name }} {{ .Level }}</option>
+                            <option value="{{ .ID }}" selected>{{ .Name }} ({{ .Level }})</option>
                         {{ else }}
                             <option value="{{ .ID }}">{{ .Name }} {{ .Level }}</option>
                         {{ end }}

@@ -22,7 +22,6 @@ func init() {
 
 func WriteDefaultConfig(appRoot string) {
 	// SetDefault sets the default value for the key.
-	appConf.SetDefault("app_db", "data/app.db")
 	appConf.SetDefault("start_url", "/app") // Default start page
 
 	appConf.SetDefault("company_name", "CompanyName")

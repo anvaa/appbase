@@ -241,3 +241,12 @@ select {
     margin-top: -2px;
     padding: 0;
 }
+
+.dbconfig input[type="text"] {
+
+    -ms-flex-align: end;
+    width: 200px;
+
+    
+    
+}

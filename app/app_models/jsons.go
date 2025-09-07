@@ -17,3 +17,13 @@ type Appbase struct {
 	User    any      `json:"user"`
 	Appinfo any      `json:"appinfo"`
 }
+
+type DbConfig struct {
+	Type     string
+	Path     string
+	Host     string
+	Port     string
+	User     string
+	Password string
+	Name     string
+}

@@ -9,7 +9,7 @@ async function Delete(_uuid) {
         return;
     }
 
-    var userData = {
+    var jsonData = {
         uuid: _uuid,
     };
 
@@ -17,7 +17,7 @@ async function Delete(_uuid) {
         const response = await fetch("/user/delete", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(userData),
+            body: JSON.stringify(jsonData),
         });
     
         if (!response.ok) {

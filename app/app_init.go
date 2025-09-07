@@ -10,6 +10,7 @@ import (
 
 	"server/filefunc"
 	"server/srv_conf"
+
 )
 
 func AppInit(app_folder string) error {
@@ -28,15 +29,10 @@ func AppInit(app_folder string) error {
 	}
 	app_conf.ReadConfig() // read the config file
 
-	appdb := app_conf.GetString("app_db")
-	if !filefunc.IsExists(appdb) {
-		appdb = srv_conf.DataDir + "/app.db"
-		log.Println("Creating", appdb)
-		filefunc.CreateFile(appdb)
-	}
+	
 
 	// connect/sync to the app database
-	app_db.CnnAppDB(appdb)
+	app_db.CnnAppDB(srv_conf.GetDbConfig())
 
 	// get default values fro DB
 	getMenuDefaultId()

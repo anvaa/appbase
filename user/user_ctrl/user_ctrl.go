@@ -4,7 +4,8 @@ import (
 	"app/app_conf"
 	"app/app_db"
 	"app/app_models"
-	
+	"fmt"
+
 	"server/middleware"
 	"user/user_conf"
 	"user/user_sec"
@@ -207,6 +208,27 @@ func User_DeleteUser(c *gin.Context) {
 		return
 	}
 
+	// if user exists
+	user, err := app_db.User_GetByUUID(body.Uuid)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get user"})
+		return
+	}
+
+	// if user AuthLevel.Level is >= 40, not allowed to delete admin level user
+	if user.AuthLevel.Level >= 40 {
+		c.JSON(http.StatusForbidden, gin.H{"message": "not allowed to delete admin level user"})
+		return
+	}
+
+	// get current user from context
+	cur_user := c.Keys[user_conf.UserKey]
+	fmt.Println("User", cur_user.(app_models.Users).UUID, "deletes ->", user.UUID)
+	if cur_user.(app_models.Users).UUID == user.UUID {
+		c.JSON(http.StatusForbidden, gin.H{"message": "not allowed to delete yourself"})
+		return
+	}
+
 	if err := app_db.User_Delete(body.Uuid); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to delete user"})
 		return
@@ -254,6 +276,20 @@ func User_UpdAuthLevel(c *gin.Context) {
 		return
 	}
 
+	// if user exists
+	user, err := app_db.User_GetByUUID(body.Uuid)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get user"})
+		return
+	}
+
+	cur_user := c.Keys[user_conf.UserKey]
+	fmt.Println("User", cur_user.(app_models.Users).UUID, "edits AuthLevel of ->", user.UUID)
+	if cur_user.(app_models.Users).UUID == user.UUID {
+		c.JSON(http.StatusForbidden, gin.H{"message": "not allowed to edit yourself"})
+		return
+	}
+
 	if err := app_db.AppDB.Model(&app_models.Users{}).
 		Where("uuid = ?", body.Uuid).
 		Update("auth_level_id", body.AuthLev).Error; err != nil {
@@ -266,8 +302,8 @@ func User_UpdAuthLevel(c *gin.Context) {
 
 func User_UpdateOrg(c *gin.Context) {
 	var body struct {
-		Uuid    string `json:"uuid"`
-		Name    string `json:"name"`
+		Uuid string `json:"uuid"`
+		Name string `json:"name"`
 	}
 
 	if err := c.BindJSON(&body); err != nil {

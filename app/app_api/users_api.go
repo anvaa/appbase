@@ -66,6 +66,10 @@ func user_Api(r *gin.Engine) *gin.Engine {
 		viewRoutes.POST("/org/members/add", user_ctrl.Org_AddMember)
 		viewRoutes.POST("/org/members/rem", user_ctrl.Org_RemoveMember)
 
+		// is database
+		viewRoutes.GET("/database", user_ctrl.View_Database)
+		viewRoutes.POST("/dbconf", user_ctrl.DB_SaveDbConf)
+
 	}
 
 	return r

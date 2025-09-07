@@ -3,25 +3,14 @@ package user_ctrl
 import (
 	"app/app_conf"
 	"app/app_db"
-	"app/app_models"
-	"user/user_conf"
-
+	"server/srv_conf"
+	"server/middleware"
 
 	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
-
-var appinfo = app_conf.AppInfo()
-
-func appbase(c *gin.Context) app_models.Appbase {
-	return app_models.Appbase{
-		Title:   app_conf.AppInfo().AppName,
-		User:    c.Keys[user_conf.UserKey],
-		Appinfo: appinfo,
-	}
-}
 
 func Root(c *gin.Context) {
 	c.Redirect(http.StatusMovedPermanently, "/login")
@@ -58,12 +47,12 @@ func View_Signup(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "signup.html", gin.H{
-		"title": "Signup",
-		"css":   "index.css",
-		"js":    "index.js",
+		"title":   "Signup",
+		"css":     "index.css",
+		"js":      "index.js",
 
 		"count":      count,
-		"logo_small": app_conf.LogoSmall(),
+		"logo_small": app_conf.AppLogos()[0],
 	})
 }
 
@@ -78,8 +67,8 @@ func View_Login(c *gin.Context) {
 		"css":   "index.css",
 		"js":    "index.js",
 
-		"logo_small": app_conf.LogoSmall(),
-		"logo_large": app_conf.LogoLarge(),
+		"logo_small": app_conf.AppLogos()[0],
+		"logo_large": app_conf.AppLogos()[1],
 	})
 }
 
@@ -87,9 +76,9 @@ func View_NewUsers(c *gin.Context) {
 	new_users, _ := app_db.Users_GetNew()
 
 	c.HTML(http.StatusOK, "users_new.html", gin.H{
-		"appbase":   appbase(c),
-		"title":     "New users",
-		"js":        "users.js",
+		"appbase": middleware.AppBase(c),
+		"title":   "New users",
+		"js":      "users.js",
 		"new_users": new_users,
 	})
 }
@@ -101,7 +90,8 @@ func View_ManageUsers(c *gin.Context) {
 	del_users, _ := app_db.Users_GetDeleted()
 
 	c.HTML(http.StatusOK, "users.html", gin.H{
-		"appbase": appbase(c),
+		"appbase": middleware.AppBase(c),
+		"title":   "Manage Users",
 		"js":      "users.js",
 
 		"auth_users":   auth_users,
@@ -122,12 +112,12 @@ func View_EditUser(c *gin.Context) {
 	auth_levels := app_db.GetAuthLevels()
 
 	c.HTML(http.StatusOK, "user_edit.html", gin.H{
-		"appbase": appbase(c),
+		"appbase": middleware.AppBase(c),
 		"title":   "Edit User",
 		"js":      "users.js",
 		"css":     "tools.css",
 
-		"edituid": edit_user,
+		"edituid":     edit_user,
 		"auth_levels": auth_levels,
 	})
 }
@@ -135,9 +125,23 @@ func View_EditUser(c *gin.Context) {
 func View_MyAccount(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "myaccount.html", gin.H{
-		"appbase": appbase(c),
+		"appbase": middleware.AppBase(c),
 		"title":   "My Account",
 		"css":     "",
 		"js":      "myaccount.js",
+	})
+}
+
+func View_Database(c *gin.Context) {
+
+	dbConfig := srv_conf.GetDbConfig()
+
+	c.HTML(http.StatusOK, "db_config.html", gin.H{
+		"appbase": middleware.AppBase(c),
+		"title":   "Database Config",
+		"css":     "",
+		"js":      "db.js",
+
+		"dbconf": dbConfig,
 	})
 }

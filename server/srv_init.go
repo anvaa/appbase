@@ -27,6 +27,13 @@ func ServerInit(app_dir string) error {
 	// Check for static folder
 	CheckFolder()
 
+	appdb := srv_conf.GetString("app_db")
+	if !filefunc.IsExists(appdb) {
+		appdb = srv_conf.DataDir + "/app.db"
+		log.Println("Creating", appdb)
+		filefunc.CreateFile(appdb)
+	}
+
 	return nil
 
 }

@@ -17,6 +17,10 @@ function mngOrgs() {
     window.location.href = "/v/orgs";
 }
 
+function mngDatabase() {
+    window.location.href = "/v/database";
+}
+
 function backToApp() {
     window.location.href = "/app";
 }
