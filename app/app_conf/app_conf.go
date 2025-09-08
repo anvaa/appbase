@@ -24,7 +24,10 @@ func WriteDefaultConfig(appRoot string) {
 	// SetDefault sets the default value for the key.
 	appConf.SetDefault("start_url", "/app") // Default start page
 
+	appConf.SetDefault("do_index", false)
+
 	appConf.SetDefault("company_name", "CompanyName")
+	appConf.SetDefault("company_url", "https://www.company.com")
 	appConf.SetDefault("app_name", "AppBase")
 	appConf.SetDefault("app_name_long", "AppBase Long Name")
 	appConf.SetDefault("app_version", "")
@@ -113,4 +116,8 @@ func AppLogos() []string {
 		LogoSmall(),
 		LogoLarge(),
 	}
+}
+
+func Doindex() bool {
+	return GetBool("do_index")
 }

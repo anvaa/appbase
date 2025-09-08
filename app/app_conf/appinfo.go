@@ -21,6 +21,7 @@ func AppInfo() app_models.Appinfo {
 
 	return app_models.Appinfo{
 		Company:     GetString("company_name"),
+		CompanyURL:  GetString("company_url"),
 		AppName:     GetString("app_name"),
 		AppNameLong: GetString("app_name_long"),
 		Version:     version,

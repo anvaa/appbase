@@ -66,7 +66,6 @@ select {
     width: 140px;
 }
 
-
 .th-lst,
 .td-lst {
     padding: 2px 4px;
@@ -246,7 +245,4 @@ select {
 
     -ms-flex-align: end;
     width: 200px;
-
-    
-    
 }

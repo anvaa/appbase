@@ -8,7 +8,7 @@
         <img src="/media/{{ $logo_small }}" class="menu-logo">
     </div>
 
-    <button class="mnubtn" onclick="fetchPage('/app')" title="ctrl + 1">
+    <button class="mnubtn" onclick="Start()" title="ctrl + 1">
         <img src="/media/house.svg" class="btn-img" alt="">
         Start
     </button>
@@ -24,10 +24,12 @@
 
     {{ if or (eq $user.AuthLevelID 1) (eq $user.AuthLevelID 2) }}
     <button class="mnubtn" onclick="Users()">
-        <img src="/media/person.svg" class="btn-img" alt="">
+        <img src="/media/person.svg" class="btn-img">
         Users /
-        <img src="/media/building.svg" class="btn-img" alt="">
-        Orgs
+        <img src="/media/building.svg" class="btn-img">
+        Orgs /
+        <img src="/media/database.svg" class="btn-img">
+        DB
     </button>
     {{ end }}
 

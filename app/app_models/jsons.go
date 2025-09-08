@@ -6,6 +6,7 @@ type AppConf struct {
 
 type Appinfo struct {
 	Company     string
+	CompanyURL  string
 	AppName     string
 	AppNameLong string
 	Version     string
@@ -13,6 +14,7 @@ type Appinfo struct {
 
 type Appbase struct {
 	Title   string   `json:"title"`
+	Doindex bool     `json:"doindex"`
 	Logos   []string `json:"logos"`
 	User    any      `json:"user"`
 	Appinfo any      `json:"appinfo"`

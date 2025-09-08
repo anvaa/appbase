@@ -11,6 +11,7 @@ import (
 func AppBase(c *gin.Context) app_models.Appbase {
 	return app_models.Appbase{
 		Title:   app_conf.AppInfo().AppName,
+		Doindex: app_conf.Doindex(),
 		Logos:   app_conf.AppLogos(),
 		User:    c.Keys[user_conf.UserKey],
 		Appinfo: app_conf.AppInfo(),

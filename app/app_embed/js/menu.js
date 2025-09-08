@@ -11,12 +11,9 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-function navigateTo(url) {
-    window.location.href = url;
-}
-
 function Start() {
     navigateTo("/app");
+    // fetchPage("/app");
 }
 
 function Tools() {
@@ -32,7 +29,8 @@ function MyAccount() {
 }
 
 function AppInfo() {
-    navigateTo("/info");
+    //navigateTo("/info");
+    fetchPopup("/info");
 }
 
 function Logout() {
@@ -50,6 +48,10 @@ function toolsStatus() {
 
 function toolsTypes() {
     navigateTo("/tools/types");
+}
+
+function navigateTo(url) {
+    window.location.href = url;
 }
 
 async function fetchPage(url) {
@@ -83,6 +85,54 @@ async function fetchPage(url) {
     } catch (error) {
         console.error('Error loading page:', error);
         ShowMsg("Error loading page: " + error.message, "error");
+    }
+}
+
+async function fetchPopup(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const html = await response.text();
+
+        // Create popup container
+        const popup = document.createElement("div");
+        popup.id = "popup";
+        Object.assign(popup.style, {
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "white",
+            border: "2px solid black",
+            padding: "20px",
+            zIndex: "1000",
+            boxShadow: "0 4px 8px rgba(119, 117, 117, 1)"
+        });
+
+        // Add content to popup
+        popup.innerHTML = html;
+
+        // Add close button
+        const closeButton = document.createElement("button");
+        closeButton.innerText = "X";
+        Object.assign(closeButton.style, {
+            position: "absolute",
+            top: "1px",
+            right: "1px"
+        });
+        closeButton.onclick = () => document.body.removeChild(popup);
+        popup.appendChild(closeButton);
+
+        // Append popup to body
+        document.body.appendChild(popup);
+
+        // Call global js() if defined
+        if (typeof window.js === "function") {
+            window.js();
+        }
+    } catch (error) {
+        console.error('Error loading popup:', error);
+        ShowMsg("Error loading popup: " + error.message, "error");
     }
 }
 

@@ -1,23 +1,21 @@
 :root {
     --color-primary: #282828;
     --color-secondary: #d3d3d3;
-    --color-background:  rgb(160, 160, 160);
+    --color-background: #a0a0a0;
     --color-text: #000;
     --color-border: #646464;
-    --color-accent: rgb(160, 160, 160);
-    --color-hover: rgb(200, 200, 200);
-    --color-button-bg: rgb(180, 180, 180);
+    --color-accent: #a0a0a0;
+    --color-hover: #c8c8c8;
+    --color-button-bg: #b4b4b4;
     --color-subbutton-bg: #9d9b9b;
     --color-sub-hover: #bcbaba;
     --color-span: #323232;
-
-    --color-menu-bg: rgb(160, 160, 160);
-    --color-btn-logout: rgb(180, 180, 180);
-
-    --color-logout-hover: rgba(255, 166, 0, 0.848);
+    --color-menu-bg: #a0a0a0;
+    --color-btn-logout: #b4b4b4;
+    --color-logout-hover: rgba(255, 166, 0, 0.85);
 }
 
-/* Flex container styles */
+/* Flex containers */
 .menu-flex-container,
 .menubox,
 .err-container {
@@ -29,7 +27,11 @@
     border: 2px solid var(--color-border);
 }
 
-/* Menu image */
+.menu-flex-container {
+    background: var(--color-menu-bg);
+}
+
+/* Images */
 .btn-img {
     width: 15px;
     height: 15px;
@@ -37,19 +39,14 @@
     background: transparent;
 }
 
-.menu-flex-container {
-    background: var(--color-menu-bg);
-}
-
-/* Text styles */
+/* Text */
 span {
     font-size: medium;
     color: var(--color-span);
-    margin-left: 2px;
-    margin-right: 2px;
+    margin: 0 2px;
 }
 
-/* Button and logo styles */
+/* Buttons */
 .mnubtn,
 .submnubtn,
 .mnubtn-logout,
@@ -68,14 +65,13 @@ span {
     width: fit-content;
 }
 
-/* Button hover */
 .mnubtn:hover {
     background: var(--color-hover);
-    border-color: black;
+    border-color: #000;
 }
 
 .mnubtn-logout:hover {
-    background: var(--color-logout-hover);
+    background: var(--color-sub-hover);
 }
 
 .submnubtn {
@@ -87,24 +83,27 @@ span {
     border-color: var(--color-span);
 }
 
-/* Logo specific */
+/* Logo */
 .menu-logo {
     width: 30px;
     height: 30px;
     margin-top: 1px;
 }
 
-/* Footer */
-.footer {
-    background: var(--color-accent);
+
+footer {
+    background: var(--color-background);
+    
+    border-radius: 15px;
+    border: 2px solid var(--color-border);
+
+    padding: 1px 8px;
+    margin: 5px;
+    font-size: medium;
     color: var(--color-text);
-    font-family: monospace;
-    font-size: 10px;
-    padding: 0 5px;
-    width: 99%;
-    height: 20px;
-    border: 1px solid var(--color-border);
-    border-radius: 5px;
+
     position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
 }

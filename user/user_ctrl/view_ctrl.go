@@ -3,8 +3,8 @@ package user_ctrl
 import (
 	"app/app_conf"
 	"app/app_db"
-	"server/srv_conf"
 	"server/middleware"
+	"server/srv_conf"
 
 	"fmt"
 	"net/http"
@@ -21,18 +21,17 @@ func Version(c *gin.Context) {
 }
 
 func Info(c *gin.Context) {
+	
 	appinfo := app_conf.AppInfo()
 	title := fmt.Sprintf("%s v%s", appinfo.AppName, appinfo.Version)
 
 	c.HTML(http.StatusOK, "info.html", gin.H{
 		"title":   title,
 		"css":     "index.css",
-		"url":     c.Request.Referer(),
-		"info":    appinfo,
-		"company": appinfo.AppName,
+		
+		"appinfo": appinfo,
 		"loctime": app_conf.GetLocalTime(),
 		"apptime": app_conf.RunTime(),
-		"backbtn": c.Request.Referer(),
 	})
 }
 
@@ -47,9 +46,9 @@ func View_Signup(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "signup.html", gin.H{
-		"title":   "Signup",
-		"css":     "index.css",
-		"js":      "index.js",
+		"title": "Signup",
+		"css":   "index.css",
+		"js":    "index.js",
 
 		"count":      count,
 		"logo_small": app_conf.AppLogos()[0],
@@ -76,9 +75,9 @@ func View_NewUsers(c *gin.Context) {
 	new_users, _ := app_db.Users_GetNew()
 
 	c.HTML(http.StatusOK, "users_new.html", gin.H{
-		"appbase": middleware.AppBase(c),
-		"title":   "New users",
-		"js":      "users.js",
+		"appbase":   middleware.AppBase(c),
+		"title":     "New users",
+		"js":        "users.js",
 		"new_users": new_users,
 	})
 }
