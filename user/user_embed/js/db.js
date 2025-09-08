@@ -27,6 +27,9 @@ async function saveDbConfig() {
         body: JSON.stringify(body)
     });
     const result = await response.json();
-    
-    ShowMsg('error',result.message);
+    if (result.success) {
+        ShowMsg('info', result.message);
+    } else {
+        ShowMsg('error', result.message);
+    }
 }
