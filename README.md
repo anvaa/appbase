@@ -1,16 +1,17 @@
-# Appbase - API application start
+# Appbase - API application starter
 
 ## Functions
 
-- Login and middelware control
+- Login and middelware access control
 - Register & authorize new users
+- Register organizations and manage user-org relations
 
 ## Use
   
 - Login and new users.
   - There are three default users:
-    - `admin@app.loc/appadmin` (admin: user administration, menu edit, app).
-    - `super@app.loc/superuser` (superuser: menu edit, app )
+    - `admin@app.loc/appadmin` (admin: user admin, menu edit, app).
+    - `super@app.loc/superuser` (super: menu edit, app )
     - `user@app.loc/password` (user: app)
   - After adding aditional users, login as admin and authenticate them.
   
