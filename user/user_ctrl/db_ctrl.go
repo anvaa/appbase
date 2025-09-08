@@ -22,5 +22,8 @@ func DB_SaveDbConf(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Database configuration saved successfully"})
+	c.JSON(http.StatusOK, gin.H{
+		"message": "success",
+		"msg":     "Database configuration saved successfully.",
+	})
 }

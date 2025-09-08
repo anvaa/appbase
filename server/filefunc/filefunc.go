@@ -43,6 +43,14 @@ func DeleteFolder_FR(path string) error {
 	return nil
 }
 
+func GetFileInfo(path string) os.FileInfo {
+	info, err := os.Stat(path)
+	if err != nil {
+		return nil
+	}
+	return info
+}
+
 // ReadFile reads the contents of a file.
 func ReadFile(path string) ([]byte, error) {
 	return os.ReadFile(path)

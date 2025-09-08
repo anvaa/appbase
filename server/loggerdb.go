@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	"server/srv_conf"
+	"server/filefunc"
 )
 
 var LogDb *gorm.DB
@@ -30,6 +31,28 @@ func init() {
 			LogDb.Create(&logEntry)
 		}
 	}()
+
+	// Periodically check the database size and clear it if it exceeds the limit
+	go func() {
+		ticker := time.NewTicker(1 * time.Hour)
+		defer ticker.Stop()
+		for range ticker.C {
+			if LoggerDbTooBig() {
+				LogDb.Exec("DELETE FROM gin_logs;")
+				log.Println("Log database cleared due to size limit.")
+			}
+		}
+	}()
+}
+
+func LoggerDbTooBig() bool {
+	dbpath := srv_conf.DataDir + "/ginlogs.db"
+	filefuncs := filefunc.GetFileInfo(dbpath)
+	var maxsize int64 = srv_conf.MaxLogSizeMB() * 1024 * 1024
+	if filefuncs != nil && filefuncs.Size() > maxsize {
+		return true
+	}
+	return false
 }
 
 func GinLoggerDatabase(r *gin.Engine) {

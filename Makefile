@@ -38,6 +38,6 @@ update:
 reset:
 	rm data/*
 	rm app.yaml
-# 	rm srv.yaml
+	rm srv.yaml
 	rm usr.yaml
 	air

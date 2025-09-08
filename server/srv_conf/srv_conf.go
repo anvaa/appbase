@@ -35,6 +35,7 @@ func WriteConfigFile(app_path string) error {
 	srvConf.SetDefault("gin_mode", "release")
 	srvConf.SetDefault("app_dir", app_path)
 	srvConf.SetDefault("tls_keysize", 4096)
+	srvConf.SetDefault("MaxLogSizeMB", 10)
 
 	// Database configuration
 	srvConf.SetDefault("app_db", "data/app.db")
@@ -87,6 +88,10 @@ func SetVal(key string, val any) {
 
 func IsGinModDebug() bool {
 	return GetString("gin_mode") == "debug"
+}
+
+func MaxLogSizeMB() int64 {
+	return GetInt64("MaxLogSizeMB")
 }
 
 func SetPaths() {

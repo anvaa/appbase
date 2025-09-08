@@ -27,13 +27,12 @@ func WriteDefaultConfig(appRoot string) {
 	appConf.SetDefault("do_index", false)
 
 	appConf.SetDefault("company_name", "CompanyName")
-	appConf.SetDefault("company_url", "https://www.company.com")
+	appConf.SetDefault("company_url", "https://www.appbase.com")
 	appConf.SetDefault("app_name", "AppBase")
 	appConf.SetDefault("app_name_long", "AppBase Long Name")
 	appConf.SetDefault("app_version", "")
 	appConf.SetDefault("logo_small", "logo_small.png")
 	appConf.SetDefault("logo_large", "logo_large.png")
-
 
 	err := appConf.WriteConfigAs(fileName)
 	if err != nil {
