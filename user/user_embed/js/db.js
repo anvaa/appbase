@@ -1,35 +1,32 @@
-
 async function saveDbConfig() {
-    const _sqlitePath = document.getElementById("_dbpath").value;
-    const _dbType = document.getElementById("_dbtype").value;
-    const _dbHost = document.getElementById("_dbhost").value;
-    const _dbName = document.getElementById("_dbname").value;
-    const _dbPort = document.getElementById("_dbport").value;
-    const _dbUser = document.getElementById("_dbuser").value;
-    const _dbPass = document.getElementById("_dbpass").value;
+    const fields = [
+        { id: "_dbpath", key: "path" },
+        { id: "_dbtype", key: "type" },
+        { id: "_dbhost", key: "host" },
+        { id: "_dbname", key: "name" },
+        { id: "_dbport", key: "port" },
+        { id: "_dbuser", key: "user" },
+        { id: "_dbpass", key: "password" }
+    ];
 
-    var body = {
-        type: _dbType,
-        path: _sqlitePath,
-        host: _dbHost,
-        name: _dbName,
-        port: _dbPort,
-        user: _dbUser,
-        password: _dbPass,
-    }
-    
-    
-    const response = await fetch("/v/dbconf", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    });
-    const result = await response.json();
-    if (result.message === "success") {
-        ShowMsg('info', result.msg);
-    } else {
-        ShowMsg('error', result.error);
+    const body = fields.reduce((acc, field) => {
+        acc[field.key] = document.getElementById(field.id).value;
+        return acc;
+    }, {});
+
+    try {
+        const response = await fetch("/v/dbconf", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        const result = await response.json();
+        if (result.message === "success") {
+            ShowMsg('info', result.msg);
+        } else {
+            ShowMsg('error', result.error);
+        }
+    } catch (error) {
+        ShowMsg('error', error.message || "Network error");
     }
 }

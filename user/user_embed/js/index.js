@@ -1,31 +1,22 @@
-document.addEventListener("keydown", handleKeyDown);
-
-function handleKeyDown(event) {
-  if (event.key === "Enter") {
-    const pageId = document.getElementById("_pageid").value;
-
-    if (pageId === "login") {
-      Login();
-    } else if (pageId === "signup") {
-      Signup();
-    }
-  }
-}
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter") return;
+  const pageId = getInputValue("_pageid");
+  if (pageId === "login") return Login();
+  if (pageId === "signup") return Signup();
+});
 
 async function Login() {
   const email = getInputValue("_email");
   const password = getInputValue("_password");
 
-  if (!validEmail(email)) return ShowMsg("Invalid email");
-  if (!validPassword(password)) return ShowMsg("Invalid password");
-
-  const data = { email, password };
+  if (!isValidEmail(email)) return showMsg("Invalid email");
+  if (!isValidPassword(password)) return showMsg("Invalid password");
 
   try {
-    const response = await sendRequest("/login", data);
+    const response = await sendRequest("/login", { email, password });
     handleResponse(response, "Login");
   } catch (error) {
-    ShowMsg(`Login: ${error.message}`);
+    showMsg(`Login: ${error.message}`);
   }
 }
 
@@ -36,65 +27,47 @@ async function Signup() {
   const orgname = getInputValue("_orgname");
   const count = parseInt(getInputValue("_count"));
 
-
   if (!validatePasswords(password, password2)) return;
 
-  const data = { email, password, password2, orgname, count };
-
   try {
-    const response = await sendRequest("/signup", data);
+    const response = await sendRequest("/signup", { email, password, password2, orgname, count });
     handleResponse(response, "Signup");
   } catch (error) {
-    ShowMsg(`Signup: ${error.message}`);
+    showMsg(`Signup: ${error.message}`);
   }
 }
 
 function validatePasswords(psw1, psw2) {
-  if (psw1 !== psw2) return ShowMsg("Passwords do not match"), false;
-  if (psw1.length < 8 || psw1.length > 50) {
-    return ShowMsg("Passwords must be at least 8 characters long"), false;
-  }
-  if (noSqlInText(psw1)) {
-    return ShowMsg("Invalid Password"), false;
-  }
-  if (noSqlInText(psw2)) {
-    return ShowMsg("Invalid Password"), false;
-  }
+  if (psw1 !== psw2) return showMsg("Passwords do not match"), false;
+  if (!isValidPassword(psw1)) return showMsg("Passwords must be at least 8 characters long"), false;
+  if (containsSqlInjection(psw1) || containsSqlInjection(psw2)) return showMsg("Invalid Password"), false;
   return true;
 }
 
-function validEmail(email) {
-  if (email.length < 5 || email.length > 50) {
-    ShowMsg("Email must be between 5 and 50 characters");
-    return false;
-  }
-  if (noSqlInText(email)) {
-    ShowMsg("Invalid Email");
-    return false;
-  }
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
+function isValidEmail(email) {
+  if (email.length < 5 || email.length > 50) return showMsg("Email must be between 5 and 50 characters"), false;
+  if (containsSqlInjection(email)) return showMsg("Invalid Email"), false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-function validPassword(password) {
+function isValidPassword(password) {
   return password.length >= 8 && password.length <= 50;
-  
 }
 
-function noSqlInText(text) {
-  const noSqlPatterns = [
-    /['"]/g, // Single or double quotes
-    /[;:]/g, // Semicolon or colon
-    /\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|TRUNCATE|RENAME|EXEC)\b/gi, // SQL keywords
-    /\b(WHERE|FROM|JOIN|ON|INTO|VALUES|SET)\b/gi, // SQL clauses
-    /\b(AND|OR|NOT)\b/gi, // Logical operators
+function containsSqlInjection(text) {
+  const patterns = [
+    /['"]/g,
+    /[;:]/g,
+    /\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|TRUNCATE|RENAME|EXEC)\b/gi,
+    /\b(WHERE|FROM|JOIN|ON|INTO|VALUES|SET)\b/gi,
+    /\b(AND|OR|NOT)\b/gi,
   ];
-
-  return noSqlPatterns.some((pattern) => pattern.test(text));
+  return patterns.some((pattern) => pattern.test(text));
 }
 
 function getInputValue(id) {
-  return document.getElementById(id).value;
+  const el = document.getElementById(id);
+  return el ? el.value : "";
 }
 
 async function sendRequest(url, data) {
@@ -120,19 +93,18 @@ function Cancel(val) {
   window.location.href = val;
 }
 
-function ShowMsg(_msg) {
-  const messageElement = document.getElementById("_msg");
-  messageElement.innerHTML = _msg;
-  messageElement.style.borderColor = "red";
-  messageElement.style.width = "inherit";
-  messageElement.style.padding = "5px";
-  messageElement.style.textAlign = "center";
-
+function showMsg(msg) {
+  const el = document.getElementById("_msg");
+  if (!el) return;
+  el.innerHTML = msg;
+  el.style.borderColor = "red";
+  el.style.width = "inherit";
+  el.style.padding = "5px";
+  el.style.textAlign = "center";
   setTimeout(() => {
-    messageElement.innerHTML = "";
-    messageElement.style.borderColor = "transparent";
-    messageElement.style.width = "0px";
-    messageElement.style.padding = "0px";
-  }
-  , 5000);
+    el.innerHTML = "";
+    el.style.borderColor = "transparent";
+    el.style.width = "0px";
+    el.style.padding = "0px";
+  }, 5000);
 }

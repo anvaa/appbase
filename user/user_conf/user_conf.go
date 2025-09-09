@@ -13,13 +13,12 @@ import (
 )
 
 var (
-	UsrConf  = viper.New()
-	fileName = "usr.yaml"
-	fileType = "yaml"
-
-	CookieName          = strings.Replace(app_conf.AppInfo().AppName, " ", "", -1) + "_Auth"
-	CookieExpire int    = 24 * 60 * 60 // 24 hours
-	UserKey      string = global.UuidToString(uuid.New().ID())
+	UsrConf    = viper.New()
+	fileName   = "usr.yaml"
+	fileType   = "yaml"
+	CookieName = strings.ReplaceAll(app_conf.AppInfo().AppName, " ", "") + "_Auth"
+	CookieExpire = 24 * 60 * 60 // 24 hours
+	UserKey      = global.UuidToString(uuid.New().ID())
 )
 
 func init() {
@@ -30,8 +29,8 @@ func init() {
 
 func WriteConfigFile(appPath string) {
 	UsrConf.SetDefault("app_dir", appPath)
-	UsrConf.SetDefault("session_expire", time.Hour*12*1) // 1/2 day
-	UsrConf.SetDefault("login_rate_limit", 60)           // in seconds
+	UsrConf.SetDefault("session_expire", 12*time.Hour) // 1/2 day
+	UsrConf.SetDefault("login_rate_limit", 60)         // in seconds
 
 	if err := UsrConf.WriteConfigAs(fileName); err != nil {
 		log.Fatalf("Error creating %s: %v", fileName, err)
@@ -44,21 +43,10 @@ func ReadConfig() {
 	}
 }
 
-func GetString(key string) string {
-	return UsrConf.GetString(key)
-}
-
-func GetInt(key string) int {
-	return UsrConf.GetInt(key)
-}
-
-func GetInt64(key string) int64 {
-	return UsrConf.GetInt64(key)
-}
-
-func GetBool(key string) bool {
-	return UsrConf.GetBool(key)
-}
+func GetString(key string) string      { return UsrConf.GetString(key) }
+func GetInt(key string) int            { return UsrConf.GetInt(key) }
+func GetInt64(key string) int64        { return UsrConf.GetInt64(key) }
+func GetBool(key string) bool          { return UsrConf.GetBool(key) }
 
 func SetVal(key string, val any) {
 	UsrConf.Set(key, val)
@@ -68,11 +56,9 @@ func SetVal(key string, val any) {
 }
 
 func SessionExpire() time.Duration {
-	// Get the session expire time from the config
 	return UsrConf.GetDuration("session_expire")
 }
 
 func LoginRateLimit() time.Duration {
-	// Get the login rate limit from the config
 	return UsrConf.GetDuration("login_rate_limit")
 }

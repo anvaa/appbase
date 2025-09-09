@@ -1,4 +1,3 @@
-
 async function orgAddUpd(uuid) {
     const org = {
         UUID: uuid,
@@ -6,78 +5,63 @@ async function orgAddUpd(uuid) {
         Note: document.getElementById("_note").value
     };
 
-    const response = await fetch(`/v/org/addupd`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(org)
-    });
+    try {
+        const response = await fetch("/v/org/addupd", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(org)
+        });
 
-    if (response.ok) {
-        window.location.href = "/v/orgs";
-    } else {
-        ShowMsg("error","Error updating organization");
+        if (response.ok) {
+            window.location.href = "/v/orgs";
+        } else {
+            ShowMsg("error", "Error updating organization");
+        }
+    } catch {
+        ShowMsg("error", "Network error updating organization");
     }
 }
 
 async function deleteOrg(uuid) {
+    if (!confirm("Are you sure you want to delete this organization? This action cannot be undone.")) return;
 
-    if (!confirm("Are you sure you want to delete this organization? This action cannot be undone.")) {
-        return;
-    }
+    try {
+        const response = await fetch(`/v/org/${uuid}`, { method: "DELETE" });
 
-    const response = await fetch(`/v/org/${uuid}`, {
-        method: "DELETE"
-    });
-
-    if (response.ok) {
-        ShowMsg("info","Organization deleted successfully");
-        window.location.href = "/v/orgs";
-    } else {
-        ShowMsg("error","Error deleting organization");
+        if (response.ok) {
+            ShowMsg("info", "Organization deleted successfully");
+            window.location.href = "/v/orgs";
+        } else {
+            ShowMsg("error", "Error deleting organization");
+        }
+    } catch {
+        ShowMsg("error", "Network error deleting organization");
     }
 }
 
-async function AddMember(orgUUID, userUUID) {
-
+async function modifyMember(url, orgUUID, userUUID, successMsg, errorMsg) {
     try {
-        const response = await fetch(`/v/org/members/add`, {
+        const response = await fetch(url, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ org_id: Number(orgUUID), user_id: Number(userUUID) })
         });
 
         if (response.ok) {
-            ShowMsg("info", "Member added successfully");
+            ShowMsg("info", successMsg);
             window.location.reload();
         } else {
-            ShowMsg("error", "Error adding member");
+            ShowMsg("error", errorMsg);
         }
-    } catch (error) {
-        ShowMsg("error", "Network error adding member");
+    } catch {
+        ShowMsg("error", `Network error ${errorMsg.toLowerCase()}`);
     }
 }
 
-async function RemoveMember(orgUUID, userUUID) {
-    try {
-        const response = await fetch(`/v/org/members/rem`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ org_id: Number(orgUUID), user_id: Number(userUUID) })
-        });
+function AddMember(orgUUID, userUUID) {
+    return modifyMember("/v/org/members/add", orgUUID, userUUID, "Member added successfully", "Error adding member");
+}
 
-        if (response.ok) {
-            ShowMsg("info", "Member removed successfully");
-            window.location.reload();
-        } else {
-            ShowMsg("error", "Error removing member");
-        }
-    } catch (error) {
-        ShowMsg("error", "Network error removing member");
-    }
+function RemoveMember(orgUUID, userUUID) {
+    return modifyMember("/v/org/members/rem", orgUUID, userUUID, "Member removed successfully", "Error removing member");
 }

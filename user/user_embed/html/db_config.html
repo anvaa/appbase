@@ -2,19 +2,18 @@
 
 {{ $dbconf := .dbconf }}
 
- <div class="tools-box" style="width: 200px;">
-    <div class="flex-container" style="gap: 5px;">
-        <div style="width: fit-content;">DBType</div>
-        <select id="_dbtype" style="width: 100%;" onchange="dbTypeChange()">
-            <option value="mysql" {{ if eq $dbconf.Type "mysql" }}selected{{ end }}>MySQL</option>
-            <option value="postgres" {{ if eq $dbconf.Type "postgres" }}selected{{ end }}>Postgres</option>
-            <option value="sqlite" {{ if eq $dbconf.Type "sqlite" }}selected{{ end }}>SQLite</option>
-        </select>
-        
-    </div>
-</div>
+<div class="flex-container" style="flex-direction: column; gap: 10px; margin-top: 10px;">
 
-<div class="flex-container" style="flex-direction: column; gap: 10px;">
+    <div class="tools-box" style="width: 200px;">
+        <div class="flex-container" style="gap: 5px;">
+            <div style="width: fit-content;">DBType</div>
+            <select id="_dbtype" style="width: 100%;" onchange="dbTypeChange()">
+                <option value="mysql" {{ if eq $dbconf.Type "mysql" }}selected{{ end }}>MySQL</option>
+                <option value="postgres" {{ if eq $dbconf.Type "postgres" }}selected{{ end }}>Postgres</option>
+                <option value="sqlite" {{ if eq $dbconf.Type "sqlite" }}selected{{ end }}>SQLite</option>
+            </select>
+        </div>
+    </div>
 
     <div class="tools-box" id="_sqlite" style="width: 300px;">
 		<div class="flex-container div-header-bold">

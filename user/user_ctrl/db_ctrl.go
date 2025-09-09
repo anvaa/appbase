@@ -16,8 +16,7 @@ func DB_SaveDbConf(c *gin.Context) {
 		return
 	}
 
-	err := srv_conf.SetDBConfig(newConfig)
-	if err != nil {
+	if err := srv_conf.SetDBConfig(newConfig); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

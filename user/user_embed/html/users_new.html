@@ -21,16 +21,17 @@
                         {{ .UUID }}
                     </td>
                     <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
-                        <input type="button" class="mnubtn" value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
+                        <input type="button" class="mnubtn" style="width: 100%; margin: 2px;" 
+                            value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
                     </td>
                     <td style="text-align: center; padding: 0; border: 0;">
                     
                     {{ if .IsAuth }}
-                        <input type="button" class="mnubtn" value="Unauthorize" title="Unauthorize user"
+                        <input type="button" class="mnubtn" style="margin: 2px;" value="Unauthorize" 
                             onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                         
                     {{ else }}
-                        <input type="button" class="mnubtn" value="Authorize" title="Authorize user"
+                        <input type="button" class="mnubtn" style="margin: 2px;" value="Authorize" title="Authorize user"
                             onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
 
                     {{ end }}
@@ -42,7 +43,7 @@
                         {{ .UpdatedAt.Format "2006-01-02 15:04" }}
                     </td>
                     <td>
-                        <input type="button" class="delbutton" value="Delete user" title="Delete user"
+                        <input type="button" class="tools-btn-del" style="margin-left: 5px;" value="Delete user" 
                         onclick="Delete('{{.UUID}}')" />
                     </td>
                 </form>

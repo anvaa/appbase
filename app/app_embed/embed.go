@@ -7,7 +7,6 @@ import (
 	"server/srv_conf"
 )
 
-//go:embed assets/*
 //go:embed css/*
 //go:embed html/*
 //go:embed js/*

@@ -8,11 +8,8 @@ function resetPage() {
 }
 
 document.addEventListener("keydown", (event) => {
-    if (event.key !== "Enter" || !mnu_TYPE) return;
-    if (mnu_TYPE === "titles") {
-        TitlesUpd();
-    } else {
-        subAddUpd(mnu_ID);
+    if (event.key === "Enter" && mnu_TYPE) {
+        mnu_TYPE === "titles" ? TitlesUpd() : subAddUpd(mnu_ID);
     }
 });
 
@@ -20,20 +17,20 @@ function isEdit(mnu_type, mnu_id) {
     mnu_TYPE = mnu_type;
     mnu_ID = mnu_id;
     const txtElem = document.getElementById(`_txt_${mnu_ID}`);
-    sel_TXT = txtElem ? txtElem.value : "";
+    sel_TXT = txtElem?.value || "";
 }
 
 // MENUS //
 function subSel(sub_uuid, mnu_id, mnu_type) {
     mnu_ID = mnu_id;
-    sub_UUID = parseInt(sub_uuid, 10);
+    sub_UUID = Number(sub_uuid) || 0;
     mnu_TYPE = mnu_id === 500 ? "titles" : mnu_type;
-    // alert(`Selected: ${sub_UUID} ${mnu_ID} ${mnu_TYPE}`);
+
     const optElem = document.getElementById(`_opt_${sub_UUID}`);
     const txtElem = document.getElementById(`_txt_${mnu_ID}`);
     const subElem = document.getElementById(`_sub_${mnu_ID}`);
 
-    sel_TXT = optElem ? optElem.value : "";
+    sel_TXT = optElem?.value || "";
     if (txtElem) txtElem.value = sel_TXT;
     if (subElem) subElem.value = sub_UUID;
     document.getElementById("_tooltest").innerHTML = `Selected: ${sel_TXT} _opt_${sub_UUID}`;
@@ -42,16 +39,12 @@ function subSel(sub_uuid, mnu_id, mnu_type) {
 async function TitlesUpd() {
     const txtElem = document.getElementById("_txt_500");
     const subElem = document.getElementById("_sub_500");
-    const _txt = txtElem ? txtElem.value : "";
-    const _uuid = subElem ? parseInt(subElem.value, 10) : 0;
+    const _txt = txtElem?.value || "";
+    const _uuid = Number(subElem?.value) || 0;
 
     if (!_uuid || !_txt) return;
 
-    const data = {
-        mnu_id: 500,
-        sub_uuid: _uuid,
-        mnu_title: _txt,
-    };
+    const data = { mnu_id: 500, sub_uuid: _uuid, mnu_title: _txt };
 
     try {
         const response = await fetch("/title/upd", {
@@ -61,10 +54,10 @@ async function TitlesUpd() {
         });
         const responseData = await response.json();
         if (!response.ok) throw new Error(responseData.Error);
-        window.location.reload();
+        resetPage();
     } catch (error) {
         ShowMsg("Upd Titles failed: " + error.message, "error");
-        window.location.reload();
+        resetPage();
     }
 }
 
@@ -72,23 +65,19 @@ async function subAddUpd(mnu_id) {
     const txtElem = document.getElementById(`_txt_${mnu_id}`);
     const subElem = document.getElementById(`_sub_${mnu_id}`);
     const idElem = document.getElementById(`_id_${mnu_id}`);
-    let _txt = txtElem ? txtElem.value.trim() : "";
-    
+    const _txt = txtElem?.value.trim() || "";
+
     if (!_txt) {
         alert("Nothing to add or update");
         return;
     }
 
-    const _sub_uuid = subElem ? parseInt(subElem.value, 10) : 0;
-    const _mnuid = parseInt(idElem.value, 10) || 0;
-    
-    const data = {
-        mnu_id: _mnuid,
-        sub_uuid: _sub_uuid,
-        val: _txt,
-    };
-    // alert(JSON.stringify(data));
+    const _sub_uuid = Number(subElem?.value) || 0;
+    const _mnuid = Number(idElem?.value) || 0;
+
+    const data = { mnu_id: _mnuid, sub_uuid: _sub_uuid, val: _txt };
     const url = `/${mnu_TYPE}/addupd`;
+
     try {
         const response = await fetch(url, {
             method: "POST",
@@ -97,7 +86,7 @@ async function subAddUpd(mnu_id) {
         });
         const responseData = await response.json();
         if (!response.ok) throw new Error(responseData.Error);
-        window.location.reload();
+        resetPage();
     } catch (error) {
         alert(`Add/Update ${mnu_TYPE} failed: ${error.message}`);
     }
@@ -106,8 +95,8 @@ async function subAddUpd(mnu_id) {
 async function lstDel(mnu_id) {
     const txtElem = document.getElementById(`_txt_${mnu_ID}`);
     const subElem = document.getElementById(`_sub_${mnu_ID}`);
-    const txt = txtElem ? txtElem.value : "";
-    const sub_uuid = subElem ? parseInt(subElem.value, 10) : 0;
+    const txt = txtElem?.value || "";
+    const sub_uuid = Number(subElem?.value) || 0;
 
     if (!txt) {
         alert("Nothing to delete");
@@ -116,9 +105,7 @@ async function lstDel(mnu_id) {
 
     if (!confirm(`Delete '${txt}'?`)) return;
 
-    const data = {
-        sub_uuid: sub_uuid,
-    };
+    const data = { sub_uuid };
 
     try {
         const response = await fetch(`/${mnu_TYPE}/delete`, {
@@ -128,9 +115,9 @@ async function lstDel(mnu_id) {
         });
         const responseData = await response.json();
         if (response.status !== 200) throw new Error(responseData.error);
-        window.location.reload();
+        resetPage();
     } catch (error) {
         alert(`Delete ${mnu_TYPE} failed: ${error.message}`);
-        window.location.reload();
+        resetPage();
     }
 }
