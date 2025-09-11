@@ -53,10 +53,6 @@ func View_Signup(c *gin.Context) {
 }
 
 func View_Login(c *gin.Context) {
-	if c.Request.Method == http.MethodPost {
-		Login(c)
-		return
-	}
 
 	c.HTML(http.StatusOK, "login.html", gin.H{
 		"title":      "Login",

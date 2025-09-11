@@ -19,7 +19,7 @@ func user_Api(r *gin.Engine) *gin.Engine {
 	// Set up the user routes
 	r.POST("/signup", user_ctrl.View_Signup)
 	r.GET("/signup/:count", user_ctrl.View_Signup)
-	r.POST("/login", user_ctrl.View_Login)
+	r.POST("/login", user_ctrl.Login)
 	r.GET("/login", user_ctrl.View_Login)
 
 	r.GET("/logout", middleware.Logout)

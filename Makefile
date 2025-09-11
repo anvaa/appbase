@@ -18,7 +18,7 @@ build: clean
 run:
 	go run cmd/main.go
 
-runapp:
+runapp: build
 	./bin/$(buildname)_$(os).$(arch)
 
 clean:
@@ -32,7 +32,7 @@ tidy:
 	@find . -name 'go.mod' -execdir go mod tidy \;
 
 ## Run 'go get -u' in all folders with a go.mod file
-update:
+update: tidy
 	@find . -name 'go.mod' -execdir go get -u \;
 
 reset:
