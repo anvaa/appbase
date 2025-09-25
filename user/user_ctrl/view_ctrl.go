@@ -13,7 +13,7 @@ import (
 )
 
 func Root(c *gin.Context) {
-	c.Redirect(http.StatusMovedPermanently, "/login")
+	c.Redirect(http.StatusMovedPermanently, "/app")
 }
 
 func Version(c *gin.Context) {

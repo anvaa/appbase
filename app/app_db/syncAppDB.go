@@ -114,7 +114,7 @@ func seedUsers(db *gorm.DB) {
 		{"admin@app.loc", "appadmin", true, 1, "Default Admin User"},
 		{"super@app.loc", "superuser", false, 2, "Default Superuser"},
 		{"manager@app.loc", "appmanager", false, 3, "Default Manager"},
-		{"user@app.loc", "password", false, 4, "Default User"},
+		{"user@app.loc", "password", true, 4, "Default User"},
 		{"guest@app.loc", "guest", false, 5, "Default Guest"},
 	}
 

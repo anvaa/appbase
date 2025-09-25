@@ -35,6 +35,7 @@
 
 /* Buttons */
 .mnubtn,
+.lstbtn,
 .submnubtn,
 .mnubtn-new,
 .mnubtn-logout,
@@ -81,7 +82,19 @@
     border-color: var(--color-span);
 }
 
-/* Logo */
+.lstbtn {
+    
+    padding: 0px;
+    margin: 0px;
+
+    width: 100%;
+    height: 100%;
+}
+.lstbtn:hover {
+    text-decoration: underline;
+}
+
+.lstbtn {
 .menu-logo {
     width: 30px;
     height: 30px;

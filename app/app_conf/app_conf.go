@@ -22,7 +22,7 @@ func init() {
 
 func WriteDefaultConfig(appRoot string) {
 	// SetDefault sets the default value for the key.
-	appConf.SetDefault("start_url", "/app") // Default start page
+	appConf.SetDefault("base_url", "/") // Default start page
 
 	appConf.SetDefault("do_index", false)
 
@@ -119,4 +119,8 @@ func AppLogos() []string {
 
 func Doindex() bool {
 	return GetBool("do_index")
+}
+
+func BaseURL() string {
+	return GetString("base_url")
 }

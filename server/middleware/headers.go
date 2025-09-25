@@ -13,11 +13,11 @@ import (
 )
 
 // SetJWT generates a JWT, sets it as a cookie, and attaches session/user info to the context.
-func SetJWT(c *gin.Context, user *app_models.Users) error {
+func SetJWT(c *gin.Context, user *app_models.Users) (string, error) {
 	tokenString, err := generateJWT(user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to generate token"})
-		return err
+		return "", err
 	}
 
 	c.SetSameSite(http.SameSiteStrictMode)
@@ -26,7 +26,7 @@ func SetJWT(c *gin.Context, user *app_models.Users) error {
 	setSecurityHeaders(c)
 	setCSRFCookie(c)
 
-	return nil
+	return tokenString, nil
 }
 
 // generateJWT creates a signed JWT string for the given user.

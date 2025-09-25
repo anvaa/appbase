@@ -4,8 +4,10 @@ import (
 	"app/app_conf"
 	"app/app_db"
 	"app/app_models"
+	"fmt"
 	"log"
 	"net/http"
+
 	"strings"
 	"sync"
 	"time"
@@ -36,6 +38,14 @@ func canAttemptLogin(ip string) bool {
 	return false
 }
 
+func Health(c *gin.Context) {
+	// json { "status": "ok", "timestamp": "2025-01-01T00:00:00Z" }
+	c.JSON(http.StatusOK, gin.H{
+		"status":    "ok",
+		"timestamp": time.Now().Format(time.RFC3339),
+	})
+}
+
 func SignUp(c *gin.Context) {
 	ip := c.ClientIP()
 	if !canAttemptLogin(ip) {
@@ -44,16 +54,16 @@ func SignUp(c *gin.Context) {
 	}
 
 	var body struct {
-		Email, Password, Password2, Orgname string
-		Count                              int
+		Username, Password, Password2, Orgname string
+		Count                                  int
 	}
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to read body"})
 		return
 	}
 
-	email, password, password2, orgname := strings.TrimSpace(body.Email), strings.TrimSpace(body.Password), strings.TrimSpace(body.Password2), strings.TrimSpace(body.Orgname)
-	if err := user_sec.IsValidEmail(email); err != nil {
+	username, password, password2, orgname := strings.TrimSpace(body.Username), strings.TrimSpace(body.Password), strings.TrimSpace(body.Password2), strings.TrimSpace(body.Orgname)
+	if err := user_sec.IsValidEmail(username); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -70,7 +80,7 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	user, err := app_db.User_GetByEmail(email)
+	user, err := app_db.User_GetByEmail(username)
 	if err != nil {
 		log.Println("User not found >> New User")
 	}
@@ -86,7 +96,7 @@ func SignUp(c *gin.Context) {
 	}
 
 	newUser := app_models.Users{
-		Email:       email,
+		Email:       username,
 		AuthLevelID: 4,
 		IsAuth:      false,
 		Note:        "Nil",
@@ -114,40 +124,102 @@ func Login(c *gin.Context) {
 	}
 
 	var body struct {
-		Email, Password string
+		Username string `json:"username"`
+		Password string `json:"password"`
 	}
+	
 	if err := c.BindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "failed to read"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid request"})
 		return
 	}
 
-	email, password := strings.TrimSpace(body.Email), strings.TrimSpace(body.Password)
-	url := "/"
-
-	if err := user_sec.IsValidEmail(email); err != nil || user_sec.IsValidPassword(password) != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": errmsg, "url": url})
+	username := strings.TrimSpace(body.Username)
+	password := strings.TrimSpace(body.Password)
+	fmt.Println("Login attempt for:", username)
+	
+	if err := user_sec.IsValidEmail(username); err != nil || user_sec.IsValidPassword(password) != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": errmsg})
 		return
 	}
 
-	user, err := app_db.User_GetByEmail(email)
+	user, err := app_db.User_GetByEmail(username)
 	if err != nil || !user.IsAuth || user.Email == "" || !app_db.CheckPassword(password, user.Password) {
-		log.Println("Login failed:", email)
-		c.JSON(http.StatusBadRequest, gin.H{"message": errmsg, "url": url})
+		c.JSON(http.StatusUnauthorized, gin.H{"message": errmsg})
 		return
 	}
 
-	if err := middleware.SetJWT(c, &user); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to set JWT"})
+	tokenString, err := middleware.SetJWT(c, &user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to set authentication"})
 		return
 	}
+
 	if err := app_db.User_SetLastLogin(user.UUID); err != nil {
-		log.Println("Error setting last login:", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to set last login"})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to update last login"})
 		return
 	}
 
-	url = app_conf.GetString("start_url")
-	c.JSON(http.StatusOK, gin.H{"url": url, "message": "success"})
+	url := app_conf.BaseURL()
+	if url == "" {
+		url = "/"
+	}
+	fmt.Println("User logged in:", username, "Redirecting to:", url)
+	
+	c.JSON(http.StatusOK, gin.H{
+		"token":        tokenString,
+		"session":      tokenString,
+		"access_token": tokenString,
+		"url":          url,
+		"user": gin.H{
+			"username": user.Email,
+			"email":    user.Email,
+			"roles":    []string{user.AuthLevel.Name},
+			"profile": gin.H{
+				"uuid":       user.UUID,
+				"auth_level": user.AuthLevel.Name,
+				"orgs":       user.Org,
+				"note":       user.Note,
+			},
+		},
+	})
+
+}
+
+func Verify(c *gin.Context) {
+	// POST /verify
+	// Validates an active session token and returns user information.
+	// Headers:
+	// http Authorization: Bearer Content-Type: application/json
+
+	// Response (Success - 200):
+
+	// json { "username": "string", "email": "string", "roles": ["string"], "expires_at": "2025-01-01T00:00:00Z", "profile": {} }
+
+	// Response (Error):
+
+	// 401 Unauthorized: Invalid or expired token
+	// 403 Forbidden: Valid token but insufficient permissions
+
+	user, exists := c.Get(user_conf.UserKey)
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid or expired token"})
+		return
+	}
+
+	u := user.(app_models.Users)
+	c.JSON(http.StatusOK, gin.H{
+		"username":   u.Email,
+		"email":      u.Email,
+		"roles":      []string{u.AuthLevel.Name},
+		"expires_at": time.Now().Add(user_conf.SessionExpire()).Format(time.RFC3339),
+		"profile": gin.H{
+			"uuid":       u.UUID,
+			"auth_level": u.AuthLevel.Name,
+			"orgs":       u.Org,
+			"note":       u.Note,
+		},
+	})
+
 }
 
 func GetAllUsers(c *gin.Context) {

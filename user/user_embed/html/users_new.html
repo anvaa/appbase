@@ -20,18 +20,18 @@
                     <td class="td-lst" title="User UUID">
                         {{ .UUID }}
                     </td>
-                    <td class="td-lst" style="text-align: center; padding: 0; border: 0;">
-                        <input type="button" class="mnubtn" style="width: 100%; margin: 2px;" 
+                    <td class="td-lst" style="border: 0;">
+                        <input type="button" class="lstbtn" 
                             value="{{ .Email }}" onclick="location.href='/v/user/{{.UUID}}'" />
                     </td>
                     <td style="text-align: center; padding: 0; border: 0;">
                     
                     {{ if .IsAuth }}
-                        <input type="button" class="mnubtn" style="margin: 2px;" value="Unauthorize" 
+                        <input type="button" class="lstbtn" value="Unauthorize" 
                             onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
                         
                     {{ else }}
-                        <input type="button" class="mnubtn" style="margin: 2px;" value="Authorize" title="Authorize user"
+                        <input type="button" class="lstbtn" value="Authorize" title="Authorize user"
                             onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
 
                     {{ end }}

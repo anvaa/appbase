@@ -6,14 +6,14 @@ document.addEventListener("keydown", (event) => {
 });
 
 async function Login() {
-  const email = getInputValue("_email");
+  const username = getInputValue("_username");
   const password = getInputValue("_password");
 
-  if (!isValidEmail(email)) return showMsg("Invalid email");
+  if (!isValidEmail(username)) return showMsg("Invalid username");
   if (!isValidPassword(password)) return showMsg("Invalid password");
 
   try {
-    const response = await sendRequest("/login", { email, password });
+    const response = await sendRequest("/login", { username, password });
     handleResponse(response, "Login");
   } catch (error) {
     showMsg(`Login: ${error.message}`);
@@ -21,7 +21,7 @@ async function Login() {
 }
 
 async function Signup() {
-  const email = getInputValue("_email");
+  const username = getInputValue("_username");
   const password = getInputValue("_password");
   const password2 = getInputValue("_password2");
   const orgname = getInputValue("_orgname");
@@ -30,7 +30,7 @@ async function Signup() {
   if (!validatePasswords(password, password2)) return;
 
   try {
-    const response = await sendRequest("/signup", { email, password, password2, orgname, count });
+    const response = await sendRequest("/signup", { username, password, password2, orgname, count });
     handleResponse(response, "Signup");
   } catch (error) {
     showMsg(`Signup: ${error.message}`);
@@ -45,7 +45,7 @@ function validatePasswords(psw1, psw2) {
 }
 
 function isValidEmail(email) {
-  if (email.length < 5 || email.length > 50) return showMsg("Email must be between 5 and 50 characters"), false;
+  if (email.length < 6 || email.length > 50) return showMsg("Email must be between 5 and 50 characters"), false;
   if (containsSqlInjection(email)) return showMsg("Invalid Email"), false;
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -82,10 +82,13 @@ async function sendRequest(url, data) {
 }
 
 function handleResponse(response, action) {
-  if (response.url) {
+  // if response == 200, redirect to the URL provided in response.url
+  //alert(JSON.stringify(response));
+  if (response && response.url) {
+    // alert("Redirecting to: " + response.url);
     window.location.href = response.url;
   } else {
-    throw new Error(`${action} failed`);
+    showMsg(`${action} failed: ${response.message || "Unknown error"}`);
   }
 }
 
