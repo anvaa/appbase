@@ -59,9 +59,14 @@ func main() {
 	r := server.InitWebServer()
 
 	addr := fmt.Sprintf(":%d", srv_conf.GetInt("server_port"))
-	go printsrvinfo("https", addr)
 
-	r.RunTLS(addr, srv_sec.CertFile, srv_sec.KeyFile)
+	if srv_conf.UseTLS() {
+		go printsrvinfo("https", addr)
+		r.RunTLS(addr, srv_sec.CertFile, srv_sec.KeyFile)
+	} else {
+		go printsrvinfo("http", addr)
+		r.Run(addr)
+	}
 
 }
 
@@ -79,7 +84,11 @@ func printsrvinfo(proto, adr string) {
 	Hostip, _ = global.GetIPv4Addresses()
 
 	for _, ip := range Hostip {
-		log.Printf("Webserver %s://%s%s (TLS %d)", proto, ip, adr, srv_conf.TLSKeySize())
+		if proto == "https" {
+			log.Printf("Webserver %s://%s%s (TLS %d)", proto, ip, adr, srv_conf.TLSKeySize())
+		} else {
+			log.Printf("Webserver %s://%s%s", proto, ip, adr)
+		}
 	}
 }
 

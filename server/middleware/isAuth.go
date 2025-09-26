@@ -6,8 +6,12 @@ import (
 	"server/srv_sec"
 	"user/user_conf"
 
+	"net/http"
+
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+
 )
 
 var (
@@ -71,4 +75,14 @@ func redirectToLogin(c *gin.Context) {
 	c.SetCookie(user_conf.CookieName, "", -1, "/", "", false, true)
 	c.Redirect(302, "/login")
 	c.Abort()
+}
+
+func Verify(c *gin.Context) {
+	// If the request reaches here, the user is authenticated
+	// return JSON and HEADERS expected from a verify endpoint
+	c.Header("Cache-Control", "no-store")
+	c.Header("Pragma", "no-cache")
+	c.JSON(http.StatusOK, gin.H{"message": "verified"})
+
+	
 }

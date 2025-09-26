@@ -29,7 +29,7 @@ func init() {
 
 func WriteConfigFile(appPath string) {
 	UsrConf.SetDefault("app_dir", appPath)
-	UsrConf.SetDefault("session_expire", 12*time.Hour) // 1/2 day
+	UsrConf.SetDefault("session_expire", 12) // 12 hours
 	UsrConf.SetDefault("login_rate_limit", 60)         // in seconds
 
 	if err := UsrConf.WriteConfigAs(fileName); err != nil {
@@ -56,7 +56,8 @@ func SetVal(key string, val any) {
 }
 
 func SessionExpire() time.Duration {
-	return UsrConf.GetDuration("session_expire")
+	h := GetInt("session_expire")
+	return time.Duration(time.Now().Add(time.Duration(h) * time.Hour).Unix())
 }
 
 func LoginRateLimit() time.Duration {

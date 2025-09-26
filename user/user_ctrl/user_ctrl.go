@@ -127,7 +127,7 @@ func Login(c *gin.Context) {
 		Username string `json:"username"`
 		Password string `json:"password"`
 	}
-	
+
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid request"})
 		return
@@ -136,7 +136,7 @@ func Login(c *gin.Context) {
 	username := strings.TrimSpace(body.Username)
 	password := strings.TrimSpace(body.Password)
 	fmt.Println("Login attempt for:", username)
-	
+
 	if err := user_sec.IsValidEmail(username); err != nil || user_sec.IsValidPassword(password) != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": errmsg})
 		return
@@ -164,7 +164,7 @@ func Login(c *gin.Context) {
 		url = "/"
 	}
 	fmt.Println("User logged in:", username, "Redirecting to:", url)
-	
+
 	c.JSON(http.StatusOK, gin.H{
 		"token":        tokenString,
 		"session":      tokenString,
@@ -180,43 +180,6 @@ func Login(c *gin.Context) {
 				"orgs":       user.Org,
 				"note":       user.Note,
 			},
-		},
-	})
-
-}
-
-func Verify(c *gin.Context) {
-	// POST /verify
-	// Validates an active session token and returns user information.
-	// Headers:
-	// http Authorization: Bearer Content-Type: application/json
-
-	// Response (Success - 200):
-
-	// json { "username": "string", "email": "string", "roles": ["string"], "expires_at": "2025-01-01T00:00:00Z", "profile": {} }
-
-	// Response (Error):
-
-	// 401 Unauthorized: Invalid or expired token
-	// 403 Forbidden: Valid token but insufficient permissions
-
-	user, exists := c.Get(user_conf.UserKey)
-	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid or expired token"})
-		return
-	}
-
-	u := user.(app_models.Users)
-	c.JSON(http.StatusOK, gin.H{
-		"username":   u.Email,
-		"email":      u.Email,
-		"roles":      []string{u.AuthLevel.Name},
-		"expires_at": time.Now().Add(user_conf.SessionExpire()).Format(time.RFC3339),
-		"profile": gin.H{
-			"uuid":       u.UUID,
-			"auth_level": u.AuthLevel.Name,
-			"orgs":       u.Org,
-			"note":       u.Note,
 		},
 	})
 

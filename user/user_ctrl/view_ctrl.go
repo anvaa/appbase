@@ -13,11 +13,7 @@ import (
 )
 
 func Root(c *gin.Context) {
-	c.Redirect(http.StatusMovedPermanently, "/app")
-}
-
-func Version(c *gin.Context) {
-	c.String(http.StatusOK, "%s", app_conf.AppInfo())
+	c.Redirect(http.StatusMovedPermanently, app_conf.BaseURL())
 }
 
 func Info(c *gin.Context) {

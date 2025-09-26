@@ -10,68 +10,73 @@ import (
 )
 
 func user_Api(r *gin.Engine) *gin.Engine {
-
-	// SET default paths
-	r.GET("/", user_ctrl.Root)
-	r.GET("/info", user_ctrl.Info)
-	r.GET("/version", user_ctrl.Version)
-	r.GET("/health", user_ctrl.Health)
-
-	// Set up the user routes
-	r.POST("/signup", user_ctrl.View_Signup)
-	r.GET("/signup/:count", user_ctrl.View_Signup)
-	r.POST("/login", user_ctrl.Login)
-	r.POST("/verify", user_ctrl.Verify)
-
-	r.GET("/login", user_ctrl.View_Login)
-
-	r.GET("/logout", middleware.Logout)
-
-	userRoutes := r.Group("/user")
+	
+	// root routes
+	rootGrp := r.Group("/")
 	{
-		userRoutes.Use(middleware.IsAuth)
+		rootGrp.GET("/", user_ctrl.Root)
 
-		userRoutes.POST("/psw", user_ctrl.User_SetNewPassword)
+		rootGrp.GET("/info", user_ctrl.Info)
+		rootGrp.GET("/health", user_ctrl.Health)
 
-		userRoutes.Use(middleware.IsAdmin)
+		rootGrp.POST("/signup", user_ctrl.View_Signup)
+		rootGrp.GET("/signup/:count", user_ctrl.View_Signup)
+		
+		rootGrp.POST("/login", user_ctrl.Login)
+		rootGrp.GET("/login", user_ctrl.View_Login)
 
-		userRoutes.GET("/", user_ctrl.GetAllUsers)
-		userRoutes.GET("/:id", user_ctrl.GetUser)
-
-		userRoutes.POST("/delete", user_ctrl.User_DeleteUser)
-		userRoutes.POST("/auth", user_ctrl.User_UpdateAuth)
-		userRoutes.POST("/authlevel", user_ctrl.User_UpdAuthLevel)
-		userRoutes.POST("/org", user_ctrl.User_UpdateOrg)
+		rootGrp.Use(middleware.IsAuth)
+		rootGrp.POST("/verify", middleware.Verify)
+		rootGrp.GET("/logout", middleware.Logout)
 	}
 
-	viewRoutes := r.Group("/v")
+	// User routes
+	userGrp := r.Group("/user")
 	{
-		viewRoutes.Use(middleware.IsAuth)
+		userGrp.Use(middleware.IsAuth)
+
+		userGrp.POST("/psw", user_ctrl.User_SetNewPassword)
+
+		userGrp.Use(middleware.IsAdmin)
+
+		userGrp.GET("/", user_ctrl.GetAllUsers)
+		userGrp.GET("/:id", user_ctrl.GetUser)
+
+		userGrp.POST("/delete", user_ctrl.User_DeleteUser)
+		userGrp.POST("/auth", user_ctrl.User_UpdateAuth)
+		userGrp.POST("/authlevel", user_ctrl.User_UpdAuthLevel)
+		userGrp.POST("/org", user_ctrl.User_UpdateOrg)
+	}
+
+	// View routes
+	viewGrp := r.Group("/v")
+	{
+		viewGrp.Use(middleware.IsAuth)
 
 		// is users
-		viewRoutes.GET("/myaccount", user_ctrl.View_MyAccount)
+		viewGrp.GET("/myaccount", user_ctrl.View_MyAccount)
 
-		viewRoutes.Use(middleware.IsAdmin)
+		viewGrp.Use(middleware.IsAdmin)
 
 		// is admin
-		viewRoutes.GET("/newusers", user_ctrl.View_NewUsers)
-		viewRoutes.GET("/users", user_ctrl.View_ManageUsers)
-		viewRoutes.GET("/user/:uuid", user_ctrl.View_EditUser)
+		viewGrp.GET("/newusers", user_ctrl.View_NewUsers)
+		viewGrp.GET("/users", user_ctrl.View_ManageUsers)
+		viewGrp.GET("/user/:uuid", user_ctrl.View_EditUser)
 
-		viewRoutes.GET("/orgs", user_ctrl.Org_View)
-		viewRoutes.GET("/org/new", user_ctrl.Org_New)
+		viewGrp.GET("/orgs", user_ctrl.Org_View)
+		viewGrp.GET("/org/new", user_ctrl.Org_New)
 
-		viewRoutes.GET("/org/:uuid", user_ctrl.Org_Edit)
-		viewRoutes.POST("/org/addupd", user_ctrl.Org_AddUpd)
-		viewRoutes.DELETE("/org/:uuid", user_ctrl.Org_Delete)
+		viewGrp.GET("/org/:uuid", user_ctrl.Org_Edit)
+		viewGrp.POST("/org/addupd", user_ctrl.Org_AddUpd)
+		viewGrp.DELETE("/org/:uuid", user_ctrl.Org_Delete)
 
-		viewRoutes.GET("/org/members/:uuid", user_ctrl.Org_Members)
-		viewRoutes.POST("/org/members/add", user_ctrl.Org_AddMember)
-		viewRoutes.POST("/org/members/rem", user_ctrl.Org_RemoveMember)
+		viewGrp.GET("/org/members/:uuid", user_ctrl.Org_Members)
+		viewGrp.POST("/org/members/add", user_ctrl.Org_AddMember)
+		viewGrp.POST("/org/members/rem", user_ctrl.Org_RemoveMember)
 
 		// is database
-		viewRoutes.GET("/database", user_ctrl.View_Database)
-		viewRoutes.POST("/dbconf", user_ctrl.DB_SaveDbConf)
+		viewGrp.GET("/database", user_ctrl.View_Database)
+		viewGrp.POST("/dbconf", user_ctrl.DB_SaveDbConf)
 
 	}
 

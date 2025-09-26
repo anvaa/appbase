@@ -33,6 +33,7 @@ func WriteConfigFile(app_path string) error {
 
 	srvConf.SetDefault("server_port", 5443)
 	srvConf.SetDefault("gin_mode", "release")
+	srvConf.SetDefault("use_tls", true)
 	srvConf.SetDefault("app_dir", app_path)
 	srvConf.SetDefault("tls_keysize", 4096)
 	srvConf.SetDefault("MaxLogSizeMB", 10)
@@ -139,4 +140,8 @@ func SetDBConfig(config app_models.DbConfig) error {
 		return err
 	}
 	return nil
+}
+
+func UseTLS() bool {
+	return GetBool("use_tls")
 }
