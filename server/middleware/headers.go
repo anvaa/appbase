@@ -3,13 +3,14 @@ package middleware
 import (
 	"net/http"
 	"time"
-	"user/user_conf"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 
 	"app/app_models"
 	"server/srv_sec"
+	"server/srv_conf"
+	"user/user_conf"
 )
 
 // SetJWT generates a JWT, sets it as a cookie, and attaches session/user info to the context.
@@ -21,7 +22,14 @@ func SetJWT(c *gin.Context, user *app_models.Users) (string, error) {
 	}
 
 	c.SetSameSite(http.SameSiteStrictMode)
-	c.SetCookie(user_conf.CookieName, tokenString, user_conf.CookieExpire, "/", "", true, true)
+
+	// Secure: true ensures the cookie is only sent over HTTPS
+	// HttpOnly: true prevents JavaScript access to the cookie
+	if srv_conf.UseTLS() {
+		c.SetCookie(user_conf.CookieName, tokenString, user_conf.CookieExpire, "/", "", true, true)
+	} else {
+		c.SetCookie(user_conf.CookieName, tokenString, user_conf.CookieExpire, "/", "", false, true)
+	}
 
 	setSecurityHeaders(c)
 	setCSRFCookie(c)

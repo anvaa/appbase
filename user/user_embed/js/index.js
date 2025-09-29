@@ -8,10 +8,13 @@ document.addEventListener("keydown", (event) => {
 async function Login() {
   const username = getInputValue("_username");
   const password = getInputValue("_password");
-
-  if (!isValidEmail(username)) return showMsg("Invalid username");
+  
+  //if username contains '@', treat it as email
+  if (username.includes("@") && username.includes(".")) {
+    if (!isValidEmail(username)) return showMsg("Invalid email");
+  }
   if (!isValidPassword(password)) return showMsg("Invalid password");
-
+  
   try {
     const response = await sendRequest("/login", { username, password });
     handleResponse(response, "Login");
@@ -44,14 +47,14 @@ function validatePasswords(psw1, psw2) {
   return true;
 }
 
-function isValidEmail(email) {
-  if (email.length < 6 || email.length > 50) return showMsg("Email must be between 5 and 50 characters"), false;
-  if (containsSqlInjection(email)) return showMsg("Invalid Email"), false;
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+function isValidEmail(username) {
+  if (username.length < 6 || username.length > 255) return showMsg("Username must be between 6 and 255 characters"), false;
+  if (containsSqlInjection(username)) return showMsg("Invalid Email"), false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username);
 }
 
 function isValidPassword(password) {
-  return password.length >= 8 && password.length <= 50;
+  return password.length >= 8 && password.length <= 255;
 }
 
 function containsSqlInjection(text) {
@@ -82,11 +85,11 @@ async function sendRequest(url, data) {
 }
 
 function handleResponse(response, action) {
-  // if response == 200, redirect to the URL provided in response.url
+  // if response == 200, redirect to the URL provided in response.redirect
   //alert(JSON.stringify(response));
-  if (response && response.url) {
-    // alert("Redirecting to: " + response.url);
-    window.location.href = response.url;
+  if (response && response.redirect) {
+    // alert("Redirecting to: " + response.redirect);
+        window.location.href = response.redirect;
   } else {
     showMsg(`${action} failed: ${response.message || "Unknown error"}`);
   }

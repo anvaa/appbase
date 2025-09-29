@@ -1,0 +1,58 @@
+{{ template "tools_menu.html" . }}
+<div class="div-header-bold">Titles & Dropdowns</div>
+    <div class="flex-container" style="flex-wrap: wrap; margin-top: 0px; gap: 12px;">
+        <div class="tools-box" style="padding: 8px;">
+            <div class="div-header">Menu Titles ({{ len .menu }})</div>
+            <div >
+                <input type="text" id="_txt_500" value="" class="tools-txt" style="width: 100%;"
+                    maxlength="16" title="max 16 char" onkeydown="isEdit('titles','500')" />
+                <input type="hidden" id="_id_500" value="500" />
+                <input type="hidden" id="_sub_500" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Edit" onclick="TitlesUpd()" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_mnuts" size="8" class="tools-select" >
+                    {{ range .menu }}
+                    <option id="_opt_{{.UUID}}" value="{{.Title}}" 
+                    onclick="subSel('{{.UUID}}','500')">{{.Title}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+        </div>
+        
+        {{ range .menu }}
+        {{ if eq .Type "sub" }} 
+        <div class="tools-box" style="padding: 8px;">
+            <div class="div-header">{{.Title}} ({{ len .Menusub }})</div>
+            {{$M_ID := printf "mnu%d" .ID}}
+            <div>
+                <input type="text" id="_txt_{{$M_ID}}" value="" class="tools-txt" style="width: 100%;"
+                    onkeydown="isEdit('menu','{{$M_ID}}')" />
+                
+                    <input type="hidden" id="_id_{{$M_ID}}" value="{{.ID}}" />
+                <input type="hidden" id="_sub_{{$M_ID}}" value="0" />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Add/Edit" 
+                onclick="subAddUpd('{{$M_ID}}')" class="tools-btn"/>
+            </div>
+            <div >
+                <select Name="_menu{{$M_ID}}" size="6" class="tools-select" >
+                    {{ range .Menusub }}
+                    <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
+                        onclick="subSel('{{.UUID}}','{{$M_ID}}','menu')">{{.Name}} {{.Type}}</option>
+                    {{ end }}
+                </select> 
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Delete" onclick="lstDel('{{$M_ID}}')" class="tools-btn-del"/>
+            </div>
+        </div>
+        {{ end }}
+        {{ end }}
+        
+    </div>
+
+    {{ template "footerbar.html" . }}

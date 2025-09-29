@@ -1,0 +1,36 @@
+{{ template "user_menu.html" . }}
+
+{{if eq (len .orgs) 0 }}<div class="div-header-bold">No organizations found.</div>{{ end }}
+
+{{ $orgs := .orgs }}
+<div class="flex-container" style="align-items: center; margin-bottom: 10px;">
+	<div class="div-header-bold">Organizations ({{ len $orgs }})</div>
+	<div style="flex-grow: 1;"></div>
+	<div class="mnubtn-new" style="margin-top: 5px;" onclick="location.href='/v/org/new'">
+		<img src="/media/plus-circle.svg" class="btn-img">
+	    <span>New Organization</span>
+	</div>
+	<div style="flex-grow: 1;"></div>
+</div>
+
+<div class="flex-container" style="flex-wrap: wrap; gap: 10px;">
+{{ range $orgs }}
+	<div class="org-box" >
+		<div class="div-header-bold" style="cursor: pointer;" onclick="location.href='/v/org/{{ .UUID }}'">
+				<img src="/media/building.svg" class="btn-img"> 
+				{{ .Name }}
+        </div>
+		<div class="note-content">{{ .Note }}</div>
+		<div class="flex-container box-meta" style="width: 100%; justify-content: space-between;">
+			<div title="Last Updated">
+				<img src="/media/calendar-day.svg"> 
+				{{ .UpdatedAt.Format "2006-01-02" }}
+			</div>
+			<div title="Members">
+				<img src="/media/person.svg"> 
+				Memebers ({{ len .Users }})
+			</div>
+		</div>
+	</div>
+{{ end }}
+</div>

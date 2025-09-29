@@ -36,7 +36,7 @@ func App_Api(r *gin.Engine) *gin.Engine {
 	// SET app routes
 	appGrp := r.Group("/app")
 	{
-		appGrp.Use(middleware.IsAuth)
+		appGrp.Use(middleware.Verify)
 
 		appGrp.GET("/", app_ctrl.Start)
 		

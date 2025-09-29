@@ -31,7 +31,7 @@ func SyncAppDB(db *gorm.DB) {
 
 	seedAuthLevels(db)
 	seedUsers(db)
-	
+
 	seedOrgs(db)
 
 	fmt.Println("Database Migrated")
@@ -105,7 +105,7 @@ func seedUsers(db *gorm.DB) {
 	}
 
 	userSeeds := []struct {
-		Email     string
+		Username     string
 		Password  string
 		IsAuth    bool
 		AuthLevel int
@@ -121,12 +121,12 @@ func seedUsers(db *gorm.DB) {
 	for _, u := range userSeeds {
 		hashed, err := hashPassword(u.Password)
 		if err != nil {
-			fmt.Printf("Error hashing password for %s: %v\n", u.Email, err)
+			fmt.Printf("Error hashing password for %s: %v\n", u.Username, err)
 			os.Exit(1)
 		}
 
 		user := app_models.Users{
-			Email:       u.Email,
+			Username:       u.Username,
 			Password:    hashed,
 			IsAuth:      u.IsAuth,
 			Note:        u.Note,

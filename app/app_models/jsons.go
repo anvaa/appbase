@@ -1,9 +1,4 @@
 package app_models
-
-type AppConf struct {
-	StartPageFocus string `json:"start_page_focus"`
-}
-
 type Appinfo struct {
 	Company     string
 	CompanyURL  string

@@ -8,7 +8,6 @@ import (
 	"app/app_models"
 
 	"golang.org/x/crypto/bcrypt"
-
 )
 
 var (
@@ -57,16 +56,16 @@ func User_GetByUUID(uuid any) (app_models.Users, error) {
 	return userbyuuid, nil
 }
 
-func User_GetByEmail(email string) (app_models.Users, error) {
-	var userbyemail app_models.Users
+func User_GetByUsername(username string) (app_models.Users, error) {
+	var user app_models.Users
 	err := AppDB.
 		Preload("AuthLevel").
 		Preload("Org").
-		Where("email = ?", email).First(&userbyemail)
+		Where("username = ?", username).First(&user)
 	if err.Error != nil {
-		return userbyemail, ErrUserNotFound
+		return user, ErrUserNotFound
 	}
-	return userbyemail, nil
+	return user, nil
 }
 
 func User_SetLastLogin(uuid any) error {
@@ -88,9 +87,9 @@ func Users_Count() int {
 
 func CreateNewUser(nu *app_models.Users) error {
 
-	log.Println("Creating new user", nu.Email)
-	res := *AppDB.Where("email", nu.Email).
-		Attrs(app_models.Users{Email: nu.Email, Password: nu.Password, AuthLevelID: nu.AuthLevelID, IsAuth: nu.IsAuth}).
+	log.Println("Creating new user", nu.Username)
+	res := *AppDB.Where("username", nu.Username).
+		Attrs(app_models.Users{Username: nu.Username, Password: nu.Password, AuthLevelID: nu.AuthLevelID, IsAuth: nu.IsAuth}).
 		FirstOrCreate(&nu)
 
 	if res.Error != nil {
@@ -128,13 +127,13 @@ func User_Delete(uuid any) error {
 	return nil
 }
 
-func User_GetEmailFromId(id any) (string, error) {
-	var user_email app_models.Users
-	err := *AppDB.Where("id = ?", id).First(&user_email)
+func User_GetUsernameFromId(id any) (string, error) {
+	var _user app_models.Users
+	err := *AppDB.Where("id = ?", id).First(&_user)
 	if err.Error != nil {
 		return "", err.Error
 	}
-	return user_email.Email, nil
+	return _user.Username, nil
 }
 
 func Users_GetAuth() ([]app_models.Users, error) {

@@ -1,7 +1,6 @@
 package app_api
 
 import (
-	
 	"server/middleware"
 
 	"app/app_ctrl"
@@ -11,7 +10,8 @@ import (
 
 func tools_Api(r *gin.Engine) *gin.Engine {
 
-	r.Use(middleware.IsAuth)
+	// Require authentication first, then admin privileges
+	r.Use(middleware.Verify)
 	r.Use(middleware.IsAdmin)
 
 	mnuGrp := r.Group("/menu")
@@ -19,7 +19,7 @@ func tools_Api(r *gin.Engine) *gin.Engine {
 		mnuGrp.POST("/addupd", app_ctrl.Sub_AddUpd)
 		mnuGrp.POST("/delete", app_ctrl.Sub_Delete)
 	}
-	
+
 	staGrp := r.Group("/status")
 	{
 		staGrp.POST("/addupd", app_ctrl.Sta_AddUpd)
@@ -37,11 +37,11 @@ func tools_Api(r *gin.Engine) *gin.Engine {
 		titelsGrp.POST("/upd", app_ctrl.Mnu_UpdTitels)
 	}
 
-	toolsGrp := r.Group("/tools") 
+	toolsGrp := r.Group("/tools")
 	{
 		toolsGrp.GET("/titles", app_ctrl.ToolsTitles) // tools titles page
 		toolsGrp.GET("/status", app_ctrl.ToolsStatus) // tools statuses page
-		toolsGrp.GET("/types", app_ctrl.ToolsTypes) // tools types page
+		toolsGrp.GET("/types", app_ctrl.ToolsTypes)   // tools types page
 
 	}
 

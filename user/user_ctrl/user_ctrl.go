@@ -63,7 +63,7 @@ func SignUp(c *gin.Context) {
 	}
 
 	username, password, password2, orgname := strings.TrimSpace(body.Username), strings.TrimSpace(body.Password), strings.TrimSpace(body.Password2), strings.TrimSpace(body.Orgname)
-	if err := user_sec.IsValidEmail(username); err != nil {
+	if err := user_sec.IsValidUsername(username); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -80,7 +80,7 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	user, err := app_db.User_GetByEmail(username)
+	user, err := app_db.User_GetByUsername(username)
 	if err != nil {
 		log.Println("User not found >> New User")
 	}
@@ -96,10 +96,10 @@ func SignUp(c *gin.Context) {
 	}
 
 	newUser := app_models.Users{
-		Email:       username,
+		Username:    username,
 		AuthLevelID: 4,
 		IsAuth:      false,
-		Note:        "Nil",
+		Note:        "NULL",
 		Org:         []*app_models.Org{{Name: orgname}},
 		Password:    hash,
 	}
@@ -135,19 +135,22 @@ func Login(c *gin.Context) {
 
 	username := strings.TrimSpace(body.Username)
 	password := strings.TrimSpace(body.Password)
-	fmt.Println("Login attempt for:", username)
+	// fmt.Println("Login attempt for:", username)
 
-	if err := user_sec.IsValidEmail(username); err != nil || user_sec.IsValidPassword(password) != nil {
+	if err := user_sec.IsValidUsername(username); err != nil || user_sec.IsValidPassword(password) != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": errmsg})
 		return
 	}
-
-	user, err := app_db.User_GetByEmail(username)
-	if err != nil || !user.IsAuth || user.Email == "" || !app_db.CheckPassword(password, user.Password) {
+	
+	user, err := app_db.User_GetByUsername(username)
+	
+	if err != nil || user.Username == "" || !user.IsAuth || !app_db.CheckPassword(password, user.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": errmsg})
 		return
 	}
-
+	
+	// fmt.Println("User found:", user.Username, "AuthLevel:", user.AuthLevel.Name)
+	
 	tokenString, err := middleware.SetJWT(c, &user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to set authentication"})
@@ -163,16 +166,15 @@ func Login(c *gin.Context) {
 	if url == "" {
 		url = "/"
 	}
-	fmt.Println("User logged in:", username, "Redirecting to:", url)
+	fmt.Println("User logged in:", username, "Redirect:", url)
 
 	c.JSON(http.StatusOK, gin.H{
 		"token":        tokenString,
 		"session":      tokenString,
 		"access_token": tokenString,
-		"url":          url,
+		"redirect":     url,
 		"user": gin.H{
-			"username": user.Email,
-			"email":    user.Email,
+			"username": user.Username,
 			"roles":    []string{user.AuthLevel.Name},
 			"profile": gin.H{
 				"uuid":       user.UUID,

@@ -2,13 +2,12 @@ package user_conf
 
 import (
 	"log"
-	"strings"
 	"time"
+	"fmt"
 
 	"github.com/google/uuid"
 	"github.com/spf13/viper"
 
-	"app/app_conf"
 	"server/global"
 )
 
@@ -16,7 +15,7 @@ var (
 	UsrConf    = viper.New()
 	fileName   = "usr.yaml"
 	fileType   = "yaml"
-	CookieName = strings.ReplaceAll(app_conf.AppInfo().AppName, " ", "") + "_Auth"
+	CookieName = GenCookieName()
 	CookieExpire = 24 * 60 * 60 // 24 hours
 	UserKey      = global.UuidToString(uuid.New().ID())
 )
@@ -62,4 +61,12 @@ func SessionExpire() time.Duration {
 
 func LoginRateLimit() time.Duration {
 	return UsrConf.GetDuration("login_rate_limit")
+}
+
+func GenCookieName() string {
+	// Make cookie name URL friendly
+	// Replace spaces with underscores and convert to lowercase
+	appName := fmt.Sprintf("auth_appbase_%v", time.Now().UnixNano())
+
+	return appName
 }

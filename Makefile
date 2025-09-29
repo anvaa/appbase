@@ -36,8 +36,6 @@ update:
 	@find . -name 'go.mod' -execdir go get -u \;
 
 reset:
-	rm data/*
-	rm app.yaml
-# 	rm srv.yaml
-	rm usr.yaml
-	air
+	@rm -f data/*
+	@rm -f app.yaml srv.yaml usr.yaml
+	@air

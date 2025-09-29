@@ -1,16 +1,14 @@
 package app_api
 
 import (
-
 	"github.com/gin-gonic/gin"
 
 	"server/middleware"
 	"user/user_ctrl"
-
 )
 
 func user_Api(r *gin.Engine) *gin.Engine {
-	
+
 	// root routes
 	rootGrp := r.Group("/")
 	{
@@ -21,24 +19,29 @@ func user_Api(r *gin.Engine) *gin.Engine {
 
 		rootGrp.POST("/signup", user_ctrl.View_Signup)
 		rootGrp.GET("/signup/:count", user_ctrl.View_Signup)
-		
+
 		rootGrp.POST("/login", user_ctrl.Login)
 		rootGrp.GET("/login", user_ctrl.View_Login)
 
-		rootGrp.Use(middleware.IsAuth)
+		// Verify endpoint - accessible without middleware (it IS the verification)
 		rootGrp.POST("/verify", middleware.Verify)
-		rootGrp.GET("/logout", middleware.Logout)
+		rootGrp.GET("/verify", middleware.Verify)
+
 	}
 
 	// User routes
 	userGrp := r.Group("/user")
 	{
-		userGrp.Use(middleware.IsAuth)
+		// Verify endpoint - accessible without middleware (it IS the verification)
+		userGrp.POST("/verify", middleware.Verify)
+		userGrp.GET("/verify", middleware.Verify)
 
+		// Password change route - requires authentication but not admin
+		userGrp.Use(middleware.Verify)
 		userGrp.POST("/psw", user_ctrl.User_SetNewPassword)
 
+		// Admin-only routes - requires both authentication and admin privileges
 		userGrp.Use(middleware.IsAdmin)
-
 		userGrp.GET("/", user_ctrl.GetAllUsers)
 		userGrp.GET("/:id", user_ctrl.GetUser)
 
@@ -51,13 +54,12 @@ func user_Api(r *gin.Engine) *gin.Engine {
 	// View routes
 	viewGrp := r.Group("/v")
 	{
-		viewGrp.Use(middleware.IsAuth)
-
-		// is users
+		// Routes that require authentication but not admin privileges
+		viewGrp.Use(middleware.Verify)
 		viewGrp.GET("/myaccount", user_ctrl.View_MyAccount)
 
+		// Admin-only routes - requires both authentication and admin privileges
 		viewGrp.Use(middleware.IsAdmin)
-
 		// is admin
 		viewGrp.GET("/newusers", user_ctrl.View_NewUsers)
 		viewGrp.GET("/users", user_ctrl.View_ManageUsers)

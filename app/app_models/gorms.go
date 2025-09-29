@@ -3,13 +3,13 @@ package app_models
 import (
 	"time"
 
-	"gorm.io/gorm"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type BaseModel struct {
 	ID        uint           `gorm:"primaryKey;autoIncrement" json:"id"`
-	UUID      uint         `gorm:"index;unique" json:"uuid"`
+	UUID      uint           `gorm:"index;unique" json:"uuid"`
 	CreatedAt time.Time      `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
@@ -57,24 +57,24 @@ func (b *BaseModel) BeforeDelete(tx *gorm.DB) (err error) {
 
 type Users struct {
 	BaseModel
-	Email        string     `gorm:"unique;size:255" json:"email"`
-	Password     string     `gorm:"not null;size:255" json:"password"`
-	IsAuth       bool       `gorm:"default:false" json:"is_auth"`
-	LastLogin    time.Time  `gorm:"autoUpdateTime" json:"last_login"`
-	Note         string     `gorm:"type:text" json:"note"`
-	TokenVersion int        `gorm:"default:1" json:"token_version"`
-	
-	AuthLevelID  int        `gorm:"default:5" json:"auth_level_id"`
-	AuthLevel    AuthLevel  `gorm:"foreignKey:AuthLevelID" json:"auth_level"`
-	
-	Org          []*Org     `gorm:"many2many:user_orgs;" json:"orgs,omitempty"`
+	Username     string    `gorm:"unique;size:255" json:"username"`
+	Password     string    `gorm:"not null;size:255" json:"password"`
+	IsAuth       bool      `gorm:"default:false" json:"is_auth"`
+	LastLogin    time.Time `gorm:"autoUpdateTime" json:"last_login"`
+	Note         string    `gorm:"type:text" json:"note"`
+	TokenVersion int       `gorm:"default:1" json:"token_version"`
+
+	AuthLevelID int       `gorm:"default:5" json:"auth_level_id"`
+	AuthLevel   AuthLevel `gorm:"foreignKey:AuthLevelID" json:"auth_level"`
+
+	Org []*Org `gorm:"many2many:user_orgs;" json:"orgs,omitempty"`
 }
 
 type Org struct {
 	BaseModel
-	Name  string    `gorm:"unique;size:255" json:"name"`
-	Note  string    `gorm:"type:text" json:"note"`
-	Users []*Users  `gorm:"many2many:user_orgs;" json:"users"`
+	Name  string   `gorm:"unique;size:255" json:"name"`
+	Note  string   `gorm:"type:text" json:"note"`
+	Users []*Users `gorm:"many2many:user_orgs;" json:"users"`
 }
 
 type AuthLevel struct {

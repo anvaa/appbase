@@ -1,7 +1,7 @@
 package app_conf
 
 import (
-	"app/app_models"
+	
 	"log"
 	"time"
 
@@ -92,14 +92,6 @@ func GetSubDefaults() []int {
 	defs = append(defs, GetInt("sub4_default"))
 	defs = append(defs, GetInt("sub5_default"))
 	return defs
-}
-
-func AppConf() app_models.AppConf {
-	// Get the app config
-	conf := app_models.AppConf{
-		StartPageFocus: GetString("start_page_focus"),
-	}
-	return conf
 }
 
 func LogoSmall() string {

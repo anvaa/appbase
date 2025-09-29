@@ -7,7 +7,7 @@
 <div class="flex-container" style="flex-direction: row; justify-content: space-between; align-items: center;">
     
     <div class="div-header-bold">
-        Edit {{ $edituser.Email }} ({{ $edituser.AuthLevel.Name }} {{ $edituser.AuthLevel.Level }})
+        Edit {{ $edituser.Username }} ({{ $edituser.AuthLevel.Name }} {{ $edituser.AuthLevel.Level }})
     </div>
     <div style="margin-top: 5px;">
         <!-- can not delet your-self or admin level users -->
@@ -23,7 +23,7 @@
 </div>
 
 <div class="flex-container" style="margin-top: 5px; flex-direction: row;">
-    <input type="hidden" id="_email" value="{{ $edituser.Email }}" />
+    <input type="hidden" id="_username" value="{{ $edituser.Username }}" />
 
     <!-- Change Password Box -->
     <div class="tools-box">

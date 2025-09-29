@@ -18,9 +18,20 @@ func OnErr(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-	// delete cookie from browser, redirect to login page
+	// Clear cookie for browser clients
 	c.SetCookie(user_conf.CookieName, "", -1, "/", "", false, true)
-	c.Redirect(http.StatusMovedPermanently, "/")
 
-	
+	// Check if this is an API request
+	accept := c.GetHeader("Accept")
+	auth := c.GetHeader("Authorization")
+
+	if accept == "application/json" || auth != "" {
+		// API client - return JSON response
+		c.Header("Content-Type", "application/json")
+		c.JSON(http.StatusOK, gin.H{"message": "Logout successful"})
+		return
+	}
+
+	// Browser client - redirect
+	c.Redirect(http.StatusMovedPermanently, "/")
 }

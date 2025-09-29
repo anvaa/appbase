@@ -1,10 +1,10 @@
 package user_sec
 
 import (
-	
 	"errors"
+	"fmt"
 	"regexp"
-
+	"strings"
 )
 
 var (
@@ -14,34 +14,46 @@ var (
 	ErrIsAlphanumericWithSpace              = regexp.MustCompile(`^[a-zA-Z0-9 ]+$`)
 	ErrIsAlphanumericWithUnderscore         = regexp.MustCompile(`^[a-zA-Z0-9_]+$`)
 	ErrIsAlphanumericWithUnderscoreAndSpace = regexp.MustCompile(`^[a-zA-Z0-9_ ]+$`)
+	ErrInvalidUsername                      = errors.New("not a valid username")
 	ErrInvalidEmail                         = errors.New("not a valid email")
 	ErrEmptyPassword                        = errors.New("password can't be empty")
 	ErrShortPassword                        = errors.New("password must be at least 8 characters")
 	ErrLongPassword                         = errors.New("password must be less than 255 characters")
 )
 
-func IsValidEmail(email string) error {
+func IsValidUsername(username string) error {
 
-	// Check if the email is empty
-	if email == "" {
-		return ErrInvalidEmail
+	// Check if the username is empty
+	if username == "" {
+		return ErrInvalidUsername
 	}
-	// Check if the email is too long
-	if len(email) > 255 {
-		return ErrInvalidEmail
+	// Check if the username is too long
+	if len(username) > 255 {
+		fmt.Println("Username is too long:", username)
+		return ErrInvalidUsername
 	}
 
 	// Check for SQL injection
-	if ErrSqlInText.MatchString(email) {
+	if ErrSqlInText.MatchString(username) {
+		fmt.Println("SQL Injection detected in username:", username)
 		return errors.New("sql injection detected")
 	}
 
-	// Check if the email matches the regex pattern
-	if !emailRegex.MatchString(email) {
-		return ErrInvalidEmail
+	// If the username contains "@" and ".", validate it as an email
+	if strings.Contains(username, "@") && strings.Contains(username, ".") {
+		fmt.Println("Username is being validated as an email:", username)
+		// Check if the username matches the email regex pattern
+		if !emailRegex.MatchString(username) {
+			fmt.Println("Email format is invalid:", username)
+			return ErrInvalidEmail
+		}
+		return nil
 	}
+
 	return nil
+
 }
+
 
 func IsValidPassword(psw string) error {
 
