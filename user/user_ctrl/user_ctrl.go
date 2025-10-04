@@ -187,6 +187,12 @@ func Login(c *gin.Context) {
 
 }
 
+func Logout(c *gin.Context) {
+	c.SetCookie(user_conf.CookieName, "", -1, "/", "", false, true)
+	// c.JSON(http.StatusOK, gin.H{"message": "logged out"})
+	c.Redirect(http.StatusFound, "/login")
+}
+
 func GetAllUsers(c *gin.Context) {
 	users, err := app_db.Users_GetAll()
 	if err != nil {

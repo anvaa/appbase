@@ -59,6 +59,10 @@ func setSecurityHeaders(c *gin.Context) {
 	c.Header("X-XSS-Protection", "1; mode=block")
 	c.Header("X-Frame-Options", "DENY")
 	c.Header("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'")
+	c.Header("Referrer-Policy", "no-referrer")
+	c.Header("Permissions-Policy", "geolocation=(), microphone=(), camera=()")
+	c.Header("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload")
+	
 }
 
 // setCSRFCookie sets a CSRF token cookie.

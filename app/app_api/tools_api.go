@@ -12,7 +12,7 @@ func tools_Api(r *gin.Engine) *gin.Engine {
 
 	// Require authentication first, then admin privileges
 	r.Use(middleware.Verify)
-	r.Use(middleware.IsAdmin)
+	r.Use(middleware.RequireLevel(30)) // super level
 
 	mnuGrp := r.Group("/menu")
 	{

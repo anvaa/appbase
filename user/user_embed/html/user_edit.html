@@ -11,7 +11,7 @@
     </div>
     <div style="margin-top: 5px;">
         <!-- can not delet your-self or admin level users -->
-        {{ if and (ne $edituser.UUID $curuser.UUID) (lt $edituser.AuthLevel.Level 40) }}
+        {{ if and (ne $edituser.UUID $curuser.UUID) (lt $edituser.AuthLevelID 1) }}
         <button value="{{ $edituser.ID }}" 
                 class="tools-btn-del"
                 onclick="Delete('{{$edituser.UUID}}')">

@@ -2,10 +2,7 @@ module user/user_conf
 
 go 1.25.1
 
-require (
-	github.com/google/uuid v1.6.0
-	github.com/spf13/viper v1.21.0
-)
+require github.com/spf13/viper v1.21.0
 
 require (
 	github.com/fsnotify/fsnotify v1.9.0 // indirect

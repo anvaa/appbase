@@ -1,8 +1,8 @@
 package app_api
 
 import (
+	//"server/middleware"
 	"server/srv_conf"
-	"server/middleware"
 
 	"app/app_ctrl"
 
@@ -18,7 +18,7 @@ func App_Api(r *gin.Engine) *gin.Engine {
 	r.Static("/css", static_dir+"/css")
 	r.Static("/js", static_dir+"/js")
 	r.Static("/assets", srv_conf.AssetsDir)
-	
+
 	r.LoadHTMLGlob(static_dir + "/html/*.html")
 
 	r.GET("/favicon.ico", func(c *gin.Context) {
@@ -30,19 +30,18 @@ func App_Api(r *gin.Engine) *gin.Engine {
 
 	// Import API routes
 	r = error_Api(r) // register error API routes
-	r = user_Api(r) // register user API routes
+	r = user_Api(r)  // register user API routes
 	r = tools_Api(r) // register tools API routes
 
 	// SET app routes
 	appGrp := r.Group("/app")
 	{
-		appGrp.Use(middleware.Verify)
+		// appGrp.Use(middleware.Verify)
+		// appGrp.Use(middleware.RequireLevel(10)) // user level
 
 		appGrp.GET("/", app_ctrl.Start)
-		
-	}
 
-	
+	}
 
 	return r
 

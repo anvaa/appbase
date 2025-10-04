@@ -23,6 +23,8 @@ func user_Api(r *gin.Engine) *gin.Engine {
 		rootGrp.POST("/login", user_ctrl.Login)
 		rootGrp.GET("/login", user_ctrl.View_Login)
 
+		rootGrp.GET("/logout", user_ctrl.Logout)
+
 		// Verify endpoint - accessible without middleware (it IS the verification)
 		rootGrp.POST("/verify", middleware.Verify)
 		rootGrp.GET("/verify", middleware.Verify)
@@ -33,15 +35,16 @@ func user_Api(r *gin.Engine) *gin.Engine {
 	userGrp := r.Group("/user")
 	{
 		// Verify endpoint - accessible without middleware (it IS the verification)
-		userGrp.POST("/verify", middleware.Verify)
-		userGrp.GET("/verify", middleware.Verify)
+		// userGrp.POST("/verify", middleware.Verify)
+		// userGrp.GET("/verify", middleware.Verify)
 
 		// Password change route - requires authentication but not admin
 		userGrp.Use(middleware.Verify)
 		userGrp.POST("/psw", user_ctrl.User_SetNewPassword)
 
-		// Admin-only routes - requires both authentication and admin privileges
-		userGrp.Use(middleware.IsAdmin)
+
+		userGrp.Use(middleware.RequireLevel(30)) // Admin, super level
+
 		userGrp.GET("/", user_ctrl.GetAllUsers)
 		userGrp.GET("/:id", user_ctrl.GetUser)
 
@@ -56,11 +59,12 @@ func user_Api(r *gin.Engine) *gin.Engine {
 	{
 		// Routes that require authentication but not admin privileges
 		viewGrp.Use(middleware.Verify)
+
 		viewGrp.GET("/myaccount", user_ctrl.View_MyAccount)
 
-		// Admin-only routes - requires both authentication and admin privileges
-		viewGrp.Use(middleware.IsAdmin)
-		// is admin
+		// superuser routes - requires both authentication and superuser privileges
+		viewGrp.Use(middleware.RequireLevel(30))
+
 		viewGrp.GET("/newusers", user_ctrl.View_NewUsers)
 		viewGrp.GET("/users", user_ctrl.View_ManageUsers)
 		viewGrp.GET("/user/:uuid", user_ctrl.View_EditUser)

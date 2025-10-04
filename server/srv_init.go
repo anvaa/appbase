@@ -24,6 +24,9 @@ func ServerInit(app_dir string) error {
 	// Check for .crt/.key files
 	srv_sec.CheckTLS(app_dir, srv_conf.TLSKeySize())
 
+	// Initialize JWT secret
+	srv_sec.Env_SetSecret()
+
 	// Check for static folder
 	CheckFolder()
 
@@ -59,7 +62,7 @@ func CheckFolder() error {
 		filefunc.CreateFolder(assets_dir)
 		filefunc.CreateFolder(srv_conf.DataDir)
 		filefunc.CreateFolder(srv_conf.ReportsDir)
-		
+
 		log.Println("Created assed dir:", assets_dir)
 	}
 
