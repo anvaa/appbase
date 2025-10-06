@@ -32,7 +32,6 @@ func SetJWT(c *gin.Context, user *app_models.Users) (string, error) {
 	}
 
 	setSecurityHeaders(c)
-	setCSRFCookie(c)
 
 	return tokenString, nil
 }
@@ -65,7 +64,4 @@ func setSecurityHeaders(c *gin.Context) {
 	
 }
 
-// setCSRFCookie sets a CSRF token cookie.
-func setCSRFCookie(c *gin.Context) {
-	c.SetCookie("csrf_token", srv_sec.JwtSecret, user_conf.CookieExpire, "/", "", true, true)
-}
+

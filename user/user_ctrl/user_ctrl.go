@@ -175,6 +175,7 @@ func Login(c *gin.Context) {
 		"redirect":     url,
 		"user": gin.H{
 			"username": user.Username,
+			"email":    user.Email,
 			"roles":    []string{user.AuthLevel.Name},
 			"profile": gin.H{
 				"uuid":       user.UUID,

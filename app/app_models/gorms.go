@@ -58,6 +58,7 @@ func (b *BaseModel) BeforeDelete(tx *gorm.DB) (err error) {
 type Users struct {
 	BaseModel
 	Username     string    `gorm:"unique;size:255" json:"username"`
+	Email        string    `gorm:"unique;size:255" json:"email"`
 	Password     string    `gorm:"not null;size:255" json:"password"`
 	IsAuth       bool      `gorm:"default:false" json:"is_auth"`
 	LastLogin    time.Time `gorm:"autoUpdateTime" json:"last_login"`

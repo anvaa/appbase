@@ -105,17 +105,18 @@ func seedUsers(db *gorm.DB) {
 	}
 
 	userSeeds := []struct {
-		Username     string
+		Username  string
+		Email     string
 		Password  string
 		IsAuth    bool
 		AuthLevel int
 		Note      string
 	}{
-		{"admin@app.loc", "appadmin", true, 1, "Default Admin User"},
-		{"super@app.loc", "superuser", false, 2, "Default Superuser"},
-		{"manager@app.loc", "appmanager", false, 3, "Default Manager"},
-		{"user@app.loc", "password", true, 4, "Default User"},
-		{"guest@app.loc", "guest", false, 5, "Default Guest"},
+		{"admin@app.loc", "admin@app.loc", "appadmin", true, 1, "Default Admin User"},
+		{"super@app.loc", "super@app.loc", "superuser", false, 2, "Default Superuser"},
+		{"manager@app.loc", "manager@app.loc", "appmanager", false, 3, "Default Manager"},
+		{"user@app.loc", "user@app.loc", "password", true, 4, "Default User"},
+		{"guest@app.loc", "guest@app.loc", "guest", false, 5, "Default Guest"},
 	}
 
 	for _, u := range userSeeds {
@@ -126,7 +127,8 @@ func seedUsers(db *gorm.DB) {
 		}
 
 		user := app_models.Users{
-			Username:       u.Username,
+			Username:    u.Username,
+			Email:       u.Email,
 			Password:    hashed,
 			IsAuth:      u.IsAuth,
 			Note:        u.Note,
