@@ -8,8 +8,8 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 
 	"app/app_models"
-	"server/srv_sec"
 	"server/srv_conf"
+	"server/srv_sec"
 	"user/user_conf"
 )
 
@@ -61,7 +61,5 @@ func setSecurityHeaders(c *gin.Context) {
 	c.Header("Referrer-Policy", "no-referrer")
 	c.Header("Permissions-Policy", "geolocation=(), microphone=(), camera=()")
 	c.Header("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload")
-	
+
 }
-
-
