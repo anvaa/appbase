@@ -145,6 +145,7 @@ func respondWithUser(c *gin.Context, claims jwt.MapClaims, user app_models.Users
 
 	c.JSON(http.StatusOK, gin.H{
 		"username":   user.Username,
+		"email":      user.Email,
 		"roles":      []string{user.AuthLevel.Name},
 		"expires_at": expiresAt,
 		"profile": gin.H{

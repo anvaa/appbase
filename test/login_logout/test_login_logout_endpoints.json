@@ -1,0 +1,340 @@
+{
+  "info": {
+    "name": "Login and Logout Endpoint Tests",
+    "description": "Comprehensive tests for authentication endpoints",
+    "version": "1.0.0"
+  },
+  "baseUrl": "${SERVER_URL:-https://localhost:5443}",
+  "testCredentials": {
+    "admin": {
+      "username": "${USER_1:-admin@app.loc}",
+      "password": "${PSW_1:-appadmin}"
+    },
+    "user": {
+      "username": "${USER_2:-user@app.loc}", 
+      "password": "${PSW_2:-password}"
+    },
+    "invalid": {
+      "username": "invalid@user.com", 
+      "password": "wrongpassword"
+    }
+  },
+  "tests": [
+    {
+      "name": "Health Check",
+      "method": "GET",
+      "url": "/health",
+      "expectedStatus": 200,
+      "description": "Verify server is running"
+    },
+    {
+      "name": "Login - Admin Credentials",
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "admin@app.loc",
+        "password": "appadmin"
+      },
+      "expectedStatus": 200,
+      "description": "Login with admin credentials should succeed",
+      "saveToken": true,
+      "validateResponse": {
+        "hasFields": ["token", "session", "access_token", "user", "url"],
+        "userFields": ["username", "email", "roles", "profile"]
+      }
+    },
+    {
+      "name": "Login - Regular User Credentials",
+      "method": "POST",
+      "url": "/login", 
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "user@app.loc",
+        "password": "password"
+      },
+      "expectedStatus": [200, 401],
+      "description": "Login with regular user credentials (may not exist)",
+      "saveToken": false,
+      "validateResponse": {
+        "hasFields": ["token", "session", "access_token", "user", "url"],
+        "userFields": ["username", "email", "roles", "profile"]
+      }
+    },
+    {
+      "name": "Login - Invalid Credentials",
+      "method": "POST", 
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "invalid@user.com",
+        "password": "wrongpassword" 
+      },
+      "expectedStatus": 401,
+      "description": "Login with invalid credentials should fail",
+      "validateResponse": {
+        "hasFields": ["message"],
+        "messagePattern": "user or password invalid"
+      }
+    },
+    {
+      "name": "Login - Invalid Email Format",
+      "method": "POST",
+      "url": "/login", 
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "not-an-email",
+        "password": "somepassword"
+      },
+      "expectedStatus": 401,
+      "description": "Login with invalid email format should fail"
+    },
+    {
+      "name": "Login - Missing Password",
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      }, 
+      "body": {
+        "username": "admin@app.loc"
+      },
+      "expectedStatus": 401,
+      "description": "Login with missing password should fail"
+    },
+    {
+      "name": "Login - Missing Username", 
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "password": "somepassword"
+      },
+      "expectedStatus": 401,
+      "description": "Login with missing username should fail"
+    },
+    {
+      "name": "Login - Empty Request Body",
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedStatus": 400,
+      "description": "Login with empty request body should fail"
+    },
+    {
+      "name": "Login - Malformed JSON",
+      "method": "POST", 
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "bodyRaw": "{\"invalid\": json}",
+      "expectedStatus": 400,
+      "description": "Login with malformed JSON should fail"
+    },
+    {
+      "name": "Login - Missing Content-Type",
+      "method": "POST",
+      "url": "/login",
+      "body": {
+        "username": "admin@app.loc",
+        "password": "appadmin"
+      },
+      "expectedStatus": 400,
+      "description": "Login without Content-Type header should fail"
+    },
+    {
+      "name": "Login Form - GET Request",
+      "method": "GET", 
+      "url": "/login",
+      "expectedStatus": 200,
+      "description": "GET /login should return login form"
+    },
+    {
+      "name": "Logout - GET with Session",
+      "method": "GET",
+      "url": "/logout", 
+      "useToken": true,
+      "expectedStatus": 302,
+      "description": "GET logout with valid session should redirect"
+    },
+    {
+      "name": "Logout - GET without Session",
+      "method": "GET",
+      "url": "/logout",
+      "expectedStatus": 302, 
+      "description": "GET logout without session should redirect"
+    },
+    {
+      "name": "Protected Endpoint After Login",
+      "method": "POST",
+      "url": "/verify",
+      "useToken": true,
+      "expectedStatus": 200,
+      "description": "Access to protected endpoint should work with valid session",
+      "dependsOn": "Login - Valid Credentials"
+    },
+    {
+      "name": "Session Persistence",
+      "method": "POST", 
+      "url": "/verify",
+      "useToken": true,
+      "expectedStatus": 200,
+      "description": "Session should persist across requests",
+      "dependsOn": "Login - Valid Credentials"
+    },
+    {
+      "name": "Rate Limiting Test 1",
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "ratelimit@test.com",
+        "password": "invalid1"
+      },
+      "expectedStatus": 401,
+      "description": "First rate limit test attempt"
+    },
+    {
+      "name": "Rate Limiting Test 2", 
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "ratelimit@test.com", 
+        "password": "invalid2"
+      },
+      "expectedStatus": 401,
+      "description": "Second rate limit test attempt"
+    },
+    {
+      "name": "Rate Limiting Test 3",
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "ratelimit@test.com",
+        "password": "invalid3" 
+      },
+      "expectedStatus": 401,
+      "description": "Third rate limit test attempt"
+    },
+    {
+      "name": "Rate Limiting Test 4",
+      "method": "POST", 
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "ratelimit@test.com",
+        "password": "invalid4"
+      },
+      "expectedStatus": 401,
+      "description": "Fourth rate limit test attempt"
+    },
+    {
+      "name": "Rate Limiting Test 5",
+      "method": "POST",
+      "url": "/login", 
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "ratelimit@test.com",
+        "password": "invalid5"
+      },
+      "expectedStatus": [401, 429],
+      "description": "Fifth rate limit test attempt - may trigger rate limiting"
+    },
+    {
+      "name": "SQL Injection Protection",
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "admin@app.loc'; DROP TABLE users; --",
+        "password": "test"
+      },
+      "expectedStatus": 401,
+      "description": "SQL injection attempt should be safely handled"
+    },
+    {
+      "name": "XSS Protection Test",
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json" 
+      },
+      "body": {
+        "username": "<script>alert('xss')</script>@test.com",
+        "password": "<script>alert('xss')</script>"
+      },
+      "expectedStatus": 401,
+      "description": "XSS attempt should be safely handled"
+    },
+    {
+      "name": "Long Username Test",
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "verylongusernamethatexceedsnormallimitsandmightcauseissuesifnothandledproperly@test.com",
+        "password": "test"
+      },
+      "expectedStatus": 401,
+      "description": "Very long username should be handled gracefully"
+    },
+    {
+      "name": "Unicode Username Test", 
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "tëst@üñîçødé.com",
+        "password": "test"
+      },
+      "expectedStatus": 401,
+      "description": "Unicode characters in username should be handled"
+    },
+    {
+      "name": "Case Sensitivity Test",
+      "method": "POST",
+      "url": "/login", 
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "ADMIN@APP.LOC",
+        "password": "appadmin"
+      },
+      "expectedStatus": 401,
+      "description": "Username case sensitivity test"
+    }
+  ]
+}

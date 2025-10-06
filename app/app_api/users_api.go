@@ -35,8 +35,8 @@ func user_Api(r *gin.Engine) *gin.Engine {
 	userGrp := r.Group("/user")
 	{
 		// Verify endpoint - accessible without middleware (it IS the verification)
-		// userGrp.POST("/verify", middleware.Verify)
-		// userGrp.GET("/verify", middleware.Verify)
+		userGrp.POST("/verify", middleware.Verify)
+		userGrp.GET("/verify", middleware.Verify)
 
 		// Password change route - requires authentication but not admin
 		userGrp.Use(middleware.Verify)
