@@ -81,7 +81,7 @@ type Org struct {
 type AuthLevel struct {
 	BaseModel
 	Name  string `gorm:"size:50" json:"name"`
-	Level int    `gorm:"default:3" json:"level"`
+	Level int    `gorm:"default:10" json:"level"`
 }
 
 type Status struct {

@@ -89,7 +89,7 @@ func CreateNewUser(nu *app_models.Users) error {
 
 	log.Println("Creating new user", nu.Username)
 	res := *AppDB.Where("username", nu.Username).
-		Attrs(app_models.Users{Username: nu.Username, Password: nu.Password, AuthLevelID: nu.AuthLevelID, IsAuth: nu.IsAuth}).
+		Attrs(app_models.Users{Username: nu.Username, Email: nu.Email, Password: nu.Password, AuthLevelID: nu.AuthLevelID, IsAuth: nu.IsAuth}).
 		FirstOrCreate(&nu)
 
 	if res.Error != nil {

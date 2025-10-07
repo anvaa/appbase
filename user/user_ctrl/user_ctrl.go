@@ -54,7 +54,7 @@ func SignUp(c *gin.Context) {
 	}
 
 	var body struct {
-		Username, Password, Password2, Orgname string
+		Username, Email, Password, Password2, Orgname string
 		Count                                  int
 	}
 	if err := c.BindJSON(&body); err != nil {
@@ -62,7 +62,11 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	username, password, password2, orgname := strings.TrimSpace(body.Username), strings.TrimSpace(body.Password), strings.TrimSpace(body.Password2), strings.TrimSpace(body.Orgname)
+	username, email, password, password2, orgname := strings.TrimSpace(body.Username),  
+													strings.TrimSpace(body.Email), 
+													strings.TrimSpace(body.Password), 
+													strings.TrimSpace(body.Password2), 
+													strings.TrimSpace(body.Orgname)
 	if err := user_sec.IsValidUsername(username); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
@@ -71,6 +75,7 @@ func SignUp(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Passwords do not match"})
 		return
 	}
+
 	if err := user_sec.IsValidPassword(password); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "InternalServerError"})
 		return
@@ -97,6 +102,7 @@ func SignUp(c *gin.Context) {
 
 	newUser := app_models.Users{
 		Username:    username,
+		Email:       email,
 		AuthLevelID: 4,
 		IsAuth:      false,
 		Note:        "NULL",
@@ -113,7 +119,9 @@ func SignUp(c *gin.Context) {
 	if body.Count == 121209 {
 		url = "/v/users"
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "success", "url": url})
+
+	log.Println("New user created:", username, "Redirect:", url)
+	c.JSON(http.StatusOK, gin.H{"message": "success", "redirect": url})
 }
 
 func Login(c *gin.Context) {
@@ -141,16 +149,16 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": errmsg})
 		return
 	}
-	
+
 	user, err := app_db.User_GetByUsername(username)
-	
+
 	if err != nil || user.Username == "" || !user.IsAuth || !app_db.CheckPassword(password, user.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": errmsg})
 		return
 	}
-	
+
 	// fmt.Println("User found:", user.Username, "AuthLevel:", user.AuthLevel.Name)
-	
+
 	tokenString, err := middleware.SetJWT(c, &user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to set authentication"})

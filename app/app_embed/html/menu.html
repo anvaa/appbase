@@ -4,39 +4,39 @@
 {{ $logo_small := index .appbase.Logos 0 }}
 
 <div class="menu-flex-container">
-    <div onclick="AppInfo()">
-        <img src="/media/{{ $logo_small }}" class="menu-logo" alt="Logo">
+    <div onclick="AppInfo()" style="margin-right: 5px;">
+        <img src="/media/{{ $logo_small }}" class="menu-logo">
     </div>
 
     <button class="mnubtn" onclick="Start()" title="ctrl + 1">
-        <img src="/media/house.svg" class="btn-img" alt="Home">
+        <img src="/media/house.svg" class="btn-img">
         Start
     </button>
 
     <div style="flex-grow: 1;"></div>
 
-    {{ if or (eq $user.AuthLevelID 1) (eq $user.AuthLevelID 2) }}
+    {{ if ge $user.AuthLevel.Level 30 }}
         <button class="mnubtn" onclick="Tools()">
-            <img src="/media/tools.svg" class="btn-img" alt="Tools">
+            <img src="/media/tools.svg" class="btn-img">
             Tools
         </button>
         <button class="mnubtn" onclick="Users()">
-            <img src="/media/person.svg" class="btn-img" alt="Users">
+            <img src="/media/person.svg" class="btn-img">
             Users /
-            <img src="/media/building.svg" class="btn-img" alt="Orgs">
+            <img src="/media/building.svg" class="btn-img">
             Orgs /
-            <img src="/media/database.svg" class="btn-img" alt="DB">
+            <img src="/media/database.svg" class="btn-img">
             DB
         </button>
     {{ end }}
 
     <button class="mnubtn" onclick="MyAccount()">
-        <img src="/media/key.svg" class="btn-img" alt="Account">
-        {{ $user.Username }}
+        <img src="/media/key.svg" class="btn-img">
+        My Account
     </button>
 
     <button class="mnubtn-logout" onclick="Logout()" title="ctrl + q">
-        <img src="/media/lock.svg" class="btn-img" alt="Logout">
+        <img src="/media/lock.svg" class="btn-img">
         Logout
     </button>
 </div>

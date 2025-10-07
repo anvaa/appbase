@@ -16,34 +16,30 @@
     --color-box-text-background: whitesmoke;
     --color-box-meta-background: #F5F5F5;
     --color-footer-bg: #b4b4b4;
+    --color-span: #2D2D2D;
+    --color-button-bg: #ECE7DF;
 
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
-    --radius: 5px;
+    --radius: 8px;
     --transition: 0.2s cubic-bezier(.4,0,.2,1);
 }
 
 html, body {
-    margin: 0px;
-    padding: 0;
+    margin: 0;
+    padding: 10px;
     font-size: medium;
     color: var(--color-text);
-    background-color: var(--color-background);
-    
+    background: var(--color-background);
     font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
-
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-
 }
 
 body {
     min-height: 100vh;
-    padding: 10px;
+    padding: 10px 0 40px 0;
     background: linear-gradient(135deg, #ECE7DF 0%, #b5b3b3 100%);
-
-    /* page height == height  - footer height */
-    padding-bottom: 40px;
 }
 
 * {
@@ -56,7 +52,6 @@ footer {
     border: 2px solid var(--color-border);
     padding: 1px 8px;
     margin: 10px 20px 2px 20px;
-    
     font-size: medium;
     color: var(--color-text);
     position: fixed;
@@ -88,7 +83,7 @@ select {
 
 input:focus,
 select:focus {
-    background-color: white;
+    background-color: #fff;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 2px #A89F9133;
     outline: none;
@@ -151,8 +146,7 @@ a:hover {
     border: 2px solid var(--color-border);
     box-shadow: var(--shadow-md);
     background-color: var(--color-th);
-    margin-right: 10px;
-    margin-top: 5px;
+    margin: 5px 10px 0 0;
     width: fit-content;
     min-width: 100px;
     max-width: 400px;
@@ -212,8 +206,7 @@ a:hover {
     padding: 2px;
     border: 1px solid var(--color-border);
     box-shadow: var(--shadow-sm);
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
 }
 
 .org-member-btn {
@@ -241,7 +234,6 @@ a:hover {
     border-bottom: 2px solid var(--color-border);
     background: var(--color-box-text-background);
     color: var(--color-text);
-    
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
     margin-bottom: 12px;
@@ -289,4 +281,32 @@ a:hover {
     padding: 10px 14px;
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
+}
+
+.lstbtn {
+    border: 2px solid var(--color-border);
+    color: var(--color-span);
+    background: var(--color-button-bg);
+    margin-right: 5px;
+    text-align: center;
+    vertical-align: middle;
+    align-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+.lstbtn:hover {
+    text-decoration: underline;
+}
+
+.lstbtn:disabled {
+    color: var(--color-span);
+    background: var(--color-button-bg);
+    border: none;
+    cursor: default;
+    text-decoration: none;
 }

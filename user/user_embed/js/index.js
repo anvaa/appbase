@@ -25,6 +25,7 @@ async function Login() {
 
 async function Signup() {
   const username = getInputValue("_username");
+  const email = getInputValue("_email");
   const password = getInputValue("_password");
   const password2 = getInputValue("_password2");
   const orgname = getInputValue("_orgname");
@@ -33,7 +34,7 @@ async function Signup() {
   if (!validatePasswords(password, password2)) return;
 
   try {
-    const response = await sendRequest("/signup", { username, password, password2, orgname, count });
+    const response = await sendRequest("/signup", { username, email, password, password2, orgname, count });
     handleResponse(response, "Signup");
   } catch (error) {
     showMsg(`Signup: ${error.message}`);

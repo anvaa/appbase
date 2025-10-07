@@ -281,21 +281,32 @@ run_login_tests() {
 
 run_signup_tests() {
     print_suite "Running Signup Tests"
-    cd "$TEST_DIR/signup"
     
     local details=""
-    # Check if signup tests exist  
-    if [ -d "$TEST_DIR/signup" ] && [ "$(ls -A $TEST_DIR/signup 2>/dev/null)" ]; then
-        print_info "Signup test directory found, but no runner script detected"
-        print_info "Skipping signup tests for now"
-        details="Signup test directory exists but no test scripts found.\nSkipped signup tests."
-        generate_test_report "signup" "SKIPPED" "$details"
-        return 0
+    local test_script="$TEST_DIR/signup/test_signup_simple.sh"
+    
+    if [ -f "$test_script" ]; then
+        print_info "Running simple signup tests..."
+        cd "$TEST_DIR/signup"
+        
+        # Run the signup test script and capture output
+        local test_output
+        if test_output=$(bash test_signup_simple.sh 2>&1); then
+            print_success "Signup tests passed"
+            details="Signup endpoint tests completed successfully:\n\n$test_output"
+            generate_test_report "signup" "PASSED" "$details"
+            return 0
+        else
+            print_error "Signup tests failed"
+            details="Signup endpoint tests failed:\n\n$test_output"
+            generate_test_report "signup" "FAILED" "$details"
+            return 1
+        fi
     else
-        print_info "Signup tests not yet implemented"
-        details="Signup tests not yet implemented.\nDirectory: $TEST_DIR/signup"
-        generate_test_report "signup" "NOT_IMPLEMENTED" "$details"
-        return 0
+        print_info "Signup test script not found: $test_script"
+        details="Signup test script not found.\nExpected: $test_script"
+        generate_test_report "signup" "NOT_FOUND" "$details"
+        return 1
     fi
 }
 
