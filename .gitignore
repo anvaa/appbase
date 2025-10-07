@@ -1,6 +1,12 @@
 
 # general files
 *.csv
+*.log
+*.out
+*.pid
+*.prof
+*.tmp
+*.txt
 
 # air generated files
 .air.toml

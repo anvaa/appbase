@@ -1,9 +1,14 @@
 #!/bin/bash
 
-# Simple test script for login and logout endpoints
+# Simple test script for login and         health_response=$(curl -s -k "$BASE_URL/health" 2>/dev/null || echo "ERROR")ogout endpoints
 # Usage: ./test_login_logout_simple.sh
 
-# Use SERVER_URL from environment if available, otherwise default to HTTPS
+logout_response=$(curl -s -k -w "%{http_code}" -b /tmp/login_test_cookies.txt \
+    -X POST "$BASE_URL/logout" \
+    -o /tmp/logout_response.txt)se SERVER_URL invalid_login_response=$(curl -s -k -w "%{http_code}" -X POST "$BASE_URL/login" \
+    -H "Content-Type: application/json" \
+    -d '{"username": "invalid@app.loc", "password": "wrongpass"}' \
+    -o /tmp/invalid_login_response.txt) environment if available, otherwise default to HTTPS
 BASE_URL="${SERVER_URL:-https://localhost:5443}"
 ADMIN_USER="${USER_1:-admin@app.loc}"
 ADMIN_PASS="${PSW_1:-appadmin}"
@@ -46,7 +51,7 @@ fi
 # Check if server is running
 echo "2. Checking server health..."
 for i in {1..10}; do
-    health_response=$(curl -s "$BASE_URL/health" 2>/dev/null || echo "ERROR")
+    health_response=$(curl -s -k "$BASE_URL/health" 2>/dev/null || echo "ERROR")
     if [[ "$health_response" == *"ok"* ]]; then
         print_success "Server is running"
         break
@@ -64,7 +69,7 @@ echo ""
 echo "3. Testing admin login with valid credentials..."
 
 # Test admin login
-admin_login=$(curl -s -c /tmp/test_cookies_admin.txt -w "%{http_code}" -X POST "$BASE_URL/login" \
+admin_login=$(curl -s -k -c /tmp/test_cookies_admin.txt -w "%{http_code}" -X POST "$BASE_URL/login" \
     -H "Content-Type: application/json" \
     -d "{\"username\": \"$ADMIN_USER\", \"password\": \"$ADMIN_PASS\"}" \
     -o /tmp/admin_login_response.txt)
@@ -92,7 +97,7 @@ echo ""
 echo "4. Testing regular user login with valid credentials..."
 
 # Test regular user login
-user_login=$(curl -s -c /tmp/test_cookies_user.txt -w "%{http_code}" -X POST "$BASE_URL/login" \
+user_login=$(curl -s -k -c /tmp/test_cookies_user.txt -w "%{http_code}" -X POST "$BASE_URL/login" \
     -H "Content-Type: application/json" \
     -d "{\"username\": \"$REGULAR_USER\", \"password\": \"$REGULAR_PASS\"}" \
     -o /tmp/user_login_response.txt)
@@ -120,7 +125,7 @@ echo ""
 echo "5. Testing login with invalid credentials..."
 
 # Test invalid login
-invalid_login_response=$(curl -s -w "%{http_code}" -X POST "$BASE_URL/login" \
+invalid_login_response=$(curl -s -k -w "%{http_code}" -X POST "$BASE_URL/login" \
     -H "Content-Type: application/json" \
     -d '{"username": "invalid@user.com", "password": "wrongpassword"}' \
     -o /tmp/invalid_login_response.txt)
@@ -141,7 +146,7 @@ echo ""
 echo "4. Testing login with malformed request..."
 
 # Test malformed request
-malformed_login_response=$(curl -s -w "%{http_code}" -X POST "$BASE_URL/login" \
+malformed_login_response=$(curl -s -k -w "%{http_code}" -X POST "$BASE_URL/login" \
     -H "Content-Type: application/json" \
     -d '{"invalid": "json"}' \
     -o /tmp/malformed_login_response.txt)
@@ -162,7 +167,7 @@ echo ""
 echo "5. Testing login with missing password..."
 
 # Test missing password
-missing_pwd_response=$(curl -s -w "%{http_code}" -X POST "$BASE_URL/login" \
+missing_pwd_response=$(curl -s -k -w "%{http_code}" -X POST "$BASE_URL/login" \
     -H "Content-Type: application/json" \
     -d '{"username": "admin@app.loc"}' \
     -o /tmp/missing_pwd_response.txt)
@@ -183,7 +188,7 @@ echo ""
 echo "6. Testing GET /logout (redirect-based logout)..."
 
 # Test GET logout
-logout_response=$(curl -s -w "%{http_code}" -b /tmp/login_test_cookies.txt \
+logout_response=$(curl -s -k -w "%{http_code}" -b /tmp/login_test_cookies.txt \
     -X GET "$BASE_URL/logout" \
     -o /tmp/logout_response.txt)
 
@@ -203,7 +208,7 @@ echo ""
 echo "7. Testing login after logout (session should be cleared)..."
 
 # Try to access protected endpoint with old cookie
-protected_response=$(curl -s -w "%{http_code}" -b /tmp/login_test_cookies.txt \
+protected_response=$(curl -s -k -w "%{http_code}" -b /tmp/login_test_cookies.txt \
     -X POST "$BASE_URL/verify" \
     -o /tmp/protected_after_logout.txt)
 
@@ -223,7 +228,7 @@ echo ""
 echo "8. Testing fresh login after logout..."
 
 # Fresh login after logout
-fresh_login_response=$(curl -s -c /tmp/fresh_login_cookies.txt -w "%{http_code}" -X POST "$BASE_URL/login" \
+fresh_login_response=$(curl -s -k -c /tmp/fresh_login_cookies.txt -w "%{http_code}" -X POST "$BASE_URL/login" \
     -H "Content-Type: application/json" \
     -d '{"username": "admin@app.loc", "password": "appadmin"}' \
     -o /tmp/fresh_login_response.txt)
@@ -247,9 +252,9 @@ print_info "Attempting multiple rapid login requests..."
 rate_limit_failed=false
 
 for i in {1..5}; do
-    rate_test_response=$(curl -s -w "%{http_code}" -X POST "$BASE_URL/login" \
+    rate_test_response=$(curl -s -k -w "%{http_code}" -X POST "$BASE_URL/login" \
         -H "Content-Type: application/json" \
-        -d '{"username": "test@rate.limit", "password": "invalid"}' \
+        -d '{"username": "testuser", "password": "wrongpass"}' \
         -o /tmp/rate_test_$i.txt)
     
     status_code="${rate_test_response: -3}"

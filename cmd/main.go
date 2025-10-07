@@ -9,7 +9,7 @@ import (
 	"user"
 
 	"app"
-	"app/app_conf"	
+	"app/app_conf"
 	"app/app_db"
 
 	"os/signal"
@@ -54,7 +54,47 @@ func init() {
 
 }
 
+func readCmdLineArgs() {
+	
+	if len(os.Args) > 1 {
+		for i, arg := range os.Args {
+			switch arg {
+			case "-tls":
+				if i+1 < len(os.Args) {
+					if os.Args[i+1] == "true" {
+						srv_conf.SetVal("use_tls", true)
+					} else {
+						srv_conf.SetVal("use_tls", false)
+					}
+				}
+			case "-port":
+				if i+1 < len(os.Args) {
+					port_int := global.StringToInt(os.Args[i+1])
+					if port_int > 0 && port_int < 65536 {
+						srv_conf.SetVal("server_port", port_int)
+					} else {
+						log.Fatalf("Invalid port number: %s", os.Args[i+1])
+						log.Println("Using default port from config.")
+					}
+				}
+			case "-debug":
+				if i+1 < len(os.Args) {
+					if os.Args[i+1] == "true" {
+						srv_conf.SetVal("gin_mode", "debug")
+					} else {
+						srv_conf.SetVal("gin_mode", "release")
+					}
+				}
+			}
+		}	
+	}
+
+}
+
 func main() {
+
+	// Read command line args
+	readCmdLineArgs()
 
 	r := server.InitWebServer()
 

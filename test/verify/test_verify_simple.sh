@@ -18,7 +18,7 @@ echo ""
 
 # Check if server is running, start if needed (only if not managed by parent runner)
 echo "1. Checking server health..."
-health_response=$(curl -s "$BASE_URL/health" 2>/dev/null || echo "ERROR")
+health_response=$(curl -s -k "$BASE_URL/health" 2>/dev/null || echo "ERROR")
 if [[ "$health_response" == *"ok"* ]]; then
     echo "✓ Server is already running at $BASE_URL"
 elif [[ -z "$MANAGED_BY_RUNNER" ]]; then
@@ -32,7 +32,7 @@ elif [[ -z "$MANAGED_BY_RUNNER" ]]; then
     # Wait for server to be ready
     for i in {1..10}; do
         sleep 2
-        health_response=$(curl -s "$BASE_URL/health" 2>/dev/null || echo "ERROR")
+        health_response=$(curl -s -k "$BASE_URL/health" 2>/dev/null || echo "ERROR")
         if [[ "$health_response" == *"ok"* ]]; then
             echo "✓ Server ready"
             break
@@ -53,7 +53,7 @@ echo ""
 echo "2. Logging in to get authentication token..."
 
 # Login to get authentication cookie
-login_response=$(curl -s -c /tmp/test_cookies.txt -X POST "$BASE_URL/login" \
+login_response=$(curl -s -k -c /tmp/test_cookies.txt -X POST "$BASE_URL/login" \
     -H "Content-Type: application/json" \
     -d "{\"username\": \"$ADMIN_USER\", \"password\": \"$ADMIN_PASS\"}")
 
@@ -71,7 +71,7 @@ fi
 echo ""
 echo ""
 echo "4. Testing POST /verify without authentication..."
-verify_noauth=$(curl -s -w "%{http_code}" -X POST "$BASE_URL/verify" \
+verify_noauth=$(curl -s -k -w "%{http_code}" -X POST "$BASE_URL/verify" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -o /tmp/verify_response.txt)
@@ -89,7 +89,7 @@ fi
 echo ""
 echo ""
 echo "5. Testing POST /verify with admin authentication..."
-verify_auth=$(curl -s -b /tmp/test_cookies.txt -w "%{http_code}" -X POST "$BASE_URL/verify" \
+verify_auth=$(curl -s -k -b /tmp/test_cookies.txt -w "%{http_code}" -X POST "$BASE_URL/verify" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -o /tmp/verify_auth_response.txt)
@@ -108,7 +108,7 @@ echo ""
 echo "6. Testing with regular user (user@app.loc)..."
 
 # Login with regular user to test second user level
-regular_login_response=$(curl -s -c /tmp/test_cookies_user.txt -X POST "$BASE_URL/login" \
+regular_login_response=$(curl -s -k -c /tmp/test_cookies_user.txt -X POST "$BASE_URL/login" \
     -H "Content-Type: application/json" \
     -d "{\"username\": \"$REGULAR_USER\", \"password\": \"$REGULAR_PASS\"}")
 
@@ -121,7 +121,7 @@ fi
 
 echo ""
 echo "7. Testing GET /verify with admin authentication..."
-get_verify=$(curl -s -b /tmp/test_cookies.txt -w "%{http_code}" -X GET "$BASE_URL/verify" \
+get_verify=$(curl -s -k -b /tmp/test_cookies.txt -w "%{http_code}" -X GET "$BASE_URL/verify" \
     -H "Accept: application/json" \
     -o /tmp/get_verify_response.txt)
 status_code="${get_verify: -3}"
@@ -137,7 +137,8 @@ fi
 
 echo ""
 echo "6. Testing /user/verify endpoint..."
-user_verify=$(curl -s -w "%{http_code}" -X POST "$BASE_URL/user/verify" \
+user_verify=$(curl -s -k -w "%{http_code}" -X POST "$BASE_URL/user/verify" \
+    -H "Content-Type: application/json" \
     -b /tmp/test_cookies.txt \
     -o /tmp/user_verify_response.txt)
 status_code="${user_verify: -3}"
@@ -153,7 +154,7 @@ fi
 
 echo ""
 echo "8. Testing with invalid token..."
-invalid_verify=$(curl -s -w "%{http_code}" -X POST "$BASE_URL/verify" \
+invalid_verify=$(curl -s -k -w "%{http_code}" -X POST "$BASE_URL/verify" \
     -H "Cookie: AppBase_Auth=invalid.jwt.token" \
     -H "Accept: application/json" \
     -o /tmp/invalid_verify_response.txt)
