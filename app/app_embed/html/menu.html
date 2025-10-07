@@ -1,6 +1,7 @@
 {{ template "header.html" . }}
 
 {{ $user := .appbase.User }}
+{{ $userlevel := .appbase.User.AuthLevel.Level }}
 {{ $logo_small := index .appbase.Logos 0 }}
 
 <div class="menu-flex-container">
@@ -15,18 +16,14 @@
 
     <div style="flex-grow: 1;"></div>
 
-    {{ if ge $user.AuthLevel.Level 30 }}
+    {{ if ge $userlevel 30 }}
         <button class="mnubtn" onclick="Tools()">
             <img src="/media/tools.svg" class="btn-img">
             Tools
         </button>
         <button class="mnubtn" onclick="Users()">
-            <img src="/media/person.svg" class="btn-img">
-            Users /
-            <img src="/media/building.svg" class="btn-img">
-            Orgs /
-            <img src="/media/database.svg" class="btn-img">
-            DB
+            <img src="/media/gear-fill.svg" class="btn-img">
+            Config
         </button>
     {{ end }}
 

@@ -2,6 +2,7 @@
     --color-btn-bg: #d1cfcf;
     --color-btn-border: #e2dede;
     --color-btn-hover: #d1cfcf;
+    --color-btn-border-hover: #727070;
     --color-btn-logout: #d1cfcf;
 
     --color-menu-bg: #a0a0a0;
@@ -61,7 +62,7 @@
 .mnubtn:hover,
 .mnubtn-logout:hover {
     background: var(--color-btn-hover);
-    border-color: #000;
+    border-color: var(--color-btn-border-hover);
 }
 
 .menu-logo {
