@@ -1,49 +1,42 @@
 package app_api
 
 import (
-	"server/middleware"
-
 	"app/app_ctrl"
+	"server/middleware"
 
 	"github.com/gin-gonic/gin"
 )
 
-func tools_Api(r *gin.Engine) *gin.Engine {
+func ToolsApi(r *gin.Engine) *gin.Engine {
+	// Menu routes - require level 30
+	menu := r.Group("/menu")
+	menu.Use(middleware.Verify, middleware.RequireLevel(30))
+	menu.POST("/addupd", app_ctrl.Sub_AddUpd)
+	menu.POST("/delete", app_ctrl.Sub_Delete)
 
-	// Require authentication first, then admin privileges
-	r.Use(middleware.Verify)
-	r.Use(middleware.RequireLevel(30)) // super level
+	// Status routes - require level 30
+	status := r.Group("/status")
+	status.Use(middleware.Verify, middleware.RequireLevel(30))
+	status.POST("/addupd", app_ctrl.Sta_AddUpd)
+	status.POST("/delete", app_ctrl.Sta_Delete)
 
-	mnuGrp := r.Group("/menu")
-	{
-		mnuGrp.POST("/addupd", app_ctrl.Sub_AddUpd)
-		mnuGrp.POST("/delete", app_ctrl.Sub_Delete)
-	}
+	// Type routes - require level 30
+	typ := r.Group("/type")
+	typ.Use(middleware.Verify, middleware.RequireLevel(30))
+	typ.POST("/addupd", app_ctrl.Typ_AddUpd)
+	typ.POST("/delete", app_ctrl.Typ_Delete)
 
-	staGrp := r.Group("/status")
-	{
-		staGrp.POST("/addupd", app_ctrl.Sta_AddUpd)
-		staGrp.POST("/delete", app_ctrl.Sta_Delete)
-	}
+	// Title routes - require level 30
+	title := r.Group("/title")
+	title.Use(middleware.Verify, middleware.RequireLevel(30))
+	title.POST("/upd", app_ctrl.Mnu_UpdTitels)
 
-	typGrp := r.Group("/type")
-	{
-		typGrp.POST("/addupd", app_ctrl.Typ_AddUpd)
-		typGrp.POST("/delete", app_ctrl.Typ_Delete)
-	}
-
-	titelsGrp := r.Group("/title")
-	{
-		titelsGrp.POST("/upd", app_ctrl.Mnu_UpdTitels)
-	}
-
-	toolsGrp := r.Group("/tools")
-	{
-		toolsGrp.GET("/titles", app_ctrl.ToolsTitles) // tools titles page
-		toolsGrp.GET("/status", app_ctrl.ToolsStatus) // tools statuses page
-		toolsGrp.GET("/types", app_ctrl.ToolsTypes)   // tools types page
-
-	}
+	// Tools routes - require level 30
+	tools := r.Group("/tools")
+	tools.Use(middleware.Verify, middleware.RequireLevel(30))
+	tools.GET("/titles", app_ctrl.ToolsTitles)
+	tools.GET("/status", app_ctrl.ToolsStatus)
+	tools.GET("/types", app_ctrl.ToolsTypes)
 
 	return r
 }

@@ -1,27 +1,28 @@
 package app_api
+
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
-// On any GIN errer, redirect to the error page
-func error_Api(r *gin.Engine) *gin.Engine {
-	// Set up the error routes
+func renderErrorPage(c *gin.Context, status int, title, errorMsg string) {
+	c.HTML(status, "error.html", gin.H{
+		"title": title,
+		"css":   "index.css",
+		"js":    "index.js",
+		"error": errorMsg,
+	})
+}
+
+// ErrorApi sets up error handlers for 404 and 405 errors.
+func ErrorApi(r *gin.Engine) *gin.Engine {
 	r.NoRoute(func(c *gin.Context) {
-		c.HTML(404, "error.html", gin.H{
-			"title": "Page Not Found",
-			"css":   "index.css",
-			"js":    "index.js",
-			"error": "404 - Page Not Found",
-		})
+		renderErrorPage(c, http.StatusNotFound, "Page Not Found", "404 - Page Not Found")
 	})
 
 	r.NoMethod(func(c *gin.Context) {
-		c.HTML(405, "error.html", gin.H{
-			"title": "Method Not Allowed",
-			"css":   "index.css",
-			"js":    "index.js",
-			"error": "405 - Method Not Allowed",
-		})
+		renderErrorPage(c, http.StatusMethodNotAllowed, "Method Not Allowed", "405 - Method Not Allowed")
 	})
 
 	return r
