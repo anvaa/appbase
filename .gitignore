@@ -1,0 +1,27 @@
+
+# general files
+*.csv
+*.log
+*.out
+*.pid
+*.prof
+*.tmp
+*.txt
+
+# air generated files
+.air.toml
+/tmp
+tmp/*
+
+# app generated files #
+*.crt
+*.key
+
+/static
+/data
+/assets
+/bin
+
+*.db
+*.yaml
+.DS_Store

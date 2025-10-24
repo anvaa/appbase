@@ -1,0 +1,47 @@
+{{ template "user_menu.html" . }}
+
+{{ $org := .org }}
+
+<div class="div-header-bold">Edit Organization '{{ $org.Name }}'</div>
+    <div class="flex-container">
+        <div class="org-box" style="padding: 10px;width: 400px;">
+            <div class="flex-container">
+                <div style="margin-right: 3px;">Name</div>
+                <input type="text" id="_name" value="{{ $org.Name }}" required />
+                <div style="flex-grow: 1;"></div>
+                <div class="trash-btn" title="Delete" onclick="deleteOrg('{{ $org.UUID }}')">
+                    <img src="/media/trash.svg" class="btn-img">
+                </div>
+            </div>
+        
+            <div style="margin-top: 10px;">
+                Note<br>
+                <textarea id="_note" style="width: 100%; height: 100px;">{{ $org.Note }}</textarea>
+            </div>
+
+            <div class="tools-btn" style="text-align: center;" onclick="orgAddUpd('{{ $org.UUID }}')">
+                <img src="/media/floppy2-fill.svg" class="btn-img">
+                <span>Save Changes</span>
+            </div>
+        </div>
+
+        <div class="org-box" style="padding: 10px;width: fit-content;">
+            <div class="flex-container" style="align-items: center; margin-bottom: 10px;">
+	            <div class="div-header" style="margin-right: 10px;">Members ({{ len $org.Users }})</div>
+	                <div style="flex-grow: 1;"></div>
+	                <div class="mnubtn" onclick="location.href='/v/org/members/{{ $org.UUID }}'">
+		            <img src="/media/person-add.svg" class="btn-img">
+	                <span>Edit Members</span>
+	            </div>
+            </div>
+            
+            {{ range $org.Users }}
+                <div class="flex-container">
+                    <img src="/media/person.svg"> 
+                    <span>{{ .Username }} ({{ .AuthLevel.Name }})</span>
+                </div>
+            {{ end }}
+
+        </div>
+
+</div>

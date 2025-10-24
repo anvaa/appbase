@@ -1,0 +1,96 @@
+{{ template "user_menu.html" . }}
+
+{{ $curuser := .appbase.User }}
+{{ $edituser := .edituid }}
+{{ $auth_levels := .auth_levels }}
+
+<div class="flex-container" style="flex-direction: row; justify-content: space-between; align-items: center;">
+    
+    <div class="div-header-bold">
+        Edit {{ $edituser.Username }} ({{ $edituser.AuthLevel.Name }} {{ $edituser.AuthLevel.Level }})
+    </div>
+    <div style="margin-top: 5px;">
+        <!-- can not delet your-self or admin level users -->
+        {{ if and (ne $edituser.UUID $curuser.UUID) (lt $edituser.AuthLevelID 1) }}
+        <button value="{{ $edituser.ID }}" 
+                class="tools-btn-del"
+                onclick="Delete('{{$edituser.UUID}}')">
+            Delete User
+        </button>
+        {{ end }}
+    </div>
+        
+</div>
+
+<div class="flex-container" style="margin-top: 5px; flex-direction: row;">
+    <input type="hidden" id="_email" value="{{ $edituser.Username }}" />
+
+    <!-- Change Password Box -->
+    <div class="tools-box">
+        <form id="changepassword" action="/user/psw" method="post" class="lst-box">
+            <table>
+                <tr>
+                    <td style="text-align: right;">
+                        <label for="_psw1">New Password</label>
+                        <input type="password" id="_psw1" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">
+                        <label for="_psw2">Confirm Password</label>
+                        <input type="password" id="_psw2" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <input type="button" value="Save Password" class="tools-btn"
+                            style="width: 155px; margin-top: 5px;"
+                            onclick="setPsw('{{$edituser.UUID}}')" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <!-- Role Box (only if editing another user) -->
+    {{ if ne $edituser.UUID $curuser.UUID }}
+        <div class="tools-box">
+            <div>
+                <label for="_authlevel">Auth Level</label>
+                <select id="_authlevel" onchange="authSelect('{{$curuser.AuthLevelID}}')">
+                    {{ range $auth_levels }}
+                        {{ if eq .ID $edituser.AuthLevelID }}
+                            <option value="{{ .ID }}" selected>{{ .Name }} ({{ .Level }})</option>
+                        {{ else }}
+                            <option value="{{ .ID }}">{{ .Name }} {{ .Level }}</option>
+                        {{ end }}
+                    {{ end }}
+                </select>
+            </div>
+            <div style="text-align: center;">
+                <input type="button" value="Update AuthLevel" class="tools-btn"
+                    style="width: 155px; margin-top: 5px;"
+                    onclick="AuthLevel('{{$edituser.UUID}}')" 
+                />
+            </div>
+        </div>
+    {{ end }}
+
+    <!-- Organization Name Box -->
+    <div class="tools-box" style="width: fit-content; min-width: 150px;">
+            <div class="div-header-bold">Member of</div>
+            {{ range $edituser.Org }}
+                <div class="org-member-btn" onclick="location.href='/v/org/{{ .UUID }}'">
+                    <div class="flex-container">
+                        <img src="/media/building.svg"> 
+                        <span>{{ .Name }}</span>
+                    </div>
+                </div>
+            {{ end }}
+    </div>
+
+</div>
+
+<script src="/js/{{ .js }}"></script>
+</body>
+</html>

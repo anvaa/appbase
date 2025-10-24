@@ -1,0 +1,40 @@
+{{ template "tools_menu.html" . }}
+<div  class="flex-container">
+    <div>
+        <div class="div-header-bold">Types</div>
+        <div class="flex-container">
+        {{ range .typ }}
+        <div class="tools-box">
+            <div class="div-header">{{.Title}} ({{ len .Typsub }})</div>
+            {{$T_ID := printf "typ%d" .ID}}
+            <div>
+                <div>
+                    <input type="text" id="_txt_{{$T_ID}}" value="" class="tools-txt" 
+                        onkeydown="isEdit('type','{{$T_ID}}')" />
+                    
+                        <input type="hidden" id="_id_{{$T_ID}}" value="{{.ID}}" />
+                    <input type="hidden" id="_sub_{{$T_ID}}" value="0" />
+                </div>
+                <div style="text-align: center;">
+                    <input type="button" value="Add/Edit" 
+                    onclick="subAddUpd('{{$T_ID}}')" class="tools-btn"/>
+                </div>
+                <div >
+                    <select Name="_type{{$T_ID}}" size="4" class="tools-select" >
+                        {{ range .Typsub }}
+                        <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
+                            onclick="subSel('{{.UUID}}','{{$T_ID}}','type')">{{.Name}} {{.Type}} {{.ID}}</option>
+                        {{ end }}
+                    </select> 
+                </div>
+                <div style="text-align: center;">
+                    <input type="button" value="Delete" onclick="lstDel('{{$T_ID}}')" class="tools-btn-del"/>
+                </div>
+            </div>
+        </div>
+        {{ end }}
+        </div>
+    </div>
+</div>
+
+{{ template "footerbar.html" . }}

@@ -1,0 +1,136 @@
+{{ template "user_menu.html" . }}
+<table>
+    <thead>
+        <td class="div-header-bold" colspan="3">Authorized ({{ len .auth_users }})</td>
+    <tr>
+        <th class="th-lst">ID</th>
+        <th class="th-lst">User (edit)</th>
+        <th class="th-lst">AuthLevel</th>
+        <th class="th-lst">Auth</th>
+        <th class="th-lst">Created</th>
+        <th  class="th-lst">Updated</th>
+    </tr>
+    </thead>
+    <body>
+        {{ range .auth_users }}
+        <tr>
+            <form class="authform">
+                <td class="td-lst">
+                    {{ .UUID }}
+                </td>
+                <td class="td-lst" style="border: 0;">
+                    <input type="button" class="lstbtn" value="{{ .Username }}" onclick="location.href='/v/user/{{.UUID}}'" />
+                </td>
+                <td class="td-lst">{{ .AuthLevel.Name }} ({{ .AuthLevel.Level }})</td>
+                <td class="td-lst" style="border: 0;">
+                    {{ if ne .AuthLevelID 1 }}
+                        <input type="hidden" id="_auth{{ .UUID }}" value="{{ .IsAuth }}" /> 
+                        {{ if .IsAuth }}
+                            <input type="button" class="lstbtn" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                        {{ else }}
+                            <input type="button" class="lstbtn" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                        {{ end }}
+                    {{ end }}
+                </td>
+                <td class="td-lst">
+                    {{ .CreatedAt.Format "2006-01-02 15:04" }}
+                </td>
+                <td class="td-lst" title="Last updates">
+                    {{ .UpdatedAt.Format "2006-01-02 15:04" }}
+                </td>
+            </form>
+        </tr>
+        {{ end }}
+    </body>
+</table>
+<br>
+<table>
+    <thead>
+        <td class="div-header-bold" colspan="3">Unauthorized ({{ len .unauth_users }})</td>
+    <tr>
+        <th class="th-lst">ID</th>
+        <th class="th-lst">User (edit)</th>
+        <th class="th-lst">AuthLevel</th>
+        <th class="th-lst">Auth</th>
+        <th class="th-lst">Created</th>
+        <th class="th-lst">Updated</th>
+        
+    </tr>
+    </thead>
+    <body>
+        {{ range .unauth_users }}
+        <tr>
+            <form class="authform">
+                <td class="td-lst">
+                    {{ .UUID }}
+                </td>
+                <td class="td-lst" style="border: 0;">
+                    <input type="button" class="lstbtn" value="{{ .Username }}" onclick="location.href='/v/user/{{.UUID}}'" />
+                </td>
+                <td class="td-lst">{{ .AuthLevel.Name }} ({{ .AuthLevel.Level }})</td>
+                <td class="td-lst" style="border: 0;">
+                {{ if ne .AuthLevelID 1 }}
+                    <input type="hidden" id="_auth{{ .UUID }}" value="{{ .IsAuth }}" /> 
+                    {{ if .IsAuth }}
+                        <input type="button" class="lstbtn" value="Unauthorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                    {{ else }}
+                        <input type="button" class="lstbtn" value="Authorize" onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                    {{ end }}
+                {{ end }}
+                </td>
+                <td class="td-lst">
+                    {{ .CreatedAt.Format "2006-01-02 15:04" }}
+                </td>
+                <td class="td-lst">
+                    {{ .UpdatedAt.Format "2006-01-02 15:04" }}
+                </td>
+            </form>
+        </tr>
+        {{ end }}
+    </body>
+</table>
+<br>
+<table>
+    <thead>
+        <td class="div-header-bold" colspan="3">Deleted ({{ len .del_users }})</td>
+    <tr>
+        <th class="th-lst">ID</th>
+        <th class="th-lst">User</th>
+        <th class="th-lst">AuthLevel</th>
+        <th class="th-lst">Created</th>
+        <th class="th-lst">Updated</th>
+        <th class="th-lst">Deleted</th>
+        
+    </tr>
+    </thead>
+    <body>
+        {{ range .del_users }}
+        <tr>
+            <form class="authform">
+                <td class="td-lst">
+                    {{ .UUID }}
+                </td>
+                <td class="td-lst">
+                    {{ .Username }}
+                </td>
+                <td class="td-lst">{{ .AuthLevel.Name }} ({{ .AuthLevel.Level }})</td>
+                <td class="td-lst">
+                    {{ .CreatedAt.Format "2006-01-02 15:04" }}
+                </td>
+                <td class="td-lst">
+                    {{ .UpdatedAt.Format "2006-01-02 15:04" }}
+                </td>
+                <td class="td-lst">
+                    {{ $_delat := printf "%s" .DeletedAt }}
+                    {{ $delat := printf "%s" (slice $_delat 1 17) }}
+                    {{$delat}}
+                </td>
+            </form>
+        </tr>
+        {{ end }}
+    </body>
+</table>
+
+<script src="/js/{{ .js }}"></script>
+</body>
+</html>

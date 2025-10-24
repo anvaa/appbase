@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Signup</title>
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/index.css" rel="stylesheet">
+  <script src="/js/index.js" defer></script>
+</head>
+<body>
+  <input type="hidden" id="_pageid" value="signup">
+  <input type="hidden" id="_count" value="{{.count}}">
+  <div class="flex-container">
+    <div>
+      <div class="configbox">
+            <div class="flex-container">
+              {{ if .logo_small }}
+              <div style="width: fit-content;">
+                <img src="/media/{{ .logo_small }}" class="menu-logo">
+            </div>
+              {{ end }}
+              <div style="flex-grow: 1; text-align: center;">
+                <h4>Signup</h4>
+              </div>
+            </div>
+          
+            <div class="container">
+              <div style="width: 100%;text-align: right;">
+                Username
+                <input type="text" id="_username" required>
+              </div>
+            
+              <div style="width: 100%;text-align: right;">
+                Password
+                <input type="password" id="_password" required>
+              </div>
+            
+              <div style="text-align: right;">
+                Confirm password
+                <input type="password" id="_password2" required>
+              </div>
+            
+              <div style="width: 100%;text-align: right;">
+                Organization
+                <input type="text" id="_orgname" maxlength="50" required>
+              </div>
+            
+            
+              <div style="width: 100%;margin: 5px;">
+                <div class="flex-container" style="width: 100%;">
+                  
+                  {{if ne .count "0"}}
+                  <div>
+                    <input type="button" class="loginbtn" value="Signup" onclick="Signup()">
+                  </div>
+                  <div style="margin-left: 20px;">
+                    <input type="button" class="loginbtn" value="Cancel" onclick="Cancel('/v/users')">
+                  </div>
+                  {{else}}
+                  <div style="width: 100%;">
+                    <input type="button" class="loginbtn" value="Signup" onclick="Signup()">
+                  </div>
+                  {{end}}
+                </div>
+              </div>
+            </div>
+      </div>
+      {{if eq .count "0"}}
+      <div class="info-text">
+        If you have an account, login
+        <a href="/login" class="info-text">here</a>
+      </div>
+      {{end}}
+      <div id="_msg" class="errmessage"></div>
+    </div>
+  </div>
+</body>
+</html>

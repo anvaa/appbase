@@ -1,0 +1,56 @@
+{{ template "user_menu.html" . }}
+    <table>
+        <thead>
+            <td class="div-header-bold" colspan="3">
+                New Users ({{ len .new_users }})
+            </td>    
+            <tr>
+                <th class="th-lst">ID</th>
+                <th class="th-lst">User (edit)</th>
+                <th class="th-lst"></th>
+                <th class="th-lst">Created</th>
+                <th class="th-lst">Updated</th>
+                <th></th>
+            </tr>
+        </thead>
+        <body>
+            {{ range .new_users }}
+            <tr>
+                <form class="authform">
+                    <td class="td-lst" title="User UUID">
+                        {{ .UUID }}
+                    </td>
+                    <td class="td-lst" style="border: 0;">
+                        <input type="button" class="lstbtn" 
+                            value="{{ .Username }}" onclick="location.href='/v/user/{{.UUID}}'" />
+                    </td>
+                    <td style="text-align: center; padding: 0; border: 0;">
+                    
+                    {{ if .IsAuth }}
+                        <input type="button" class="lstbtn" value="Unauthorize" 
+                            onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+                        
+                    {{ else }}
+                        <input type="button" class="lstbtn" value="Authorize" title="Authorize user"
+                            onclick="setAuth('{{.UUID}}','{{.IsAuth}}')" />
+
+                    {{ end }}
+                    </td>
+                    <td class="td-lst">
+                        {{ .CreatedAt.Format "2006-01-02 15:04" }}
+                    </td>
+                    <td class="td-lst" title="Last updates">
+                        {{ .UpdatedAt.Format "2006-01-02 15:04" }}
+                    </td>
+                    <td>
+                        <input type="button" class="tools-btn-del" style="margin-left: 5px;" value="Delete user" 
+                        onclick="Delete('{{.UUID}}')" />
+                    </td>
+                </form>
+            </tr>
+            {{ end }}
+        </body>
+    </table>
+</body>
+</html>
+<script src="/js/{{ .js }}"></script>

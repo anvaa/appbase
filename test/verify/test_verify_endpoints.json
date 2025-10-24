@@ -1,0 +1,112 @@
+{
+  "info": {
+    "name": "Verify Endpoint Tests",
+    "description": "Tests for POST /verify and GET /verify endpoints",
+    "version": "1.0.0"
+  },
+  "baseUrl": "${SERVER_URL:-https://localhost:5443}",
+  "tests": [
+    {
+      "name": "Health Check",
+      "method": "GET",
+      "url": "/health",
+      "expectedStatus": 200,
+      "description": "Verify server is running"
+    },
+    {
+      "name": "Login - Admin User",
+      "method": "POST", 
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "admin@app.loc",
+        "password": "appadmin"
+      },
+      "expectedStatus": 200,
+      "description": "Login with admin user to get authentication token",
+      "saveToken": true
+    },
+    {
+      "name": "Login - Regular User", 
+      "method": "POST",
+      "url": "/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "username": "user@app.loc",
+        "password": "password"
+      },
+      "expectedStatus": [200, 401],
+      "description": "Login with regular user (may not exist in test db)",
+      "saveToken": false
+    },
+    {
+      "name": "POST /verify - No Auth",
+      "method": "POST",
+      "url": "/verify", 
+      "expectedStatus": 401,
+      "description": "POST /verify without authentication should fail"
+    },
+    {
+      "name": "POST /verify - Valid Auth",
+      "method": "POST",
+      "url": "/verify",
+      "useToken": true,
+      "expectedStatus": 200,
+      "description": "POST /verify with valid authentication",
+      "validateResponse": {
+        "hasFields": ["username", "email", "token", "profile"]
+      }
+    },
+    {
+      "name": "GET /verify - Valid Auth", 
+      "method": "GET",
+      "url": "/verify",
+      "useToken": true,
+      "expectedStatus": 200,
+      "description": "GET /verify with valid authentication",
+      "validateResponse": {
+        "hasFields": ["username", "email", "token", "profile"]
+      }
+    },
+    {
+      "name": "POST /verify - Invalid Token",
+      "method": "POST",
+      "url": "/verify",
+      "headers": {
+        "Cookie": "AppBase_Auth=invalid.jwt.token"
+      },
+      "expectedStatus": 401,
+      "description": "POST /verify with invalid token should fail"
+    },
+    {
+      "name": "GET /verify - Invalid Token",
+      "method": "GET", 
+      "url": "/verify",
+      "headers": {
+        "Cookie": "AppBase_Auth=invalid.jwt.token"
+      },
+      "expectedStatus": 401,
+      "description": "GET /verify with invalid token should fail"
+    },
+    {
+      "name": "POST /user/verify - Valid Auth",
+      "method": "POST",
+      "url": "/user/verify", 
+      "useToken": true,
+      "expectedStatus": 200,
+      "description": "POST /user/verify with valid authentication"
+    },
+    {
+      "name": "GET /user/verify - Valid Auth",
+      "method": "GET",
+      "url": "/user/verify",
+      "useToken": true, 
+      "expectedStatus": 200,
+      "description": "GET /user/verify with valid authentication"
+    }
+  ]
+}

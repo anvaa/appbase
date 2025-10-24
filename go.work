@@ -1,0 +1,27 @@
+go 1.25.1
+
+use (
+	.
+
+	./app
+	./app/app_api
+	./app/app_conf
+	./app/app_ctrl
+	./app/app_db
+	./app/app_embed
+	./app/app_models
+
+	./server
+	./server/filefunc
+	./server/global
+	./server/middleware
+	./server/srv_conf
+	./server/srv_sec
+
+	./user
+	./user/user_embed
+	./user/user_ctrl
+	./user/user_conf
+	./user/user_sec
+
+)

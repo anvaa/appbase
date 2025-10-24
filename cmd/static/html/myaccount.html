@@ -1,0 +1,32 @@
+{{ template "menu.html" . }}
+
+{{ $user := .appbase.User }}
+
+<div class="flex-container">
+    <input type="hidden" id="_username" value="{{ $user.Username }}" />
+
+    <div class="tools-box">
+          <table>
+              <tr>
+                  <td style="text-align: right;">
+                    <label for="_psw1">New Password</label>
+                    <input type="password" id="_psw1" required />
+                  </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">
+                      <label for="_psw2">Confirm Password</label>
+                      <input type="password" id="_psw2" required />
+                    </td>
+                  </tr>
+                <tr>
+              <tr>
+                  <td style="text-align: center;">
+                      <input type="button" value="Save Password" 
+                      class="mnubtn" style="width: 155px;margin-top:5px;" 
+                      onclick="NewPsw('{{ $user.UUID}}')" />
+                  </td>
+              </tr>
+          </table>
+      </div>
+  </div>

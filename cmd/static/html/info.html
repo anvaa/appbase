@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ .title }}</title>
+    
+    <style>
+        a {
+            text-decoration: none;
+            color: black;
+        }
+        a:hover {
+            font-weight: bold;
+        }
+        .timetxt {
+            font-family: monospace;
+            font-size: large;
+
+            text-align: center;
+
+            margin-top: 30px;
+        }
+        .timetxt:hover {
+            font-weight: bold;
+            color: black;
+        }
+        .header, .content {
+            display: flex;
+            justify-content: space-between;
+            font-family: monospace;
+        }
+        .header div {
+            vertical-align: middle;
+        }
+        .content {
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            cursor: default;
+        }
+        .app-info {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .app-info-long {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .company-info {
+            font-size: 20px;
+            font-weight: bold;
+
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+    
+    <div class="content">
+        <div style="text-align: center;">
+            <div class="app-info">
+                {{ .appinfo.AppName }} v{{ .appinfo.Version }}
+            </div>
+            <div class="app-info-long">
+                {{ .appinfo.AppNameLong }}
+            </div>
+            <div class="company-info">
+                <a href="{{ .appinfo.CompanyURL }}">{{ .appinfo.Company }}</a>
+            </div>
+            <div class="timetxt">{{ .apptime }}</div>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,25 @@
+{{ template "user_menu.html" . }}
+
+{{ $org := .org }}
+
+<div class="div-header-bold">New Organization</div>
+    
+<div class="org-box" style="padding: 10px;width: 400px;">
+    <div class="flex-container">
+        <div style="margin-right: 3px;">Name</div>
+        <input type="text" id="_name" value="" required />
+        <div style="flex-grow: 1;"></div>
+    </div>
+
+    <div style="margin-top: 10px;">
+        Note<br>
+        <textarea id="_note" style="width: 100%; height: 100px;"></textarea>
+    </div>
+
+    <div class="tools-btn" style="text-align: center;" onclick="orgAddUpd('0')">
+        <img src="/media/floppy2-fill.svg" class="btn-img">
+        <span>Save Changes</span>
+    </div>
+</div>
+
+    

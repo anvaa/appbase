@@ -1,0 +1,17 @@
+{{ template "header.html" . }}
+
+<div class="err-container">
+    <h1 id="_header"></h1>
+</div>
+<div>
+    <h5 id="_errtxt"></h5>
+</div>
+
+<script>
+    document.getElementById("_header").innerHTML = "Error: {{ .code }}";
+    document.getElementById("_errtxt").innerHTML = "{{ .error }}";
+
+    <!-- setTimeout(function() {
+        window.location.href = "/";
+    }, 15000); -->
+</script>

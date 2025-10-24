@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ if .appbase.Doindex }}
+        <meta name="robots" content="index, follow">
+    {{ else }}
+        <meta name="robots" content="noindex, nofollow">
+    {{ end }}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ .title }}">
+    <meta name="author" content="{{ .appbase.Appinfo.Company }}">
+    <title>{{ .title }}</title>
+
+    <link rel="apple-touch-icon" href="/media/apple-touch-icon.png">
+    <link rel="icon" href="/media/favicon.ico" type="image/x-icon">
+
+    <!-- Permanent CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/menu.css">
+    <link rel="stylesheet" href="/css/app.css">
+
+
+    <!-- Permanent JS -->
+    <script src="/js/menu.js"></script>
+
+    <!-- Dynamic CSS and JS -->
+    {{ with .css }}<link rel="stylesheet" href="/css/{{ . }}">{{ end }}
+    {{ with .js }}<script src="/js/{{ . }}"></script>{{ end }}
+
+</head>
+<body>

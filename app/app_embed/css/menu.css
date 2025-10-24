@@ -1,0 +1,76 @@
+:root {
+    --color-btn-bg: #d1cfcf;
+    --color-btn-border: #e2dede;
+    --color-btn-hover: #d1cfcf;
+    --color-btn-border-hover: #727070;
+    --color-btn-logout: #d1cfcf;
+
+    --color-menu-bg: #a0a0a0;
+    --color-border: #444;
+    --color-text: #222;
+    --color-background: #f5f5f5;
+    --radius: 8px;
+}
+
+/* Flex containers */
+.menu-flex-container,
+.menubox,
+.err-container {
+    display: flex;
+    flex-direction: row;
+    padding: 2px;
+    border-radius: var(--radius);
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+}
+
+.menu-flex-container {
+    background: var(--color-menu-bg);
+    height: 45px;
+}
+
+/* Images */
+.btn-img {
+    width: 15px;
+    height: 15px;
+    margin-left: 3px;
+    background: transparent;
+}
+
+/* Buttons */
+.mnubtn,
+.mnubtn-logout {
+    border: 2px solid var(--color-btn-border);
+    color: var(--color-text);
+    background: var(--color-btn-bg);
+    margin-right: 5px;
+    text-align: center;
+    vertical-align: middle;
+    align-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+    width: fit-content;
+    transition: background 0.2s, border-color 0.2s;
+    display: inline-block;
+}
+
+.mnubtn-logout {
+    background: var(--color-btn-logout);
+}
+
+.mnubtn:hover,
+.mnubtn-logout:hover {
+    background: var(--color-btn-hover);
+    border-color: var(--color-btn-border-hover);
+}
+
+.menu-logo {
+    height: 100%;
+    width: auto;
+    
+    margin: 0;
+    background: transparent;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-background);
+}

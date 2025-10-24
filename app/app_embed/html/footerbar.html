@@ -1,0 +1,17 @@
+
+{{ $appinfo := .appbase.Appinfo }}
+{{ $dbinfo := .appbase.DbInfo | printf "%+v" }}
+
+<footer style="display: flex; justify-content: space-between; align-items: center; cursor: default;">
+    <div style="text-align: left;">
+        {{ $appinfo.AppName }} v{{ $appinfo.Version }}
+    </div>
+    <div style="text-align: center; flex: 1;" title="Datasource">
+        {{ $dbinfo }}
+    </div>
+    <div style="text-align: right;">
+        {{ $appinfo.Company }}
+    </div>
+</footer>
+</body>
+</html>

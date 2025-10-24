@@ -1,0 +1,42 @@
+{{ template "header.html" . }}
+
+{{ $user := .appbase.User }}
+{{ $userlevel := .appbase.User.AuthLevel.Level }}
+{{ $logo_small := index .appbase.Logos 0 }}
+
+<div class="menu-flex-container">
+    <div onclick="AppInfo()" style="margin-right: 5px;">
+        <img src="/media/{{ $logo_small }}" class="menu-logo">
+    </div>
+
+    <button class="mnubtn" onclick="Start()" title="ctrl + 1">
+        <img src="/media/house.svg" class="btn-img">
+        Start
+    </button>
+
+    <div style="flex-grow: 1;"></div>
+
+    {{ if ge $userlevel 30 }}
+        <button class="mnubtn" onclick="Tools()">
+            <img src="/media/tools.svg" class="btn-img">
+            Tools
+        </button>
+        <button class="mnubtn" onclick="Users()">
+            <img src="/media/gear-fill.svg" class="btn-img">
+            Config
+        </button>
+    {{ end }}
+
+    <button class="mnubtn" onclick="MyAccount()">
+        <img src="/media/key.svg" class="btn-img">
+        My Account
+    </button>
+
+    <button class="mnubtn-logout" onclick="Logout()" title="ctrl + q">
+        <img src="/media/lock.svg" class="btn-img">
+        Logout
+    </button>
+</div>
+
+<div id="_msg"></div>
+<input type="hidden" id="_page" value="" />

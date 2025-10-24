@@ -1,0 +1,36 @@
+{{ template "user_menu.html" . }}
+
+{{ $org := .org }}
+{{ $users := .users }}
+
+<div class="div-header-bold">Edit '{{ $org.Name }}' Members</div>
+
+<div class="flex-container" style="width: 100%; flex-direction: row; gap: 20px;">
+
+    <div class="org-box" style="padding: 5px;width: fit-content; min-height: 300px;">
+        <div class="div-header-bold" style="margin-right: 10px;">Members ({{ len $org.Users }})</div>
+        {{ range $org.Users }}
+        <div class="org-member-btn" onclick="RemoveMember('{{ $.org.ID }}', '{{ .ID }}')">
+            <div class="flex-container">
+                <div style="flex-grow: 1;">{{ .Username }} ({{ .AuthLevel.Name }})</div>
+                <img src="/media/arrow-right-circle.svg" style="margin: 5px;"> 
+            </div>
+        </div>
+        {{ end }}
+    </div>
+
+    <div class="org-box" style="padding: 5px; width: fit-content; min-height: 300px;">
+        <div class="div-header-bold" style="margin-right: 10px;">Non-Members ({{ len $users }})</div>
+        
+        {{ range $users }}
+            <div class="org-member-btn" onclick="AddMember('{{ $.org.ID }}', '{{ .ID }}')">
+                <div class="flex-container">
+                    <img src="/media/arrow-left-circle.svg" style="margin: 5px;">
+                    
+                    <div>{{ .Username }} ({{ .AuthLevel.Name }})</div>
+                </div>
+            </div>
+        {{ end }}
+    </div>
+
+</div>

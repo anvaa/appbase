@@ -1,0 +1,40 @@
+{{ template "tools_menu.html" . }}
+<div  class="flex-container">
+    <div>
+        <div class="div-header-bold">Statuses</div>
+        <div class="flex-container">
+        {{ range .sta }}
+        <div class="tools-box">
+            <div class="div-header">{{.Title}} ({{ len .Stasub }})</div>
+            {{$S_ID := printf "sta%d" .ID}}
+            <div>
+                <div>
+                    <input type="text" id="_txt_{{$S_ID}}" value="" class="tools-txt" 
+                        onkeydown="isEdit('status','{{$S_ID}}')" />
+                    
+                        <input type="hidden" id="_id_{{$S_ID}}" value="{{.ID}}" />
+                    <input type="hidden" id="_sub_{{$S_ID}}" value="0" />
+                </div>
+                <div style="text-align: center;">
+                    <input type="button" value="Add/Edit" 
+                    onclick="subAddUpd('{{$S_ID}}')" class="tools-btn"/>
+                </div>
+                <div >
+                    <select Name="_status{{$S_ID}}" size="6" class="tools-select" >
+                        {{ range .Stasub }}
+                        <option id="_opt_{{ .UUID }}" value="{{.Name}}" 
+                            onclick="subSel('{{.UUID}}','{{$S_ID}}','status')">{{.Name}} {{.Type}} {{.ID}}</option>
+                        {{ end }}
+                    </select> 
+                </div>
+                <div style="text-align: center;">
+                    <input type="button" value="Delete" onclick="lstDel('{{$S_ID}}')" class="tools-btn-del"/>
+                </div>
+            </div>
+        </div>
+        {{ end }}
+        </div>
+    </div>
+</div>
+
+{{ template "footerbar.html" . }}

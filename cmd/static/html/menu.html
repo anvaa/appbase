@@ -1,0 +1,45 @@
+{{ template "header.html" . }}
+
+{{ $user := .appbase.User }}
+{{ $logo_small := index .appbase.Logos 0 }}
+
+<div class="menu-flex-container">
+    <div onclick="AppInfo()">
+        <img src="/media/{{ $logo_small }}" class="menu-logo" alt="Logo">
+    </div>
+
+    <button class="mnubtn" onclick="Start()" title="ctrl + 1">
+        <img src="/media/house.svg" class="btn-img" alt="Home">
+        Start
+    </button>
+
+    <div style="flex-grow: 1;"></div>
+
+    {{ if or (eq $user.AuthLevelID 1) (eq $user.AuthLevelID 2) }}
+        <button class="mnubtn" onclick="Tools()">
+            <img src="/media/tools.svg" class="btn-img" alt="Tools">
+            Tools
+        </button>
+        <button class="mnubtn" onclick="Users()">
+            <img src="/media/person.svg" class="btn-img" alt="Users">
+            Users /
+            <img src="/media/building.svg" class="btn-img" alt="Orgs">
+            Orgs /
+            <img src="/media/database.svg" class="btn-img" alt="DB">
+            DB
+        </button>
+    {{ end }}
+
+    <button class="mnubtn" onclick="MyAccount()">
+        <img src="/media/key.svg" class="btn-img" alt="Account">
+        {{ $user.Username }}
+    </button>
+
+    <button class="mnubtn-logout" onclick="Logout()" title="ctrl + q">
+        <img src="/media/lock.svg" class="btn-img" alt="Logout">
+        Logout
+    </button>
+</div>
+
+<div id="_msg"></div>
+<input type="hidden" id="_page" value="" />

@@ -1,0 +1,80 @@
+{{ template "user_menu.html" . }}
+
+{{ $dbconf := .dbconf }}
+
+<div class="flex-container" style="flex-direction: column; gap: 10px; margin-top: 10px;">
+
+    <div class="tools-box" style="width: 200px;">
+        <div class="flex-container" style="gap: 5px;">
+            <div style="width: fit-content;">DBType</div>
+            <select id="_dbtype" style="width: 100%;" onchange="dbTypeChange()">
+                <option value="mysql" {{ if eq $dbconf.Type "mysql" }}selected{{ end }}>MySQL</option>
+                <option value="postgres" {{ if eq $dbconf.Type "postgres" }}selected{{ end }}>Postgres</option>
+                <option value="sqlite" {{ if eq $dbconf.Type "sqlite" }}selected{{ end }}>SQLite</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="tools-box" id="_sqlite" style="width: 300px;">
+		<div class="flex-container div-header-bold">
+				<img src="/media/database.svg" class="btn-img" style="margin: 4px;"> 
+				<div id="_dbname1"></div>
+        </div>
+        <div style="margin: 5px;">
+        <input type="text" id="_dbpath" style="width: 100%;" value="{{ $dbconf.Path }}">
+        </div>
+    </div>
+
+    <div class="tools-box" id="_mysql_postgres" style="width: fit-content;">
+		<div class="flex-container div-header-bold">
+				<img src="/media/database.svg" class="btn-img" style="margin: 4px;"> 
+				<div id="_dbname2"></div>
+        </div>
+        <div style="margin: 5px; text-align: right;">
+            <div class="flex-container dbconfig" style="gap: 5px;">
+                <div style="flex: 1;">Host</div>
+                <input type="text" id="_dbhost" value="{{ $dbconf.Host }}">
+            </div>
+            <div class="flex-container dbconfig" style="gap: 5px;">
+                <div style="flex: 1;">Name</div>
+                <input type="text" id="_dbname" value="{{ $dbconf.Name }}">
+            </div>
+            <div class="flex-container dbconfig" style="gap: 5px;">
+                <div style="flex: 1;">Port</div>
+                <input type="text" id="_dbport" value="{{ $dbconf.Port }}">
+            </div>
+            <div class="flex-container dbconfig" style="gap: 5px;">
+                <div style="flex: 1;">User</div>
+                <input type="text" id="_dbuser" value="{{ $dbconf.User }}">
+            </div>
+            <div class="flex-container dbconfig" style="gap: 5px;">
+                <div style="flex: 1;">Password</div>
+                <input type="text" id="_dbpass" value="{{ $dbconf.Password }}">
+            </div>
+        </div>
+    </div>
+    <input type="button" class="tools-btn" value="Save" onclick="saveDbConfig()" style="margin-top: 8px; width: 150px;">
+</div>
+
+<script>
+    function dbTypeChange() {
+        let dbtype = document.getElementById("_dbtype").value;
+        if (dbtype === "sqlite") {
+            document.getElementById("_dbname1").innerText = "SqLite";
+            document.getElementById("_sqlite").style.display = "block";
+            document.getElementById("_mysql_postgres").style.display = "none";
+        } else {
+            
+            if (dbtype === "mysql") {
+                document.getElementById("_dbname2").innerText = "MySQL";
+            } else {
+                document.getElementById("_dbname2").innerText = "Postgres";
+            }
+
+            document.getElementById("_sqlite").style.display = "none";
+            document.getElementById("_mysql_postgres").style.display = "block";
+
+        }
+    }
+    dbTypeChange();
+</script>
